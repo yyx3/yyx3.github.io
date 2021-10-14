@@ -1,0 +1,854 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux文件操作 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,Linux命令,linux学习,linux安装,linux教程,linux文件操作,linux用法">
+<meta name="description" content="文件操作命令 显示当前工作目录 每个shell和系统进程都有一个当前的工作目录 CWD：current work directory 显示当前shell CWD的绝对路径 pwd命令: printing working directory …">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33862"><link rel="prev" title="linux系统目录结构" href="http://www.yunweipai.com/33859.html">
+<link rel="next" title="什么是搜索引擎" href="http://www.yunweipai.com/33979.html">
+<link rel="canonical" href="http://www.yunweipai.com/33862.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33862.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33862.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, Linux命令, linux学习, linux安装, linux教程, linux文件操作, linux用法, Linux教程">
+<meta name="description" content="文件操作命令 显示当前工作目录 每个shell和系统进程都有一个当前的工作目录 CWD：current work directory 显示当前shell CWD的绝对路径 pwd命令: printing working directory  -P 显示真实物理路径 -L 显示链接路径（默认）  范例： [root@centos8 ~]#pwd /root [root@centos8 ~]#cd /data [root@centos8 d">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post current"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33862" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>文件操作命令</h3>
+<h4>显示当前工作目录</h4>
+<p>每个shell和系统进程都有一个当前的工作目录 CWD：current work directory</p>
+<p>显示当前shell CWD的绝对路径</p>
+<p>pwd命令: printing working directory</p>
+<ul>
+<li>-P 显示真实物理路径</li>
+<li>-L 显示链接路径（默认）</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/root
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cd /data</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/data
+<span class="token punctuation">[</span><span class="token number">14</span>:38:41 root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#cd /bin</span>
+<span class="token punctuation">[</span><span class="token number">14</span>:38:52 root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/bin
+<span class="token punctuation">[</span><span class="token number">14</span>:38:54 root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#ll /</span>
+total <span class="token number">28</span>
+lrwxrwxrwx.   <span class="token number">1</span> root root    <span class="token number">7</span> May <span class="token number">11</span>  <span class="token number">2019</span> bin -<span class="token operator">&gt;</span> usr/bin
+dr-xr-xr-x.   <span class="token number">6</span> root root <span class="token number">4096</span> Dec <span class="token number">11</span> <span class="token number">11</span>:21 boot
+drwxr-xr-x.   <span class="token number">2</span> root root  <span class="token number">142</span> Dec <span class="token number">13</span> <span class="token number">14</span>:26 data
+drwxr-xr-x.  <span class="token number">19</span> root root <span class="token number">3280</span> Dec <span class="token number">13</span> <span class="token number">11</span>:21 dev
+drwxr-xr-x. <span class="token number">142</span> root root <span class="token number">8192</span> Dec <span class="token number">13</span> <span class="token number">14</span>:26 etc
+drwxr-xr-x.   <span class="token number">3</span> root root   <span class="token number">18</span> Dec <span class="token number">11</span> <span class="token number">11</span>:19 home
+lrwxrwxrwx.   <span class="token number">1</span> root root    <span class="token number">7</span> May <span class="token number">11</span>  <span class="token number">2019</span> lib -<span class="token operator">&gt;</span> usr/lib
+lrwxrwxrwx.   <span class="token number">1</span> root root    <span class="token number">9</span> May <span class="token number">11</span>  <span class="token number">2019</span> lib64 -<span class="token operator">&gt;</span> usr/lib64
+drwxr-xr-x.   <span class="token number">2</span> root root    <span class="token number">6</span> May <span class="token number">11</span>  <span class="token number">2019</span> media
+drwxr-xr-x.   <span class="token number">3</span> root root   <span class="token number">18</span> Dec <span class="token number">11</span> <span class="token number">11</span>:15 mnt
+drwxr-xr-x.   <span class="token number">2</span> root root    <span class="token number">6</span> May <span class="token number">11</span>  <span class="token number">2019</span> opt
+dr-xr-xr-x. <span class="token number">259</span> root root    <span class="token number">0</span> Dec <span class="token number">13</span> <span class="token number">10</span>:34 proc
+dr-xr-x---.  <span class="token number">15</span> root root <span class="token number">4096</span> Dec <span class="token number">13</span> <span class="token number">14</span>:26 root
+drwxr-xr-x.  <span class="token number">42</span> root root <span class="token number">1200</span> Dec <span class="token number">13</span> <span class="token number">11</span>:03 run
+lrwxrwxrwx.   <span class="token number">1</span> root root    <span class="token number">8</span> May <span class="token number">11</span>  <span class="token number">2019</span> sbin -<span class="token operator">&gt;</span> usr/sbin
+drwxr-xr-x.   <span class="token number">2</span> root root    <span class="token number">6</span> May <span class="token number">11</span>  <span class="token number">2019</span> srv
+dr-xr-xr-x.  <span class="token number">13</span> root root    <span class="token number">0</span> Dec <span class="token number">13</span> <span class="token number">10</span>:34 sys
+drwxrwxrwt.  <span class="token number">20</span> root root <span class="token number">4096</span> Dec <span class="token number">13</span> <span class="token number">14</span>:14 tmp
+drwxr-xr-x.  <span class="token number">12</span> root root  <span class="token number">144</span> Dec <span class="token number">11</span> <span class="token number">11</span>:12 usr
+drwxr-xr-x.  <span class="token number">22</span> root root <span class="token number">4096</span> Dec <span class="token number">11</span> <span class="token number">11</span>:21 var
+<span class="token punctuation">[</span><span class="token number">14</span>:38:57 root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#pwd -P</span>
+/usr/bin</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>绝对和相对路径</h4>
+<ul>
+<li>绝对路径<br>
+以正斜杠/ 即根目录开始<br>
+完整的文件的位置路径<br>
+可用于任何想指定一个文件名的时候</li>
+<li>相对路径名<br>
+不以斜线开始<br>
+一般情况下，是指相对于当前工作目录的路径，特殊场景下，是相对于某目录的位置<br>
+可以作为一个简短的形式指定一个文件名</li>
+</ul>
+<p>基名：basename，只取文件名而不要路径<br>
+目录名：dirname，只取路径，不要文件名</p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#basename /etc/sysconfig/network</span>
+network
+<span class="token punctuation">[</span>root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#dirname /etc/sysconfig/network</span>
+/etc/sysconfig
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dirname  /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+/etc/sysconfig/network-scripts
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#basename /etc/sysconfig/network-scripts/ifcfg-eth0</span>
+ifcfg-eth0
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>更改目录</h4>
+<p>命令 cd ： change directory 改变目录</p>
+<p>选项：-P  切换至物理路径，而非软链接目录</p>
+<p>可以使用绝对或相对路径</p>
+<ul>
+<li>切换至父目录：          cd ..</li>
+<li>切换至当前用户主目录： cd</li>
+<li>切换至以前的工作目录： cd –</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cd /etc/sysconfig</span>
+<span class="token punctuation">[</span>root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/etc/sysconfig
+<span class="token punctuation">[</span>root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#cd ../../data</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/data
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cd /bin</span>
+<span class="token punctuation">[</span>root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/bin
+<span class="token punctuation">[</span>root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#cd -P /bin </span>
+<span class="token punctuation">[</span>root@centos8 bin<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/usr/bin</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>相关的环境变量：</p>
+<ul>
+<li>PWD：当前目录路径 </li>
+<li>OLDPWD：上一次目录路径</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo $OLDPWD</span>
+/etc/sysconfig
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cd -</span>
+/etc/sysconfig
+<span class="token punctuation">[</span>root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/etc/sysconfig
+<span class="token punctuation">[</span>root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>列出目录内容</h4>
+<p>ls 命令可以列出当前目录的内容或指定目录</p>
+<p>用法：</p>
+<pre><code>ls [options] [files_or_dirs]</code></pre>
+<p>常见选项：</p>
+<ul>
+<li>-a 包含隐藏文件</li>
+<li>-l  显示额外的信息</li>
+<li>-R  目录递归</li>
+<li>-ld  目录和符号链接信息</li>
+<li>-1  文件分行显示</li>
+<li>-S  按从大到小排序</li>
+<li>-t   按mtime排序</li>
+<li>-u   配合-t选项，显示并按atime从新到旧排序</li>
+<li>-U  按目录存放顺序显示</li>
+<li>-X  按文件后缀排序</li>
+</ul>
+<p>说明：</p>
+<p>ls 查看不同后缀文件时的颜色由 /etc/DIR_COLORS 和@LS_COLORS变量定义</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#vim /etc/DIR_COLORS</span>
+.jpg 01<span class="token punctuation">;</span><span class="token number">31</span>  <span class="token comment">#修改此行</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#exit </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo $LS_COLORS</span>
+<span class="token assign-left variable">rs</span><span class="token operator">=</span><span class="token number">0</span>:di<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">34</span>:ln<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:mh<span class="token operator">=</span>00:pi<span class="token operator">=</span><span class="token number">40</span><span class="token punctuation">;</span><span class="token number">33</span>:so<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:do<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:bd<span class="token operator">=</span><span class="token number">40</span><span class="token punctuation">;</span><span class="token number">33</span><span class="token punctuation">;</span>01:cd<span class="token operator">=</span><span class="token number">40</span><span class="token punctuation">;</span><span class="token number">33</span><span class="token punctuation">;</span>01:or<span class="token operator">=</span><span class="token number">40</span><span class="token punctuation">;</span><span class="token number">31</span><span class="token punctuation">;</span>01:mi<span class="token operator">=</span>01<span class="token punctuation">;</span>05<span class="token punctuation">;</span><span class="token number">37</span><span class="token punctuation">;</span><span class="token number">41</span>:su<span class="token operator">=</span><span class="token number">37</span><span class="token punctuation">;</span><span class="token number">41</span>:sg<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">;</span><span class="token number">43</span>:ca<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">;</span><span class="token number">41</span>:tw<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">;</span><span class="token number">42</span>:ow<span class="token operator">=</span><span class="token number">34</span><span class="token punctuation">;</span><span class="token number">42</span>:st<span class="token operator">=</span><span class="token number">37</span><span class="token punctuation">;</span><span class="token number">44</span>:ex<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">32</span>:*.tar<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tgz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.arc<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.arj<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.taz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lha<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lz4<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lzh<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lzma<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tlz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.txz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tzo<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.t7z<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.zip<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.z<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.dz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.gz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lrz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.lzo<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.xz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.zst<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tzst<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.bz2<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.bz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tbz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tbz2<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.tz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.deb<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.rpm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.jar<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.war<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.ear<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.sar<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.rar<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.alz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.ace<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.zoo<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.cpio<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.7z<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.rz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.cab<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.wim<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.swm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.dwm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.esd<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.jpg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">31</span>:*.jpeg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mjpg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mjpeg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.gif<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.bmp<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.pbm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.pgm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.ppm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.tga<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.xbm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.xpm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.tif<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.tiff<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.png<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.svg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.svgz<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mng<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.pcx<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mov<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mpg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mpeg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.m2v<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mkv<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.webm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.ogm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mp4<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.m4v<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.mp4v<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.vob<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.qt<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.nuv<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.wmv<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.asf<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.rm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.rmvb<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.flc<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.avi<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.fli<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.flv<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.gl<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.dl<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.xcf<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.xwd<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.yuv<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.cgm<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.emf<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.ogv<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.ogx<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">35</span>:*.aac<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.au<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.flac<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.m4a<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.mid<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.midi<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.mka<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.mp3<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.mpc<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.ogg<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.ra<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.wav<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.oga<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.opus<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.spx<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:*.xspf<span class="token operator">=</span>01<span class="token punctuation">;</span><span class="token number">36</span>:</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p><img title="linux文件操作插图" alt="linux文件操作插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191223083717338.png"></p>
+<h4>查看文件状态 stat</h4>
+<p>文件相关信息：metadata, data</p>
+<p>每个文件有三个时间戳：</p>
+<ul>
+<li>access time  访问时间，atime，读取文件内容</li>
+<li>modify time  修改时间，mtime，改变文件内容（数据）</li>
+<li>change time  改变时间，ctime，元数据发生改变</li>
+</ul>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#stat /etc/passwd</span>
+  File: /etc/passwd
+  Size: <span class="token number">1306</span>        Blocks: <span class="token number">8</span>          IO Block: <span class="token number">4096</span>   regular <span class="token function">file</span>
+Device: 802h/2050d  Inode: <span class="token number">134792556</span>   Links: <span class="token number">1</span>
+Access: <span class="token punctuation">(</span>0644/-rw-r--r--<span class="token punctuation">)</span>  Uid: <span class="token punctuation">(</span>    <span class="token number">0</span>/    root<span class="token punctuation">)</span>   Gid: <span class="token punctuation">(</span>    <span class="token number">0</span>/    root<span class="token punctuation">)</span>
+Access: <span class="token number">2019</span>-12-09 <span class="token number">20</span>:37:12.830991350 +0800
+Modify: <span class="token number">2019</span>-12-09 <span class="token number">20</span>:37:12.826991351 +0800
+Change: <span class="token number">2019</span>-12-09 <span class="token number">20</span>:37:12.826991351 +0800
+ Birth: -</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>确定文件内容</h4>
+<p>文件可以包含多种类型的数据，使用file命令检查文件的类型，然后确定适当的打开命令或应用程序使用</p>
+<p>格式：</p>
+<pre><code>file [options] &lt;filename&gt;...</code></pre>
+<p>常用选项:</p>
+<ul>
+<li>-b 列出文件辨识结果时，不显示文件名称</li>
+<li>-f filelist 列出文件filelist中文件名的文件类型</li>
+<li>-F 使用指定分隔符号替换输出文件名后默认的”:”分隔符</li>
+<li>-L 查看对应软链接对应文件的文件类型</li>
+<li>–help 显示命令在线帮助</li>
+</ul>
+<p>范例：windows的文本格式和Linux的文本格式的区别</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cat linux.txt</span>
+a
+b
+c
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cat win.txt</span>
+a
+b
+c<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#file win.txt linux.txt</span>
+win.txt:   ASCII text, with CRLF line terminators
+linux.txt: ASCII text
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#hexdump -C linux.txt</span>
+00000000  <span class="token number">61</span> 0a <span class="token number">62</span> 0a <span class="token number">63</span> 0a                                 <span class="token operator">|</span>a.b.c.<span class="token operator">|</span>
+00000006
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#hexdump  -C win.txt</span>
+00000000  <span class="token number">61</span> 0d 0a <span class="token number">62</span> 0d 0a <span class="token number">63</span>                              <span class="token operator">|</span>a<span class="token punctuation">..</span>b<span class="token punctuation">..</span>c<span class="token operator">|</span>
+00000007
+
+<span class="token comment">#安装转换工具</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#dnf -y install dos2unix</span>
+
+<span class="token comment">#将Windows的文本格式转换成的Linux文本格式</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#dos2unix  win.txt</span>
+dos2unix: converting <span class="token function">file</span> win.txt to Unix format<span class="token punctuation">..</span>.
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#file win.txt</span>
+win.txt: ASCII text
+
+<span class="token comment">#将Linux的文本格式转换成Windows的文本格式</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#unix2dos  win.txt</span>
+unix2dos: converting <span class="token function">file</span> win.txt to DOS format<span class="token punctuation">..</span>.
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#file win.txt</span>
+win.txt: ASCII text, with CRLF line terminators</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：转换文件字符集编码</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#显示支持字符集编码列表</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#iconv -l</span>
+
+<span class="token comment">#windows10上文本默认的编码ANSI（GB2312）</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#file windows.txt</span>
+windows.txt: ISO-8859 text, with no line terminators
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#echo $LANG</span>
+en_US.UTF-8
+
+<span class="token comment">#默认在linux无法正常显示文本内容</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cat windows11.txt</span>
+▒▒▒▒▒▒<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#</span>
+
+<span class="token comment">#将windows10上文本默认的编码ANSI（GB2312）转换成UTF-8</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#iconv -f gb2312 windows.txt  -o windows1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cat windows1.txt</span>
+马哥教育<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll windows1.txt</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">12</span> Mar <span class="token number">23</span> <span class="token number">10</span>:13 windows1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#file windows1.txt</span>
+windows1.txt: UTF-8 Unicode text, with no line terminators
+
+<span class="token comment">#将UTF-8转换成windows10上文本默认的编码ANSI（GB2312）</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#iconv -f utf8 -t gb2312 windows1.txt -o  windows11.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#file windows11.txt</span>
+windows11.txt: ISO-8859 text, with no line terminators</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#将windows10上文本默认的编码ANSI（GB2312）转换成UTF-8</span>
+<span class="token punctuation">[</span><span class="token number">15</span>:34:50 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#iconv -f gb2312 win.txt  -o win2.txt  </span>
+<span class="token punctuation">[</span><span class="token number">15</span>:34:50 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#file linux.txt</span>
+linux.txt: ASCII text
+<span class="token punctuation">[</span><span class="token number">15</span>:34:31 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#file windows.txt </span>
+windows.txt: ASCII text, with CRLF line terminators
+<span class="token comment">#将windows的文本格式转换成Linux的文本格式</span>
+<span class="token punctuation">[</span><span class="token number">15</span>:35:26 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dos2unix  windows.txt </span>
+dos2unix: converting <span class="token function">file</span> windows.txt to Unix format<span class="token punctuation">..</span>.
+<span class="token punctuation">[</span><span class="token number">15</span>:36:00 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#file windows.txt</span>
+windows.txt: ASCII text</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat list.txt </span>
+/etc/
+/bin
+/etc/issue
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#file -f list.txt</span>
+/etc/:      directory
+/bin:       symbolic <span class="token function">link</span> to usr/bin
+/etc/issue: ASCII text</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>文件通配符模式 wildcard pattern</h4>
+<p>文件通配符可以用来匹配符合条件的多个文件，方便批量管理文件</p>
+<p>通配符采有特定的符号，表示特定的含义，此特符号称为元 meta 字符</p>
+<p>常见的通配符如下：</p>
+<pre><code>*       匹配零个或多个字符，但不匹配 "." 开头的文件，即隐藏文件
+?       匹配任何单个字符
+~       当前用户家目录
+~mage   用户mage家目录
+~+和.    当前工作目录
+~-      前一个工作目录
+[0-9]   匹配数字范围
+[a-z]   字母
+[A-Z]   字母
+[wang]  匹配列表中的任何的一个字符
+[^wang] 匹配列表中的所有字符以外的字符</code></pre>
+<p>别外还有在Linux系统中预定义的字符类：man 7 glob</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>:digit:<span class="token punctuation">]</span>：任意数字，相当于0-9
+<span class="token punctuation">[</span>:lower:<span class="token punctuation">]</span>：任意小写字母,表示 a-z
+<span class="token punctuation">[</span>:upper:<span class="token punctuation">]</span>: 任意大写字母,表示 A-Z 
+<span class="token punctuation">[</span>:alpha:<span class="token punctuation">]</span>: 任意大小写字母
+<span class="token punctuation">[</span>:alnum:<span class="token punctuation">]</span>：任意数字或字母
+<span class="token punctuation">[</span>:blank:<span class="token punctuation">]</span>：水平空白字符
+<span class="token punctuation">[</span>:space:<span class="token punctuation">]</span>：水平或垂直空白字符
+<span class="token punctuation">[</span>:punct:<span class="token punctuation">]</span>：标点符号
+<span class="token punctuation">[</span>:print:<span class="token punctuation">]</span>：可打印字符 
+<span class="token punctuation">[</span>:cntrl:<span class="token punctuation">]</span>：控制（非打印）字符 
+<span class="token punctuation">[</span>:graph:<span class="token punctuation">]</span>：图形字符 
+<span class="token punctuation">[</span>:xdigit:<span class="token punctuation">]</span>：十六进制字符</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<pre><code>[root@centos8 wang]#echo $OLDPWD
+/data
+[root@centos8 wang]#ll -/linux.txt
+ls: invalid option -- '/'
+Try 'ls --help' for more information.
+[root@centos8 wang]#ll ~-/linux.txt
+-rw-r--r-- 1 root root 6 Mar 23 09:48 /data/linux.txt</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 data]#touch file{a..z}.txt file{A..Z}.txt file{0.9}.txt
+[root@centos8 data]#ll file{0..9}.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file0.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file1.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file2.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file3.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file4.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file5.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file6.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file7.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file8.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file9.txt
+[root@centos8 data]#ll file[0-9].txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file0.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file1.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file2.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file3.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file4.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file5.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file6.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file7.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file8.txt
+-rw-r--r-- 1 root root 0 Mar 23 10:46 file9.txt
+
+[root@centos8 data]#ls file[a-c].txt
+filea.txt  fileA.txt  fileb.txt  fileB.txt  filec.txt
+[root@centos8 data]#ls file[C-E].txt
+fileC.txt  filed.txt  fileD.txt  filee.txt  fileE.txt
+
+[root@centos8 data]#ls file[wang].txt
+filea.txt  fileg.txt  filen.txt  filew.txt
+[root@centos8 data]#ls file[^wang].txt</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 data]#ls file[:lower:].txt
+filee.txt  filel.txt  fileo.txt  filer.txt  filew.txt
+[root@centos8 data]#ls file[[:lower:]].txt
+filea.txt  filed.txt  fileg.txt  filej.txt  filem.txt  filep.txt  files.txt  filev.txt  filey.txt
+fileb.txt  filee.txt  fileh.txt  filek.txt  filen.txt  fileq.txt  filet.txt  filew.txt  filez.txt
+filec.txt  filef.txt  filei.txt  filel.txt  fileo.txt  filer.txt  fileu.txt  filex.txt
+</code></pre>
+<p>范例：比较有无*的功能区别</p>
+<pre><code>[root@centos8 data]#ls -a *
+[root@centos8 data]#ls -a</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#ls -d /etc/*/
+[root@centos8 ~]#l.</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 data]#touch file*.log
+[root@centos8 data]#touch file1.log
+[root@centos8 data]#ls file*.log
+ file1.log  'file*.log'
+[root@centos8 data]#ls 'file*.log'
+'file*.log'
+[root@centos8 data]#ls 'file*.log'</code></pre>
+<p>范例：<br>
+1、显示/etc目录下所有以l开头，以一个小写字母结尾，且中间出现至少一位数字的文件或目录列表<br>
+2、显示/etc目录下以任意一位数字开头，且以非数字结尾的文件或目录列表<br>
+3、显示/etc/目录下以非字母开头，后面跟了一个字母及其它任意长度任意字符的文件或目录列表<br>
+4、显示/etc/目录下所有以rc开头，并后面是0-6之间的数字，其它为任意字符的文件或目录列表<br>
+5、显示/etc目录下，所有.conf结尾，且以m,n,r,p开头的文件或目录列表<br>
+6、只显示/root下的隐藏文件和目录列表<br>
+7、只显示/etc下的非隐藏目录列表</p>
+<h4>创建空文件和刷新时间</h4>
+<p>touch命令可以用来创建空文件或刷新文件的时间</p>
+<p>格式：</p>
+<pre><code>touch [OPTION]... FILE...</code></pre>
+<p>选项说明：       </p>
+<ul>
+<li>-a   仅改变 atime和ctime</li>
+<li>-m  仅改变 mtime和ctime</li>
+<li>-t  [[CC]YY]MMDDhhmm[.ss]     指定atime和mtime的时间戳</li>
+<li>-c  如果文件不存在，则不予创建</li>
+</ul>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#touch f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">0</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">0</span> Mar <span class="token number">23</span> <span class="token number">11</span>:30 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll  /etc/issue</span>
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">23</span> Jan  <span class="token number">2</span> <span class="token number">23</span>:21 /etc/issue
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#touch /etc/issue</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll /etc/issue</span>
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">23</span> Mar <span class="token number">23</span> <span class="token number">11</span>:31 /etc/issue
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#stat /etc/issue</span>
+  File: /etc/issue
+  Size: <span class="token number">23</span>              Blocks: <span class="token number">8</span>          IO Block: <span class="token number">4096</span>   regular <span class="token function">file</span>
+Device: 802h/2050d      Inode: <span class="token number">134345998</span>   Links: <span class="token number">1</span>
+Access: <span class="token punctuation">(</span>0644/-rw-r--r--<span class="token punctuation">)</span>  Uid: <span class="token punctuation">(</span>    <span class="token number">0</span>/    root<span class="token punctuation">)</span>   Gid: <span class="token punctuation">(</span>    <span class="token number">0</span>/    root<span class="token punctuation">)</span>
+Access: <span class="token number">2020</span>-03-23 <span class="token number">11</span>:31:20.030291332 +0800
+Modify: <span class="token number">2020</span>-03-23 <span class="token number">11</span>:31:20.030291332 +0800
+Change: <span class="token number">2020</span>-03-23 <span class="token number">11</span>:31:20.030291332 +0800
+ Birth: -
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#date</span>
+Fri Dec <span class="token number">13</span> <span class="token number">16</span>:11:55 CST <span class="token number">2019</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#touch date -d "-1 day" +%F_%T.log</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ls</span>
+<span class="token number">2019</span>-12-12_16:11:48.log
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#touch $(date -d "1 year" +%F_%T).log</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ls</span>
+<span class="token number">2019</span>-12-12_16:11:48.log  <span class="token number">2020</span>-12-13_16:13:11.log</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4><img title="linux文件操作插图(1)" alt="linux文件操作插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191209211901026.png">复制文件和目录</h4>
+<p><img title="linux文件操作插图(2)" src="images/image-20191209211901026.png" alt="image-20191209211901026"></p>
+<p>利用 cp（copy）命令可以实现文件或目录的复制 </p>
+<p>格式：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">cp</span> <span class="token punctuation">[</span>OPTION<span class="token punctuation">]</span><span class="token punctuation">..</span>. <span class="token punctuation">[</span>-T<span class="token punctuation">]</span> SOURCE DEST
+<span class="token function">cp</span> <span class="token punctuation">[</span>OPTION<span class="token punctuation">]</span><span class="token punctuation">..</span>. SOURCE<span class="token punctuation">..</span>. DIRECTORY
+<span class="token function">cp</span> <span class="token punctuation">[</span>OPTION<span class="token punctuation">]</span><span class="token punctuation">..</span>. -t DIRECTORY SOURCE<span class="token punctuation">..</span>.</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>常用选项</p>
+<ul>
+<li>
+-i        如果目标已存在，覆盖前提示是否覆盖
+</li>
+<li>
+-n        不覆盖，注意两者顺序
+</li>
+<li>
+-r, -R    递归复制目录及内部的所有内容
+</li>
+<li>
+-a        归档，相当于-dR –preserv=all，常用于备份功能
+</li>
+<li>
+-d  –no-dereference –preserv=links  不复制原文件，只复制链接名
+</li>
+<li>
+–preserv[=ATTR_LIST]<br>
+mode: 权限<br>
+ownership: 属主属组<br>
+timestamp:<br>
+links<br>
+xattr<br>
+context<br>
+all
+</li>
+<li>
+-p    等同–preserv=mode,ownership,timestamp
+</li>
+<li>
+-v    –verbose
+</li>
+<li>
+-f    –force
+</li>
+<li>
+-u    –update 只复制源比目标更新文件或目标不存在的文件
+</li>
+<li>
+-b    目标存在，覆盖前先备份，默认形式为 <code>filename~</code>,只保留最近的一个备份
+</li>
+<li>
+–backup=numbered 目标存在，覆盖前先备份加数字后缀，形式为<code>filename.~#~</code>，可以保留多个版本
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>源\目标</th>
+<th style="text-align: left;"><strong>不存在</strong></th>
+<th><strong>存在且为文件</strong></th>
+<th><strong>存在且为目录</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>一个文件</strong></td>
+<td style="text-align: left;">新建DEST，并将SRC中内容填充至DEST中</td>
+<td>将SRC中的内容覆盖至DEST中  <strong>注意数据丢失风险！</strong>  <strong>建议用</strong>  –i  <strong>选项</strong></td>
+<td>在DEST下新建与原文件同名的文件，并将SRC中内容填充至新文件中</td>
+</tr>
+<tr>
+<td><strong>多个文件</strong></td>
+<td style="text-align: left;">提示错误</td>
+<td>提示错误</td>
+<td>在DEST下新建与原文件同名的文件，并将原文件内容复制进新文件中</td>
+</tr>
+<tr>
+<td><strong>目录须使用-r选项</strong></td>
+<td style="text-align: left;">创建指定DEST同名目录，复制SRC目录中所有文件至DEST下</td>
+<td>提示错误</td>
+<td>在DEST下新建与原目录同名的目录，并将SRC中内容复制至新目录中</td>
+</tr>
+</tbody>
+</table>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span><span class="token number">16</span>:21:08 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp ~wang/issue  /data/issue_wang.bak</span>
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:21 /data/issue_wang.bak
+-rw-r--r--. <span class="token number">1</span> wang wang <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:18 /home/wang/issue
+<span class="token punctuation">[</span><span class="token number">16</span>:21:44 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp  -p ~wang/issue /data/issue_wang2.bak</span>
+<span class="token punctuation">[</span><span class="token number">16</span>:22:07 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll  ~wang/issue /data/issue_wang2.bak</span>
+-rw-r--r--. <span class="token number">1</span> wang wang <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:18 /data/issue_wang2.bak
+-rw-r--r--. <span class="token number">1</span> wang wang <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:18 /home/wang/issue
+<span class="token punctuation">[</span><span class="token number">16</span>:23:19 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp /etc/sysconfig/  /data/</span>
+cp: -r not specified<span class="token punctuation">;</span> omitting directory <span class="token string">'/etc/sysconfig/'</span>
+<span class="token punctuation">[</span><span class="token number">16</span>:23:40 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp -r /etc/sysconfig/  /data/</span>
+<span class="token punctuation">[</span><span class="token number">16</span>:23:45 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /data</span>
+total <span class="token number">12</span>
+-rw-r--r--. <span class="token number">1</span> root root    <span class="token number">0</span> Dec <span class="token number">13</span> <span class="token number">16</span>:11 <span class="token number">2019</span>-12-12_16:11:48.log
+-rw-r--r--. <span class="token number">1</span> root root    <span class="token number">0</span> Dec <span class="token number">13</span> <span class="token number">16</span>:13 <span class="token number">2020</span>-12-13_16:13:11.log
+-rw-r--r--. <span class="token number">1</span> wang wang   <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:18 issue_wang2.bak
+-rw-r--r--. <span class="token number">1</span> root root   <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:21 issue_wang.bak
+drwxr-xr-x. <span class="token number">7</span> root root <span class="token number">4096</span> Dec <span class="token number">13</span> <span class="token number">16</span>:23 sysconfig
+<span class="token punctuation">[</span><span class="token number">16</span>:24:03 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp -r /etc/sysconfig/  /data/sysconfig_bak</span>
+<span class="token punctuation">[</span><span class="token number">16</span>:24:34 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /data</span>
+total <span class="token number">16</span>
+-rw-r--r--. <span class="token number">1</span> root root    <span class="token number">0</span> Dec <span class="token number">13</span> <span class="token number">16</span>:11 <span class="token number">2019</span>-12-12_16:11:48.log
+-rw-r--r--. <span class="token number">1</span> root root    <span class="token number">0</span> Dec <span class="token number">13</span> <span class="token number">16</span>:13 <span class="token number">2020</span>-12-13_16:13:11.log
+-rw-r--r--. <span class="token number">1</span> wang wang   <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:18 issue_wang2.bak
+-rw-r--r--. <span class="token number">1</span> root root   <span class="token number">86</span> Dec <span class="token number">13</span> <span class="token number">16</span>:21 issue_wang.bak
+drwxr-xr-x. <span class="token number">7</span> root root <span class="token number">4096</span> Dec <span class="token number">13</span> <span class="token number">16</span>:23 sysconfig
+drwxr-xr-x. <span class="token number">7</span> root root <span class="token number">4096</span> Dec <span class="token number">13</span> <span class="token number">16</span>:24 sysconfig_bak
+
+<span class="token punctuation">[</span><span class="token number">16</span>:32:43 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp -b  /etc/motd /data/issue</span>
+cp: overwrite <span class="token string">'/data/issue'</span>? y 
+<span class="token punctuation">[</span><span class="token number">16</span>:33:09 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /data</span>
+total <span class="token number">8</span>
+-rw-r--r--. <span class="token number">1</span> root root    <span class="token number">1</span> Dec <span class="token number">13</span> <span class="token number">16</span>:33 issue
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">2610</span> Dec <span class="token number">13</span> <span class="token number">16</span>:32 issue~
+<span class="token punctuation">[</span><span class="token number">16</span>:33:11 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp -b  /etc/fstab  /data/issue</span>
+cp: overwrite <span class="token string">'/data/issue'</span>? y
+<span class="token punctuation">[</span><span class="token number">16</span>:33:55 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /data</span>
+total <span class="token number">8</span>
+-rw-r--r--. <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">13</span> <span class="token number">16</span>:33 issue
+-rw-r--r--. <span class="token number">1</span> root root   <span class="token number">1</span> Dec <span class="token number">13</span> <span class="token number">16</span>:33 issue~
+<span class="token punctuation">[</span><span class="token number">16</span>:33:56 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp --backup=numbered   /etc/fstab  /data/issue</span>
+cp: overwrite <span class="token string">'/data/issue'</span>? y
+<span class="token punctuation">[</span><span class="token number">16</span>:34:32 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp --backup=numbered   /etc/shadow  /data/issue</span>
+cp: overwrite <span class="token string">'/data/issue'</span>? y
+<span class="token punctuation">[</span><span class="token number">16</span>:34:41 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp --backup=numbered   /etc/os-release  /data/issue</span>
+cp: overwrite <span class="token string">'/data/issue'</span>? y
+<span class="token punctuation">[</span><span class="token number">16</span>:34:48 root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /data</span>
+total <span class="token number">20</span>
+-rw-r--r--. <span class="token number">1</span> root root  <span class="token number">420</span> Dec <span class="token number">13</span> <span class="token number">16</span>:34 issue
+-rw-r--r--. <span class="token number">1</span> root root    <span class="token number">1</span> Dec <span class="token number">13</span> <span class="token number">16</span>:33 issue~
+-rw-r--r--. <span class="token number">1</span> root root  <span class="token number">709</span> Dec <span class="token number">13</span> <span class="token number">16</span>:33 issue.~1~
+-rw-r--r--. <span class="token number">1</span> root root  <span class="token number">709</span> Dec <span class="token number">13</span> <span class="token number">16</span>:34 issue.~2~
+----------. <span class="token number">1</span> root root <span class="token number">1349</span> Dec <span class="token number">13</span> <span class="token number">16</span>:34 issue.~3~</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#cp /dev/zero /data/zero.bak</code></pre>
+<p><strong>练习</strong><br>
+1、每天将/etc/目录下所有文件，备份到/data独立的子目录下，并要求子目录格式为 backupYYYY-mm-dd，备份过程可见</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp -av /etc/ /data/backupdate +%F</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>2、创建/data/rootdir目录，并复制/root下所有文件到该目录内，要求保留原有权限</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cp -a /root /data/rootdir</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>移动和重命名文件</h4>
+<p>mv 命令可以实现文件或目录的移动和改名</p>
+<p>同一分区移动数据,速度很快:数据位置没有变化</p>
+<p>不同分区移动数据,速度相对慢:数据位置发生了变化</p>
+<p>格式：</p>
+<pre><code>mv [OPTION]... [-T] SOURCE DEST
+mv [OPTION]... SOURCE... DIRECTORY
+mv [OPTION]... -t DIRECTORY SOURCE...</code></pre>
+<p>常用选项： </p>
+<ul>
+<li>-i       交互式</li>
+<li>-f       强制</li>
+<li>-b     目标存在，覆盖前先备份</li>
+</ul>
+<p>利用rename 可以批量修改文件名</p>
+<p>格式：</p>
+<pre><code>rename [options] &lt;expression&gt; &lt;replacement&gt; &lt;file&gt;...</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#为所有的conf文件加上.bak后缀： </span>
+<span class="token function">rename</span>  <span class="token string">'conf'</span>    <span class="token string">'conf.bak'</span>   f* 
+<span class="token comment">#去掉所有的bak后缀： </span>
+<span class="token function">rename</span>  <span class="token string">'.bak'</span>  <span class="token string">''</span>  *.bak</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>删除文件</h4>
+<p><img title="linux文件操作插图(3)" alt="linux文件操作插图(3)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200229101858626-480x254.png"></p>
+<p>使用 rm 命令可以删除文件</p>
+<p>注意：此命令非常危险，慎重使用，建议使用mv 代替 rm </p>
+<p>格式：</p>
+<pre><code>rm [OPTION]... FILE...</code></pre>
+<p>常用选项：</p>
+<ul>
+<li>-i    交互式</li>
+<li>-f    强制删除</li>
+<li>-r    递归</li>
+<li>–no-preserve-root  删除/ </li>
+</ul>
+<p>范例： </p>
+<pre><code>[root@centos8 ~]#rm -rf /
+rm: it is dangerous to operate recursively on '/'
+rm: use --no-preserve-root to override this failsafe
+
+rm -rf    /*</code></pre>
+<p>范例：删除特殊文件</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#将名为 “/data/-f” 的文件删除</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm -f -f  #此方式错误</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm -- -f</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm ./-f</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm /data/-f</span>
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#touch '~'</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ls</span>
+<span class="token string">'~'</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm -f ~</span>
+rm: cannot remove <span class="token string">'/root'</span><span class="token builtin class-name">:</span> Is a directory
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm -- ~</span>
+rm: cannot remove <span class="token string">'/root'</span><span class="token builtin class-name">:</span> Is a directory
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm -f ./~</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>rm虽然删除了文件，但是被删除的文件仍然可能被恢复，在安全要求较高的场景下，可以使用shred安全删除文件</p>
+<p>shred格式</p>
+<pre><code>shred [OPTION]... FILE...</code></pre>
+<p>常见选项：<br>
+-z     最后一次覆盖添加0，以隐藏覆盖操作<br>
+-v      能够显示操作进度<br>
+-u      覆盖后截断并删除文件<br>
+-n #    指定覆盖文件内容的次数（默认值是3次）</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#shred  -zvun 5 passwords.txt</span>
+shred: passwords.txt: pass <span class="token number">1</span>/6 <span class="token punctuation">(</span>random<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+shred: passwords.txt: pass <span class="token number">2</span>/6 <span class="token punctuation">(</span>000000<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+shred: passwords.txt: pass <span class="token number">3</span>/6 <span class="token punctuation">(</span>random<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+shred: passwords.txt: pass <span class="token number">4</span>/6 <span class="token punctuation">(</span>ffffff<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+shred: passwords.txt: pass <span class="token number">5</span>/6 <span class="token punctuation">(</span>random<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+shred: passwords.txt: pass <span class="token number">6</span>/6 <span class="token punctuation">(</span>000000<span class="token punctuation">)</span><span class="token punctuation">..</span>.
+shred: passwords.txt: removing
+shred: passwords.txt: renamed to 0000000000000
+shred: 0000000000000: renamed to 000000000000
+shred: 000000000000: renamed to 00000000000
+shred: 00000000000: renamed to 0000000000
+shred: 0000000000: renamed to 000000000
+shred: 000000000: renamed to 00000000
+shred: 00000000: renamed to 0000000
+shred: 0000000: renamed to 000000
+shred: 000000: renamed to 00000
+shred: 00000: renamed to 0000
+shred: 0000: renamed to 000
+shred: 000: renamed to 00
+shred: 00: renamed to <span class="token number">0</span>
+shred: passwords.txt: removed
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ls passwords.txt</span>
+ls: cannot access <span class="token string">'passwords.txt'</span><span class="token builtin class-name">:</span> No such <span class="token function">file</span> or directory</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>目录操作</h4>
+<h5>显示目录树 tree</h5>
+<p>常见选项：</p>
+<ul>
+<li>-d: 只显示目录</li>
+<li>-L level：指定显示的层级数目</li>
+<li>-P pattern: 只显示由指定wild-card pattern匹配到的路径</li>
+</ul>
+<h5>创建目录 mkdir</h5>
+<p>常见选项：</p>
+<ul>
+<li>-p: 存在于不报错，且可自动创建所需的各目录</li>
+<li>-v: 显示详细信息</li>
+<li>-m MODE: 创建目录时直接指定权限</li>
+</ul>
+<h5>删除空目录rmdir</h5>
+<p>常见选项：</p>
+<ul>
+<li>-p  递归删除父空目录</li>
+<li>-v  显示详细信息</li>
+</ul>
+<p>注意：rmdir只能删除空目录，如果想删除非空目录，可以使用rm -r 命令，递归删除目录树</p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token builtin class-name">alias</span> <span class="token assign-left variable">rm</span><span class="token operator">=</span><span class="token string">'DIR=/data/backupdate +%F%T;mkdir DIR;mv -tDIR'</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+	
+		</div>
+
+	</div>
+
+</div>	
+
+	
+</body></html>

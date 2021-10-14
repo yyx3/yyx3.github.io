@@ -1,0 +1,564 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux-文本处理-vim – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,vim">
+<meta name="description" content="文本编辑工具之神VIM vi和vim简介 在Linux中我们经常编辑修改文本文件，即由ASCII, Unicode 或其它编码的纯文字的文件。之前介绍过nano，实际工作中我们会使用更为专业，功能强大的工具 文本编辑种类： 全屏编辑器：na…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33875"><link rel="prev" title="linux权限管理" href="http://www.yunweipai.com/33871.html">
+<link rel="next" title="linux-文本处理-grep" href="http://www.yunweipai.com/33884.html">
+<link rel="canonical" href="http://www.yunweipai.com/33875.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33875.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33875.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, vim, Linux教程">
+<meta name="description" content="文本编辑工具之神VIM vi和vim简介  在Linux中我们经常编辑修改文本文件，即由ASCII, Unicode 或其它编码的纯文字的文件。之前介绍过nano，实际工作中我们会使用更为专业，功能强大的工具 文本编辑种类：  全屏编辑器：nano（字符工具）, gedit(图形化工具)，vi,vim 行编辑器：sed  vi  Visual editor，文本编辑器，是 Linux 必备工具之一，功能强大，学习曲线较陡峭，学习难度大 ">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post current"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33875" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>文本编辑工具之神VIM</h3>
+<h4>vi和vim简介</h4>
+<p><img title="linux-文本处理-vim插图" alt="linux-文本处理-vim插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191212213016013.png"></p>
+<p>在Linux中我们经常编辑修改文本文件，即由ASCII, Unicode 或其它编码的纯文字的文件。之前介绍过nano，实际工作中我们会使用更为专业，功能强大的工具</p>
+<p>文本编辑种类：</p>
+<ul>
+<li>全屏编辑器：nano（字符工具）, gedit(图形化工具)，vi,vim</li>
+<li>行编辑器：sed</li>
+</ul>
+<p><strong>vi</strong> </p>
+<p>Visual editor，文本编辑器，是 Linux 必备工具之一，功能强大，学习曲线较陡峭，学习难度大</p>
+<p><strong>vim</strong></p>
+<p>VIsual editor iMproved ，和 vi 使用方法一致，但功能更为强大，不是必备软件</p>
+<p>官网：www.vim.org  </p>
+<p>其他相关编辑器：gvim  一个Vim编辑器的图形版本</p>
+<p><strong>vim 小抄</strong></p>
+<p><img title="linux-文本处理-vim插图(1)" alt="linux-文本处理-vim插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191212213756553-480x312.png"></p>
+<h5>使用 vim 初步</h5>
+<h5>vim 命令格式</h5>
+<pre><code>vim [OPTION]... FILE...</code></pre>
+<p>常用选项</p>
+<pre><code>+#  打开文件后，让光标处于第#行的行首，+默认行尾
++/PATTERN   让光标处于第一个被PATTERN匹配到的行行首
+-b file 二进制方式打开文件
+-d file1 file2…  比较多个文件，相当于 vimdiff
+-m file  只读打开文件
+-e file   直接进入ex模式，相当于执行ex  file </code></pre>
+<p>说明：</p>
+<ul>
+<li>如果该文件存在，文件被打开并显示内容</li>
+<li>如果该文件不存在，当编辑后第一次存盘时创建它</li>
+</ul>
+<h5>三种主要模式和转换</h5>
+<p>vim 是 一个模式编辑器，击键行为是依赖于 vim的 的“模式”</p>
+<p><strong>三种常见模式：</strong></p>
+<ul>
+<li>命令或普通(Normal)模式：默认模式，可以实现移动光标，剪切/粘贴文本</li>
+<li>插入(Insert)或编辑模式：用于修改文本</li>
+<li>扩展命令(extended command )或命令(末)行模式：保存，退出等</li>
+</ul>
+<p><strong>模式转换</strong></p>
+<p><img title="linux-文本处理-vim插图(2)" alt="linux-文本处理-vim插图(2)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191212220324213-480x217.png"></p>
+<ul>
+<li>
+命令模式 –&gt; 插入模式<p></p>
+<pre><code>i insert, 在光标所在处输入
+I 在当前光标所在行的行首输入
+a append, 在光标所在处后面输入
+A 在当前光标所在行的行尾输入
+o 在当前光标所在行的下方打开一个新行
+O 在当前光标所在行的上方打开一个新行</code></pre>
+</li>
+<li>
+插入模式 — ESC—–&gt; 命令模式
+</li>
+<li>
+命令模式 —- : —-&gt; 扩展命令模式
+</li>
+<li>
+扩展命令模式 —-ESC,enter—-&gt; 命令模式
+</li>
+</ul>
+<h4>扩展命令模式</h4>
+<p>按“:”进入Ex模式 ，创建一个命令提示符:   处于底部的屏幕左侧</p>
+<h5>扩展命令模式基本命令</h5>
+<pre><code>w   写（存）磁盘文件
+wq  写入并退出
+x   写入并退出
+X   加密
+q   退出
+q！ 不存盘退出，即使更改都将丢失   
+r   filename     读文件内容到当前文件中
+w   filename     将当前文件内容写入另一个文件
+!command     执行命令
+r!command    读入命令的输出</code></pre>
+<h5>地址定界</h5>
+<p>格式：</p>
+<pre><code>:start_pos,end_pos CMD</code></pre>
+<h6>地址定界格式</h6>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#       #具体第#行，例如2表示第2行</span>
+<span class="token comment">#,#     #从左侧#表示起始行，到右侧#表示结尾行    </span>
+<span class="token comment">#,+#    #从左侧#表示的起始行，加上右侧#表示的行数，范例：2,+3  表示2到5行</span>
+<span class="token builtin class-name">.</span>       <span class="token comment">#当前行</span>
+<span class="token comment">#最后一行</span>
+.,-1   <span class="token comment">#当前行到倒数第二行</span>
+%       <span class="token comment">#全文, 相当于1,/pattern/       #从当前行向下查找，直到匹配pattern的第一行,即:正则表达式</span>
+/pat1/,/pat2/   <span class="token comment">#从第一次被pat1模式匹配到的行开始，一直到第一次被pat2匹配到的行结束</span>
+<span class="token comment">#,/pat/         #从指定行开始，一直找到第一个匹配patttern的行结束</span>
+/pat/,         <span class="token comment">#向下找到第一个匹配patttern的行到整个文件的结尾的所有行</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h6>地址定界后跟一个编辑命令</h6>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">d           <span class="token comment">#删除</span>
+y           <span class="token comment">#复制</span>
+w <span class="token function">file</span>      <span class="token comment">#将范围内的行另存至指定文件中</span>
+r  <span class="token function">file</span>     <span class="token comment">#在指定位置插入指定文件中的所有内容</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>查找并替换</h5>
+<p>格式</p>
+<pre><code>s/要查找的内容/替换为的内容/修饰符</code></pre>
+<p>说明：</p>
+<pre><code>要查找的内容：可使用基末正则表达式模式
+替换为的内容：不能使用模式，但可以使用\1, \2, ...等后向引用符号；还可以使用“&amp;”引用前面查找时查找到的整个内容</code></pre>
+<p>修饰符：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">i   <span class="token comment">#忽略大小写</span>
+g   <span class="token comment">#全局替换，默认情况下，每一行只替换第一次出现</span>
+gc  <span class="token comment">#全局替换，每次替换前询问</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>查找替换中的分隔符/可替换为其它字符，如：#,@ </p>
+<p>范例：</p>
+<pre><code>s@/etc@/var@g
+s#/boot#/#i</code></pre>
+<h5>定制vim的工作特性</h5>
+<p>扩展命令模式的配置只是对当前vim进程有效，可将配置存放在文件中持久保存</p>
+<p>配置文件：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">/etc/vimrc          <span class="token comment">#全局</span>
+~/.vimrc            <span class="token comment">#个人</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h6>行号</h6>
+<p>&ZeroWidthSpace;   显示：set number，简写 set nu<br>
+&ZeroWidthSpace;   取消显示：set nonumber, 简写 set nonu</p>
+<h6>忽略字符的大小写</h6>
+<p>&ZeroWidthSpace;   启用：set ignorecase，简写 set ic<br>
+&ZeroWidthSpace;   不忽略：set noic</p>
+<h6>自动缩进</h6>
+<p>&ZeroWidthSpace;   启用：set autoindent，简写 set ai<br>
+&ZeroWidthSpace;   禁用：set noai</p>
+<h6>复制保留格式</h6>
+<p>&ZeroWidthSpace;   启用：set paste<br>
+&ZeroWidthSpace;   禁用：set nopaste</p>
+<h6>显示Tab和换行符 ^I 和$显示</h6>
+<p>&ZeroWidthSpace;   启用：set list<br>
+&ZeroWidthSpace;   禁用：set nolist</p>
+<h6>高亮搜索</h6>
+<p>&ZeroWidthSpace;   启用：set hlsearch<br>
+&ZeroWidthSpace;   禁用：set nohlsearch</p>
+<h6>语法高亮</h6>
+<p>&ZeroWidthSpace;   启用：syntax on<br>
+&ZeroWidthSpace;   禁用：syntax off</p>
+<h6>文件格式</h6>
+<p>&ZeroWidthSpace;   启用windows格式：set  fileformat=dos<br>
+&ZeroWidthSpace;   启用unix格式：set fileformat=unix<br>
+&ZeroWidthSpace;   简写 set ff=dos|unix</p>
+<h6>Tab 用空格代替</h6>
+<p>&ZeroWidthSpace;   启用：set expandtab   默认为8个空格代替Tab<br>
+&ZeroWidthSpace;   禁用：set noexpandtab<br>
+&ZeroWidthSpace;   简写：set et </p>
+<h6>Tab用指定空格的个数代替</h6>
+<p>&ZeroWidthSpace;   启用：set tabstop=#  指定#个空格代替Tab<br>
+&ZeroWidthSpace;   简写：set ts=4</p>
+<h6>设置文本宽度</h6>
+<p>&ZeroWidthSpace;   set textwidth=65 (vim only)<br>
+&ZeroWidthSpace;   set wrapmargin=15</p>
+<h6>设置光标所在行的标识线</h6>
+<p>&ZeroWidthSpace;   启用：set cursorline，简写 set cul<br>
+&ZeroWidthSpace;   禁用：set nocursorline</p>
+<h6>加密</h6>
+<p>&ZeroWidthSpace;   启用： set key=password</p>
+<p>&ZeroWidthSpace;   禁用： set key=</p>
+<h6>了解更多</h6>
+<p><strong>set 帮助</strong><br>
+:help option-list<br>
+<img align="absmiddle" alt=":confounded:" class="emoji" src="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/images/basic/confounded.png" title=":confounded:">et or <img align="absmiddle" alt=":confounded:" class="emoji" src="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/images/basic/confounded.png" title=":confounded:">et all</p>
+<h4>命令模式</h4>
+<p>命令模式，又称为Normal模式，功能强大，只是此模式输入指令并在屏幕上显示，所以需要记忆大量的快捷按键才能更好的使用</p>
+<h5>退出VIM</h5>
+<p>ZZ  保存退出<br>
+ZQ  不保存退出</p>
+<h5>光标跳转</h5>
+<p><strong>字符间跳转：</strong><br>
+h: 左    L: 右     j: 下   k: 上</p>
+<h1>COMMAND：跳转由#指定的个数的字符</h1>
+<p><strong>单词间跳转：</strong><br>
+w：下一个单词的词首<br>
+e：当前或下一单词的词尾<br>
+b：当前或前一个单词的词首</p>
+<h1>COMMAND：由#指定一次跳转的单词数</h1>
+<p><strong>当前页跳转：</strong><br>
+H：页首     M：页中间行     L：页底<br>
+zt：将光标所在当前行移到屏幕顶端<br>
+zz：将光标所在当前行移到屏幕中间<br>
+zb：将光标所在当前行移到屏幕底端</p>
+<p><strong>行首行尾跳转：</strong><br>
+^   跳转至行首的第一个非空白字符<br>
+0   跳转至行首<br>
+$   跳转至行尾<br>
+<strong>行间移动：</strong></p>
+<h1>G          或者扩展命令模式下   <code>:#</code>   跳转至由第#行</h1>
+<pre><code>G           最后一行
+1G, gg  第一行</code></pre>
+<p><strong>句间移动：</strong><br>
+)  下一句  (  上一句<br>
+<strong>段落间移动：</strong><br>
+}  下一段  {  上一段<br>
+<strong>命令模式翻屏操作</strong><br>
+Ctrl+f  向文件尾部翻一屏<br>
+Ctrl+b  向文件首部翻一屏<br>
+Ctrl+d  向文件尾部翻半屏<br>
+Ctrl+u  向文件首部翻半屏</p>
+<h5>字符编辑</h5>
+<p>x           删除光标处的字符</p>
+<h1>x     删除光标处起始的#个字符</h1>
+<p>xp      交换光标所在处的字符及其后面字符的位置<br>
+~       转换大小写<br>
+J       删除当前行后的换行符</p>
+<h5>替换命令(replace)</h5>
+<p>r   只替换光标所在处的一个字符<br>
+R   切换成REPLACE模式（在末行出现– REPLACE — 提示）,按ESC回到命令模式</p>
+<h5>删除命令（delete）</h5>
+<p>d     删除命令，可结合光标跳转字符，实现范围删除<br>
+d\$ 删除到行尾<br>
+d^  删除到非空行首<br>
+d0  删除到行首<br>
+dw<br>
+de<br>
+db</p>
+<h1>COMMAND</h1>
+<p>dd：   剪切光标所在的行</p>
+<h1>dd    多行删除</h1>
+<p>D：从当前光标位置一直删除到行尾，等同于d$</p>
+<h5>复制命令(yank)</h5>
+<p>y   复制，行为相似于d命令<br>
+y\$<br>
+&ZeroWidthSpace;y0<br>
+y^<br>
+ye<br>
+yw<br>
+yb</p>
+<h1>COMMAND</h1>
+<p>yy：复制行</p>
+<h1>yy    复制多行</h1>
+<p>Y：复制整行</p>
+<h5>粘贴命令(paste)</h5>
+<p>p   缓冲区存的如果为整行，则粘贴当前光标所在行的下方；否则，则粘贴至当前光标所在处的后面<br>
+P   缓冲区存的如果为整行，则粘贴当前光标所在行的上方；否则，则粘贴至当前光标所在处的前面</p>
+<h5>改变命令(change)</h5>
+<p>c: 删除后切换成插入模式<br>
+&ZeroWidthSpace;c\$<br>
+c^<br>
+c0<br>
+cb<br>
+ce<br>
+cw</p>
+<h1>COMMAND</h1>
+<p>cc：删除当前行并输入新内容，相当于S</p>
+<h1>cc<br></h1>
+<p>C：删除当前光标到行尾，并切换成插入模式,相当于c$</p>
+<p><strong>命令模式操作文本总结</strong></p>
+<p><img title="linux-文本处理-vim插图(3)" alt="linux-文本处理-vim插图(3)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191213204016724-480x161.png"></p>
+<h5>查找</h5>
+<p>/PATTERN：从当前光标所在处向文件尾部查找<br>
+?PATTERN：从当前光标所在处向文件首部查找<br>
+n：与命令同方向<br>
+N：与命令反方向</p>
+<h5>撤消更改</h5>
+<p>u     撤销最近的更改，相当于windows中ctrl+z</p>
+<h1>u 撤销之前多次更改</h1>
+<p>U    撤消光标落在这行后所有此行的更改<br>
+Ctrl – r    重做最后的“撤消”更改，相当于windows中crtl+y<br>
+.  重复前一个操作</p>
+<h1>. 重复前一个操作#次</h1>
+<h5>高级用法</h5>
+<p>“</p>
+<p>常见Command：y 复制、d 删除、gU 变大写、gu 变小写</p>
+<p>范例： </p>
+<pre><code>0y<span class="katex math inline">命令
+0 → 先到行头
+y → 从这里开始拷贝</span> → 拷贝到本行最后一个字符</code></pre>
+<p>范例：粘贴“wang”100次 </p>
+<pre><code>100iwang [ESC] </code></pre>
+<p>di"   光标在” “之间，则删除” “之间的内容<br>
+yi(   光标在()之间，则复制()之间的内容<br>
+vi[   光标在[]之间，则选中[]之间的内容<br>
+dtx  删除字符直到遇见光标之后的第一个 x 字符<br>
+ytx  复制字符直到遇见光标之后的第一个 x 字符</p>
+<h4>可视化模式</h4>
+<p>在末行有”– VISUAL — “指示，表示在可视化模式</p>
+<p>允许选择的文本块</p>
+<ul>
+<li>v 面向字符，– VISUAL —</li>
+<li>V 面向整行，– VISUAL LINE — </li>
+<li>ctrl-v 面向块，– VISUAL BLOCK — </li>
+</ul>
+<p>可视化键可用于与移动键结合使用<br>
+w  )   }   箭头等<br>
+突出显示的文字可被删除，复制，变更，过滤，搜索，替换等</p>
+<p>范例：在文件行首插入#</p>
+<pre><code>输入ctrl+v  进入可视化模式
+输入 G 跳到最后1行，选中每一行的第一个字符
+输入 I 切换至插入模式
+输入 # 
+按 ESC 键</code></pre>
+<h4>多文件模式</h4>
+<p>vim FILE1 FILE2 FILE3 …<br>
+:next 下一个<br>
+<img align="absmiddle" alt=":stuck_out_tongue_winking_eye:" class="emoji" src="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/images/basic/stuck_out_tongue_winking_eye.png" title=":stuck_out_tongue_winking_eye:">rev 前一个<br>
+:first 第一个<br>
+:last 最后一个<br>
+:wall 保存所有<br>
+:qall 不保存退出所有<br>
+:wqall保存退出所有</p>
+<h4>多窗口模式</h4>
+<h5>多文件分割</h5>
+<p>vim -o|-O FILE1 FILE2 …<br>
+&ZeroWidthSpace;-o: 水平或上下分割<br>
+-O: 垂直或左右分割（vim only）<br>
+在窗口间切换：Ctrl+w, Arrow</p>
+<h5>1.7.2 单文件窗口分割</h5>
+<p>Ctrl+w,s：split, 水平分割，上下分屏<br>
+&ZeroWidthSpace;Ctrl+w,v：vertical, 垂直分割，左右分屏<br>
+ctrl+w,q：取消相邻窗口<br>
+ctrl+w,o：取消全部窗口<br>
+:wqall 退出</p>
+<h4>vim的寄存器</h4>
+<p>有26个命名寄存器和1个无命名寄存器，常存放不同的剪贴版内容，可以在同一个主机的不同会话（终端窗口）间共享<br>
+寄存器名称a，b,…,z,格式：<code>”寄存器</code>   放在数字和命令之间</p>
+<p>范例：</p>
+<p>3"tyy 表示复制3行到t寄存器中 ，末行显示<code>3 lines yanked into "t</code><br>
+"tp  表示将t寄存器内容粘贴</p>
+<p>未指定，将使用无命名寄存器 </p>
+<p>有10个数字寄存器，用0，1，…，9表示，0存放最近复制内容，1存放最近删除内容。当新的文本变更和删除时，1转存到2，2转存到3，以此类推。数字寄存器不能在不同会话间共享</p>
+<h4>标记和宏(macro)</h4>
+<p>ma   将当前位置标记为a，26个字母均可做标记， mb 、 mc 等等<br>
+‘a      跳转到a标记的位置，实用的文档内标记方法，文档中跳跃编辑时很有用<br>
+qa    录制宏 a，a为宏的名称，末行提示：<code>recording @a</code><br>
+q      停止录制宏<br>
+@a    执行宏 a<br>
+@@   重新执行上次执行的宏</p>
+<h4>编辑二进制文件</h4>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#以二进制方式打开文件</span>
+<span class="token function">vim</span> -b binaryfile
+<span class="token comment">#扩展命令模式下，利用xxd命令转换为可读的十六进制</span>
+:%<span class="token operator">!</span>xxd
+<span class="token comment">#切换至插入模式下，编辑二进制文件</span>
+<span class="token comment">#切换至扩展命令模式下，利用xxd命令转换回二进制</span>
+:%<span class="token operator">!</span>xxd  -r
+<span class="token comment">#保存退出</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>帮助</h4>
+<p>:help<br>
+:help topic<br>
+Use :q to exit help</p>
+<p>vimtutor</p>
+<h4>vim 总结图</h4>
+<p><img title="linux-文本处理-vim插图(4)" alt="linux-文本处理-vim插图(4)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191213211721816-480x272.png"><br>
+<img title="linux-文本处理-vim插图(5)" alt="linux-文本处理-vim插图(5)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191213211735127-480x270.png"><br>
+<img title="linux-文本处理-vim插图(6)" alt="linux-文本处理-vim插图(6)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191213215535101-480x271.png"></p>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+	
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

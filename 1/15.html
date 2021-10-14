@@ -1,0 +1,1034 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux文本处理-awk – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="awk,Linux,linux入门,linux学习,linux教程">
+<meta name="description" content="文本处理三剑客之 awk awk 工作原理和基本用法说明 awk：Aho, Weinberger, Kernighan，报告生成器，格式化文本输出，GNU/Linux发布的AWK目前由自由软件基金会（FSF）进行开发和维护，通常也称它为 G…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33891"><link rel="prev" title="linux文本处理-sed" href="http://www.yunweipai.com/33886.html">
+<link rel="next" title="linux正则表达式" href="http://www.yunweipai.com/33893.html">
+<link rel="canonical" href="http://www.yunweipai.com/33891.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33891.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33891.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sawk, Linux, linux入门, linux学习, linux教程, Linux教程">
+<meta name="description" content="文本处理三剑客之 awk awk 工作原理和基本用法说明 awk：Aho, Weinberger, Kernighan，报告生成器，格式化文本输出，GNU/Linux发布的AWK目前由自由软件基金会（FSF）进行开发和维护，通常也称它为 GNU AWK 有多种版本：  AWK：原先来源于 AT &amp; T 实验室的的AWK NAWK：New awk，AT &amp; T 实验室的AWK的升级版 GAWK：即GNU AWK。所有的GN">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+y
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post current"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33891" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h4>文本处理三剑客之 awk</h4>
+<h5>awk 工作原理和基本用法说明</h5>
+<p>awk：Aho, Weinberger, Kernighan，报告生成器，格式化文本输出，GNU/Linux发布的AWK目前由自由软件基金会（FSF）进行开发和维护，通常也称它为 GNU AWK</p>
+<p>有多种版本：</p>
+<ul>
+<li>AWK：原先来源于 AT &amp; T 实验室的的AWK</li>
+<li>NAWK：New awk，AT &amp; T 实验室的AWK的升级版</li>
+<li>GAWK：即GNU AWK。所有的GNU/Linux发布版都自带GAWK，它与AWK和NAWK完全兼容</li>
+</ul>
+<p>gawk：模式扫描和处理语言，可以实现下面功能</p>
+<ul>
+<li>文本处理</li>
+<li>输出格式化的文本报表</li>
+<li>执行算数运算</li>
+<li>执行字符串操作</li>
+</ul>
+<p>格式：</p>
+<pre><code>awk [options]   'program'     var=value   file…
+awk [options]   -f programfile    var=value  file…</code></pre>
+<p>说明：</p>
+<p>program通常是被放在单引号中，并可以由三种部分组成</p>
+<ul>
+<li>BEGIN语句块</li>
+<li>模式匹配的通用语句块</li>
+<li>END语句块</li>
+</ul>
+<p>常见选项：</p>
+<ul>
+<li>-F “分隔符”  指明输入时用到的字段分隔符</li>
+<li>-v  var=value 变量赋值</li>
+</ul>
+<p><strong>Program格式：</strong></p>
+<pre><code>pattern{action statements;..}</code></pre>
+<p>pattern：决定动作语句何时触发及触发事件，比如：BEGIN,END<br>
+action statements：对数据进行处理，放在{}内指明，常见：print, printf</p>
+<p><strong>awk 工作过程</strong></p>
+<p><img title="linux文本处理-awk插图" src="images/awk.jpg" alt="awk"></p>
+<p>第一步：执行BEGIN{action;… }语句块中的语句<br>
+第二步：从文件或标准输入(stdin)读取一行，然后执行pattern{ action;… }语句块，它逐行扫描文件，从第一行到最后一行重复这个过程，直到文件全部被读取完毕。<br>
+第三步：当读至输入流末尾时，执行END{action;…}语句块<br>
+BEGIN语句块在awk开始从输入流中读取行之前被执行，这是一个可选的语句块，比如变量初始化、打印输出表格的表头等语句通常可以写在BEGIN语句块中<br>
+END语句块在awk从输入流中读取完所有的行之后即被执行，比如打印所有行的分析结果这类信息汇总都是在END语句块中完成，它也是一个可选语句块<br>
+pattern语句块中的通用命令是最重要的部分，也是可选的。如果没有提供pattern语句块，则默认执行{ print }，即打印每一个读取到的行，awk读取的每一行都会执行该语句块</p>
+<p><strong>分割符、域和记录</strong></p>
+<ul>
+<li></li>
+<li>文件的每一行称为记录record</li>
+<li>如果省略action，则默认执行 print &ZeroWidthSpace;\$0 的操作</li>
+</ul>
+<p><strong>常用的action分类</strong></p>
+<ul>
+<li>output statements：print,printf</li>
+<li>Expressions：算术，比较表达式等</li>
+<li>Compound statements：组合语句</li>
+<li>Control statements：if, while等</li>
+<li>input statements</li>
+</ul>
+<p><strong>awk控制语句</strong></p>
+<ul>
+<li>{ statements;… } 组合语句</li>
+<li>if(condition) {statements;…} </li>
+<li>if(condition) {statements;…} else {statements;…}</li>
+<li>while(conditon) {statments;…}</li>
+<li>do {statements;…} while(condition)</li>
+<li>for(expr1;expr2;expr3) {statements;…}</li>
+<li>break</li>
+<li>continue</li>
+<li>exit </li>
+</ul>
+<h5>动作 print</h5>
+<p>格式：</p>
+<pre><code>print item1, item2, ...</code></pre>
+<p>说明：</p>
+<ul>
+<li>逗号分隔符</li>
+<li>输出item可以字符串，也可是数值；当前记录的字段、变量或awk的表达式</li>
+<li>如省略item，相当于print $0</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk    '{print "hello,awk"}'</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{print "wang"}' /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{print}' /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{print 0}' /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{print1,3}' /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{print1"\t"3}' /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#grep "^UUID" /etc/fstab |awk {'print2,3'}</span>
+/ xfs
+/boot ext4
+/data xfs
+swap swap
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '{print1}' access_log |sort |uniq -c|sort -nr|head </span>
+   <span class="token number">4870</span> <span class="token number">172.20</span>.116.228
+   <span class="token number">3429</span> <span class="token number">172.20</span>.116.208
+   <span class="token number">2834</span> <span class="token number">172.20</span>.0.222
+   <span class="token number">2613</span> <span class="token number">172.20</span>.112.14
+   <span class="token number">2267</span> <span class="token number">172.20</span>.0.227
+   <span class="token number">2262</span> <span class="token number">172.20</span>.116.179
+   <span class="token number">2259</span> <span class="token number">172.20</span>.65.65
+   <span class="token number">1565</span> <span class="token number">172.20</span>.0.76
+   <span class="token number">1482</span> <span class="token number">172.20</span>.0.200
+   <span class="token number">1110</span> <span class="token number">172.20</span>.28.145
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#df | awk -F"[[:space:]]+|%" '{print 5}'</span>
+Use
+<span class="token number">0</span>
+<span class="token number">0</span>
+<span class="token number">1</span>
+<span class="token number">0</span>
+<span class="token number">5</span>
+<span class="token number">1</span>
+<span class="token number">92</span>
+<span class="token number">1</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#df | grep "^/dev/sd" | awk -F"[[:space:]]+|%" '{print5}'</span>
+<span class="token number">5</span>
+<span class="token number">1</span>
+<span class="token number">92</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#df |  awk -F"[[:space:]]+|%" '/^\/dev\/sd/{print $5}'</span>
+<span class="token number">5</span>
+<span class="token number">1</span>
+<span class="token number">92</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>awk变量</h5>
+<p>awk中的变量分为：内置和自定义变量</p>
+<p><strong>常见的内置变量</strong></p>
+<p>FS：输入字段分隔符，默认为空白字符,功能相当于 -F</p>
+<p>范例：</p>
+<pre><code>awk -v FS=':'  '{print <span class="katex math inline">1,FS,</span>3}' /etc/passwd
+awk -v FS=":" '{print <span class="katex math inline">1FS</span>3}' /etc/passwd
+awk –F:   '{print <span class="katex math inline">1,</span>3,<span class="katex math inline">7}'   /etc/passwd    
+S=:;awk -v FS=</span>S '{print <span class="katex math inline">1FS</span>3}' /etc/passwd</code></pre>
+<p>OFS：输出字段分隔符，默认为空白字符</p>
+<p>范例：</p>
+<pre><code>awk  -v FS=':'  -v OFS=':'  '{print <span class="katex math inline">1,</span>3,$7}'   /etc/passwd</code></pre>
+<p>RS：输入记录分隔符，指定输入时的换行符</p>
+<p>范例：</p>
+<pre><code>awk -v RS=' ' ‘{print }’ /etc/passwd</code></pre>
+<p>ORS：输出记录分隔符，输出时用指定符号代替换行符</p>
+<p>范例：</p>
+<pre><code>awk -v RS=' ' -v ORS='###'  '{print $0}' /etc/passwd</code></pre>
+<p>NF：字段数量</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#引用变量时，变量前不需加[root@centos8 ~]#awk  -F：'{print NF}'     /etc/fstab  </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  -F：'{print(NF-1)}'  /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ls /misc/cd/BaseOS/Packages/*.rpm |awk -F"." '{print (NF-1)}'|sort |uniq -c</span>
+    <span class="token number">389</span> i686
+    <span class="token number">208</span> noarch
+   <span class="token number">1060</span> x86_64
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ss -nt |grep "^ESTAB" | awk -F"[[:space:]]+|:" '{print(NF-2)}'</span>
+<span class="token number">10.0</span>.0.1
+<span class="token number">10.0</span>.0.7
+<span class="token number">10.0</span>.0.1
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ss -nt |awk -F"[[:space:]]+|:" '/^ESTAB/{print $(NF-2)}'</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例: 将连接数超过3个以上的IP放入黑名单拒绝访问</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">cat</span> deny_dos.sh
+<span class="token keyword">while</span> <span class="token boolean">true</span><span class="token punctuation">;</span><span class="token keyword">do</span>
+ss -nt <span class="token operator">|</span><span class="token function">grep</span> <span class="token string">"^ESTAB"</span> <span class="token operator">|</span> <span class="token function">awk</span> -F<span class="token string">"[[:space:]]+|:"</span> <span class="token string">'{print (NF-2)}'</span><span class="token operator">|</span><span class="token function">sort</span> <span class="token operator">|</span><span class="token function">uniq</span> -c<span class="token operator">|</span><span class="token keyword">while</span> <span class="token builtin class-name">read</span>
+count <span class="token function">ip</span><span class="token punctuation">;</span><span class="token keyword">do</span>
+<span class="token comment">#ss -nt | awk -F"[[:space:]]+|:" '/^ESTAB/{print(NF-2)}'|sort |uniq -c</span>
+    <span class="token keyword">if</span> <span class="token punctuation">[</span> count -gt <span class="token number">3</span> <span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token keyword">then</span>
+       iptables -A INPUT -sip -j REJECT
+    <span class="token keyword">fi</span>
+<span class="token keyword">done</span>
+<span class="token function">sleep</span> <span class="token number">10</span>
+<span class="token keyword">done</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>NR：记录编号</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{print NR}' /etc/passwd</span>
+<span class="token number">1</span>
+<span class="token number">2</span>
+<span class="token number">3</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: 'END{print NR}' /etc/passwd</span>
+<span class="token number">57</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: 'BEGIN{print NR}' /etc/passwd</span>
+<span class="token number">0</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>FNR：各文件分别计数,记录号</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span> <span class="token string">'{print FNR}'</span>  /etc/fstab /etc/inittab
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  '{print NR,0}' /etc/issue /etc/redhat-release </span>
+<span class="token number">1</span> <span class="token punctuation">\</span>S
+<span class="token number">2</span> Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+<span class="token number">3</span> 
+<span class="token number">4</span> CentOS Linux release <span class="token number">8.0</span>.1905 <span class="token punctuation">(</span>Core<span class="token punctuation">)</span> 
+<span class="token punctuation">[</span>root@centos8 script40<span class="token punctuation">]</span><span class="token comment">#awk  '{print FNR,0}' /etc/issue /etc/redhat-release </span>
+<span class="token number">1</span> <span class="token punctuation">\</span>S
+<span class="token number">2</span> Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+<span class="token number">3</span> 
+<span class="token number">1</span> CentOS Linux release <span class="token number">8.0</span>.1905 <span class="token punctuation">(</span>Core<span class="token punctuation">)</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>FILENAME：当前文件名</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '{print FILENAME}'  /etc/fstab</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  '{print FNR,FILENAME,$0}' /etc/issue /etc/redhat-release </span>
+<span class="token number">1</span> /etc/issue <span class="token punctuation">\</span>S
+<span class="token number">2</span> /etc/issue Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+<span class="token number">3</span> /etc/issue 
+<span class="token number">1</span> /etc/redhat-release CentOS Linux release <span class="token number">8.0</span>.1905 <span class="token punctuation">(</span>Core<span class="token punctuation">)</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>ARGC：命令行参数的个数</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '{print ARGC}'  /etc/issue /etc/redhat-release </span>
+<span class="token number">3</span>
+<span class="token number">3</span>
+<span class="token number">3</span>
+<span class="token number">3</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print ARGC}'  /etc/issue /etc/redhat-release </span>
+<span class="token number">3</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>ARGV：数组，保存的是命令行所给定的各参数</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print ARGV[0]}'  /etc/issue /etc/redhat-release </span>
+<span class="token function">awk</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print ARGV[1]}'  /etc/issue /etc/redhat-release </span>
+/etc/issue
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print ARGV[2]}'  /etc/issue /etc/redhat-release </span>
+/etc/redhat-release
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print ARGV[3]}'  /etc/issue /etc/redhat-release </span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>自定义变量(区分字符大小写)</p>
+<ul>
+<li>-v var=value      </li>
+<li>在program中直接定义</li>
+</ul>
+<p>范例： </p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span>  -v <span class="token assign-left variable">test</span><span class="token operator">=</span><span class="token string">'hello gawk'</span> <span class="token string">'{print test}'</span> /etc/fstab 
+<span class="token function">awk</span>  -v <span class="token assign-left variable">test</span><span class="token operator">=</span><span class="token string">'hello gawk'</span> <span class="token string">'BEGIN{print test}'</span> 
+<span class="token function">awk</span>  <span class="token string">'BEGIN{test="hello,gawk";print test}'</span> 
+<span class="token function">awk</span>  -F: <span class="token string">'{sex=“male”;print 1,sex,age;age=18}'</span> /etc/passwd
+
+<span class="token function">cat</span> awkscript
+<span class="token punctuation">{</span>print script,1,<span class="token variable">$2</span><span class="token punctuation">}</span>
+<span class="token function">awk</span>  -F: -f awkscript <span class="token assign-left variable">script</span><span class="token operator">=</span><span class="token string">"awk"</span> /etc/passwd</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>5.3.4 动作 printf</p>
+<p>printf 可以实现格式化输出</p>
+<p>格式：</p>
+<pre><code>printf “FORMAT”, item1, item2, ...</code></pre>
+<p>说明：</p>
+<ul>
+<li>必须指定FORMAT</li>
+<li>不会自动换行，需要显式给出换行控制符，\n</li>
+<li>FORMAT中需要分别为后面每个item指定格式符</li>
+</ul>
+<p>格式符：与item一一对应</p>
+<ul>
+<li>%c：显示字符的ASCII码</li>
+<li>%d, %i：显示十进制整数</li>
+<li>%e, %E：显示科学计数法数值  </li>
+<li>%f：显示为浮点数</li>
+<li>%g, %G：以科学计数法或浮点形式显示数值</li>
+<li>%s：显示字符串</li>
+<li>%u：无符号整数</li>
+<li>%%：显示%自身</li>
+</ul>
+<p>修饰符</p>
+<pre><code>#[.#]   第一个数字控制显示的宽度；第二个#表示小数点后精度，如：%3.1f
+-       左对齐（默认右对齐） 如：%-15s
++       显示数值的正负符号   如：%+d</code></pre>
+<p>范例：</p>
+<pre><code>awk -F:   '{printf "%s",<span class="katex math inline">1}' /etc/passwd
+awk -F:   '{printf "%s\n",</span>1}' /etc/passwd
+awk -F:   '{printf "%-20s %10d\n",<span class="katex math inline">1,</span>3}' /etc/passwd
+awk -F:   '{printf "Username: %s\n",<span class="katex math inline">1}'  /etc/passwd
+awk -F:   '{printf “Username: %sUID:%d\n",</span>1,<span class="katex math inline">3}'    /etc/passwd
+awk -F:   '{printf "Username: %25sUID:%d\n",</span>1,<span class="katex math inline">3}' /etc/passwd
+awk -F:   '{printf "Username: %-25sUID:%d\n",</span>1,$3}'    /etc/passwd</code></pre>
+<h5>操作符</h5>
+<p>算术操作符：</p>
+<pre><code>x+y, x-y, x*y, x/y, x^y, x%y
+-x：转换为负数
++x：将字符串转换为数值</code></pre>
+<p>字符串操作符：没有符号的操作符，字符串连接</p>
+<p>赋值操作符：</p>
+<pre><code>=, +=, -=, *=, /=, %=, ^=，++, --</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  'BEGIN{i=0;print ++i,i}'</span>
+<span class="token number">1</span> <span class="token number">1</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  'BEGIN{i=0;print i++,i}'</span>
+<span class="token number">0</span> <span class="token number">1</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>比较操作符：</p>
+<pre><code>==, !=, &gt;, &gt;=, &lt;, &lt;=</code></pre>
+<p>模式匹配符：</p>
+<pre><code>~   左边是否和右边匹配，包含关系
+!~  是否不匹配</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  -F: '0 ~ /root/{print1}'  /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  -F: '0 ~ "^root"{print1}'  /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  '0  !~ /root/'   /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  '/root/'   /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  -F: '3==0'     /etc/passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#df |  awk -F"[[:space:]]+|%" '0 ~ /^\/dev\/sd/{print5}'</span>
+<span class="token number">5</span>
+<span class="token number">1</span>
+<span class="token number">92</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig  eth0 | awk 'NR==2{print $2}'</span>
+<span class="token number">10.0</span>.0.8</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>逻辑操作符：</p>
+<pre><code>与&amp;&amp;，或||，非!</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span> -F:   <span class="token string">'3&gt;=0 &amp;&amp;3&lt;=1000 {print 1}'</span>  /etc/passwd
+<span class="token function">awk</span> -F:   <span class="token string">'3==0 || 3&gt;=1000 {print1}'</span>  /etc/passwd 
+<span class="token function">awk</span> -F:   <span class="token string">'!(3==0) {print1}'</span>     /etc/passwd
+<span class="token function">awk</span> -F:   <span class="token string">'!(3&gt;=500) {print3}'</span> /etc/passwd</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>条件表达式（三目表达式）</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">selector?if-true-expression:if-false-expression</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span> -F: <span class="token string">'{3&gt;=1000?usertype="Common User":usertype="SysUser";printf "%-20s:%12s<span class="token entity">\n</span>",1,usertype}'</span>   /etc/passwd</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>模式PATTERN</h5>
+<p>PATTERN:根据pattern条件，过滤匹配的行，再做处理</p>
+<ol>
+<li>如果未指定：空模式，匹配每一行</li>
+</ol>
+<p>范例:</p>
+<pre><code>[root@centos8 ~]#awk -F: '{print <span class="katex math inline">1,</span>3}' /etc/passwd</code></pre>
+<ol start="2">
+<li>/regular expression/：仅处理能够模式匹配到的行，需要用/  /括起来</li>
+</ol>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk   '/^UUID/{print 1}'     /etc/fstab</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk   '!/^UUID/{print1}'   /etc/fstab</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#df  | awk '/^\/dev\/sd/'</span>
+/dev/sda2      <span class="token number">104806400</span> <span class="token number">4935924</span>  <span class="token number">99870476</span>   <span class="token number">5</span>% /
+/dev/sda3       <span class="token number">52403200</span>  <span class="token number">398876</span>  <span class="token number">52004324</span>   <span class="token number">1</span>% /data
+/dev/sda1         <span class="token number">999320</span>  <span class="token number">848572</span>     <span class="token number">81936</span>  <span class="token number">92</span>% /boot</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<ol start="3">
+<li>relational expression: 关系表达式，结果为“真”才会被处理<br>
+真：结果为非0值，非空字符串<br>
+假：结果为空字符串或0值 </li>
+</ol>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span>   -F:  <span class="token string">'i=1;j=1{print i,j}'</span> /etc/passwd
+<span class="token function">awk</span>  <span class="token string">'!0'</span>  /etc/passwd <span class="token punctuation">;</span><span class="token function">awk</span>  <span class="token string">'!1'</span>   /etc/passwd
+Awk  -F: <span class="token string">'3&gt;=1000{print1,3}'</span>  /etc/passwd
+<span class="token function">awk</span>  -F: <span class="token string">'3&lt;1000{print 1,3}'</span>  /etc/passwd
+<span class="token function">awk</span>  -F: <span class="token string">'NF=="/bin/bash"{print1,NF}'</span> /etc/passwd
+<span class="token function">awk</span>  -F: <span class="token string">'NF ~ /bash/{print1,<span class="token variable">$NF</span>}'</span> /etc/passwd</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<ol start="4">
+<li>line ranges：行范围</li>
+</ol>
+<p>/pat1/,/pat2/      不支持直接给出数字格式</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '/^bin/,/^adm/' /etc/passwd</span>
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -n '/^bin/,/^adm/p' /etc/passwd</span>
+bin:x:1:1:bin:/bin:/sbin/nologin
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'NR&gt;=3 &amp;&amp; NR&lt;=6{print NR,$0}' /etc/passwd</span>
+<span class="token number">3</span> daemon:x:2:2:daemon:/sbin:/sbin/nologin
+<span class="token number">4</span> adm:x:3:4:adm:/var/adm:/sbin/nologin
+<span class="token number">5</span> lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+<span class="token number">6</span> sync:x:5:0:sync:/sbin:/bin/sync
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -n '3,6p' /etc/passwd</span>
+daemon:x:2:2:daemon:/sbin:/sbin/nologin
+adm:x:3:4:adm:/var/adm:/sbin/nologin
+lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin
+sync:x:5:0:sync:/sbin:/bin/sync</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<ol start="5">
+<li>
+BEGIN/END模式<p></p>
+<p>BEGIN{}：仅在开始处理文件中的文本之前执行一次</p>
+<p>END{}：仅在文本处理完成之后执行一次
+</p></li>
+</ol>
+<p>范例</p>
+<pre><code>awk -F : 'BEGIN {print "USER USERID"} {print <span class="katex math inline">1":"</span>3} END{print "END FILE"}' /etc/passwd
+awk -F: '{print "USER USERID";print <span class="katex math inline">1":"</span>3} END{print "END FILE"}'  /etc/passwd
+awk -F: 'BEGIN{print "USER  UID  \n--------------- "}{print <span class="katex math inline">1,</span>3}'  /etc/passwd
+awk -F: 'BEGIN{print "USER UID  \n------"}{print <span class="katex math inline">1,</span>3}'END{print "========"} /etc/passwd
+seq 10 | awk   'i=0'
+seq 10 | awk   'i=1'
+seq 10 | awk   'i=!i'
+seq 10 | awk   '{i=!i;print i}'
+seq 10 | awk   '!(i=!i)'              
+seq 10 | awk  -v  i=1 'i=!i'</code></pre>
+<h5>条件判断 if-else</h5>
+<p>语法：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">if<span class="token punctuation">(</span>condition<span class="token punctuation">)</span><span class="token punctuation">{</span>statement<span class="token punctuation">;</span>…<span class="token punctuation">}</span><span class="token punctuation">[</span>else statement<span class="token punctuation">]</span>
+if<span class="token punctuation">(</span>condition1<span class="token punctuation">)</span><span class="token punctuation">{</span>statement1<span class="token punctuation">}</span>else if<span class="token punctuation">(</span>condition2<span class="token punctuation">)</span><span class="token punctuation">{</span>statement2<span class="token punctuation">}</span>else<span class="token punctuation">{</span>statement3<span class="token punctuation">}</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>使用场景：对awk取得的整行或某个字段做条件判断</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span> -F: <span class="token string">'{if(3&gt;=1000)print1,3}'</span> /etc/passwd
+<span class="token function">awk</span> -F: <span class="token string">'{if(NF=="/bin/bash") print 1}'</span> /etc/passwd
+<span class="token function">awk</span> <span class="token string">'{if(NF&gt;5) print0}'</span> /etc/fstab
+<span class="token function">awk</span> -F: <span class="token string">'{if(3&gt;=1000) {printf "Common user: %s<span class="token entity">\n</span>",1} else {printf "root or Sysuser: %s<span class="token entity">\n</span>",1}}'</span> /etc/passwd
+<span class="token function">awk</span> -F: <span class="token string">'{if(3&gt;=1000) printf "Common user: %s<span class="token entity">\n</span>",1; else printf "root or Sysuser: %s<span class="token entity">\n</span>",1}'</span> /etc/passwd
+<span class="token function">df</span> -h<span class="token operator">|</span><span class="token function">awk</span> -F% <span class="token string">'/^\/dev\/sd/{print 1}'</span><span class="token operator">|</span> <span class="token function">awk</span> <span class="token string">'NF&gt;=80{print 1,5}'</span>
+<span class="token function">df</span> <span class="token operator">|</span> <span class="token function">awk</span> -F<span class="token string">"[[:space:]]+|%"</span> <span class="token string">'/^\/dev\/sd/{if(5&gt;80)print1,<span class="token variable">$5</span>}'</span>
+
+<span class="token function">awk</span> <span class="token string">'BEGIN{ test=100;if(test&gt;90){print "very good"}
+    else if(test&gt;60){ print "good"}else{print "no pass"}}'</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>switch语句</h5>
+<p>语法：</p>
+<pre><code>switch(expression) {case VALUE1 or /REGEXP/: statement1; case VALUE2 or /REGEXP2/: statement2; ...; default: statementn}</code></pre>
+<h5></h5>
+<h5>循环while</h5>
+<p>语法：</p>
+<pre><code>while (condition) {statement;…}</code></pre>
+<p>条件“真”，进入循环；条件“假”，退出循环<br>
+使用场景：<br>
+对一行内的多个字段逐一类似处理时使用<br>
+对数组中的各元素逐一处理时使用</p>
+<p>示例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print length("hello")}'</span>
+<span class="token number">5</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{print length("马哥教育")}'</span>
+<span class="token number">4</span>
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#awk '/^[[:space:]]*linux16/{i=1;while(i&lt;=NF){print i,length(i); i++}}' /etc/grub2.cfg</span>
+linux16 <span class="token number">7</span>
+/vmlinuz-3.10.0-1062.el7.x86_64 <span class="token number">31</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span>UUID<span class="token operator">=</span>bebb9244-bbb8-4c69-9249-54a36c75155e <span class="token number">46</span>
+ro <span class="token number">2</span>
+<span class="token assign-left variable">crashkernel</span><span class="token operator">=</span>auto <span class="token number">16</span>
+rhgb <span class="token number">4</span>
+quiet <span class="token number">5</span>
+net.ifnames<span class="token operator">=</span><span class="token number">0</span> <span class="token number">13</span>
+linux16 <span class="token number">7</span>
+/vmlinuz-0-rescue-b12558570741487c9328c996e3265b09 <span class="token number">50</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span>UUID<span class="token operator">=</span>bebb9244-bbb8-4c69-9249-54a36c75155e <span class="token number">46</span>
+ro <span class="token number">2</span>
+<span class="token assign-left variable">crashkernel</span><span class="token operator">=</span>auto <span class="token number">16</span>
+rhgb <span class="token number">4</span>
+quiet <span class="token number">5</span>
+net.ifnames<span class="token operator">=</span><span class="token number">0</span> <span class="token number">13</span>
+
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#awk  '/^[[:space:]]*linux16/{i=1;while(i&lt;=NF) {if(length(i)&gt;=10){printi,length($i)}; i++}}' /etc/grub2.cfg</span>
+/vmlinuz-3.10.0-1062.el7.x86_64 <span class="token number">31</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span>UUID<span class="token operator">=</span>bebb9244-bbb8-4c69-9249-54a36c75155e <span class="token number">46</span>
+<span class="token assign-left variable">crashkernel</span><span class="token operator">=</span>auto <span class="token number">16</span>
+net.ifnames<span class="token operator">=</span><span class="token number">0</span> <span class="token number">13</span>
+/vmlinuz-0-rescue-b12558570741487c9328c996e3265b09 <span class="token number">50</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span>UUID<span class="token operator">=</span>bebb9244-bbb8-4c69-9249-54a36c75155e <span class="token number">46</span>
+<span class="token assign-left variable">crashkernel</span><span class="token operator">=</span>auto <span class="token number">16</span>
+net.ifnames<span class="token operator">=</span><span class="token number">0</span> <span class="token number">13</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{ total=0;i=1;while(i&lt;=100){total+=i;i++};print total}'</span>
+<span class="token number">5050</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>循环 do-while</h5>
+<p>语法：</p>
+<pre><code>do {statement;…}while(condition)</code></pre>
+<p>意义：无论真假，至少执行一次循环体</p>
+<p>do-while循环<br>
+语法：do {statement;…}while(condition)<br>
+意义：无论真假，至少执行一次循环体</p>
+<p>范例： </p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{ total=0;i=1;do{ total+=i;i++;}while(i&lt;=100);print total}'</span>
+<span class="token number">5050</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>循环for</h5>
+<p>语法：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">for<span class="token punctuation">(</span>expr1<span class="token punctuation">;</span>expr2<span class="token punctuation">;</span>expr3<span class="token punctuation">)</span> <span class="token punctuation">{</span>statement<span class="token punctuation">;</span>…<span class="token punctuation">}</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>常见用法：</p>
+<pre><code>for(variable assignment;condition;iteration process) {for-body}</code></pre>
+<p>特殊用法：能够遍历数组中的元素</p>
+<pre><code>for(var in array) {for-body}</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{total=0;for(i=1;i&lt;=100;i++){total+=i};print total}'</span>
+<span class="token number">5050</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#awk '/^[[:space:]]*linux16/{for(i=1;i&lt;=NF;i++) {print i,length(i)}}' /etc/grub2.cfg</span>
+linux16 <span class="token number">7</span>
+/vmlinuz-3.10.0-1062.el7.x86_64 <span class="token number">31</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span>UUID<span class="token operator">=</span>bebb9244-bbb8-4c69-9249-54a36c75155e <span class="token number">46</span>
+ro <span class="token number">2</span>
+<span class="token assign-left variable">crashkernel</span><span class="token operator">=</span>auto <span class="token number">16</span>
+rhgb <span class="token number">4</span>
+quiet <span class="token number">5</span>
+net.ifnames<span class="token operator">=</span><span class="token number">0</span> <span class="token number">13</span>
+linux16 <span class="token number">7</span>
+/vmlinuz-0-rescue-b12558570741487c9328c996e3265b09 <span class="token number">50</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span>UUID<span class="token operator">=</span>bebb9244-bbb8-4c69-9249-54a36c75155e <span class="token number">46</span>
+ro <span class="token number">2</span>
+<span class="token assign-left variable">crashkernel</span><span class="token operator">=</span>auto <span class="token number">16</span>
+rhgb <span class="token number">4</span>
+quiet <span class="token number">5</span>
+net.ifnames<span class="token operator">=</span><span class="token number">0</span> <span class="token number">13</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>性能比较</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">time</span> <span class="token punctuation">(</span>awk <span class="token string">'BEGIN{ total=0;for(i=0;i&lt;=10000;i++){total+=i;};print total;}'</span><span class="token punctuation">)</span>
+<span class="token function">time</span> <span class="token punctuation">(</span>total<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span><span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">..</span><span class="token number">10000</span><span class="token punctuation">}</span><span class="token punctuation">;</span><span class="token keyword">do</span> <span class="token assign-left variable">total</span><span class="token operator">=</span><span class="token variable"><span class="token punctuation">((</span>total<span class="token operator">+</span>i<span class="token punctuation">))</span></span><span class="token punctuation">;</span><span class="token keyword">done</span><span class="token punctuation">;</span><span class="token builtin class-name">echo</span> total<span class="token punctuation">)</span>
+<span class="token function">time</span> <span class="token punctuation">(</span>for <span class="token variable"><span class="token punctuation">((</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;=</span><span class="token number">10000</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">))</span></span><span class="token punctuation">;</span><span class="token keyword">do</span> <span class="token builtin class-name">let</span> <span class="token assign-left variable">total</span><span class="token operator">+=</span>i<span class="token punctuation">;</span><span class="token keyword">done</span><span class="token punctuation">;</span>echototal<span class="token punctuation">)</span>
+<span class="token function">time</span> <span class="token punctuation">(</span>seq –s ”+” <span class="token number">10000</span><span class="token operator">|</span><span class="token function">bc</span><span class="token punctuation">)</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>continue和break</h5>
+<p>格式：</p>
+<pre><code>continue [n]
+break [n]</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{sum=0;for(i=1;i&lt;=100;i++){if(i%2==0)continue;sum+=i}print sum}'</span>
+<span class="token number">2500</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{sum=0;for(i=1;i&lt;=100;i++){if(i==50)break;sum+=i}print sum}'</span>
+<span class="token number">1225</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>next</h5>
+<p>next 可以提前结束对本行处理而直接进入下一行处理（awk自身循环）</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk -F: '{if(3%2!=0) next; print1,$3}' /etc/passwd</span>
+root <span class="token number">0</span>
+daemon <span class="token number">2</span>
+lp <span class="token number">4</span>
+<span class="token function">shutdown</span> <span class="token number">6</span>
+mail <span class="token number">8</span>
+games <span class="token number">12</span>
+<span class="token function">ftp</span> <span class="token number">14</span>
+nobody <span class="token number">65534</span>
+polkitd <span class="token number">998</span>
+gluster <span class="token number">996</span>
+rtkit <span class="token number">172</span>
+rpc <span class="token number">32</span>
+chrony <span class="token number">994</span>
+saslauth <span class="token number">992</span>
+clevis <span class="token number">984</span>
+pegasus <span class="token number">66</span>
+colord <span class="token number">982</span>
+setroubleshoot <span class="token number">980</span>
+gdm <span class="token number">42</span>
+gnome-initial-setup <span class="token number">978</span>
+sshd <span class="token number">74</span>
+avahi <span class="token number">70</span>
+tcpdump <span class="token number">72</span>
+wang <span class="token number">1000</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>数组</h5>
+<p>awk的数组为关联数组</p>
+<p>格式</p>
+<pre><code>array[index-expression]</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">weekdays<span class="token punctuation">[</span><span class="token string">"mon"</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token string">"Monday"</span> </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>index-expression</p>
+<ul>
+<li>可使用任意字符串；字符串要使用双引号括起来</li>
+<li>如果某数组元素事先不存在，在引用时，awk会自动创建此元素，并将其值初始化为“空串”</li>
+<li>若要判断数组中是否存在某元素，要使用“index in array”格式进行遍历</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{weekdays["mon"]="Monday";weekdays["tue"]="Tuesday";print weekdays["mon"]}'</span>
+Monday</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<pre><code>awk '!line[<span class="katex math inline">0]++'  dupfile
+awk '{!line[</span>0]++;print <span class="katex math inline">0, line[</span>0]}'  dupfile</code></pre>
+<p>范例：判断数组索引是否存在</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment"># awk 'BEGIN{array["i"]="x"; array["j"]="y" ; print "i" in array, "y" in array }'</span>
+<span class="token number">1</span> <span class="token number">0</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{array["i"]="x"; array["j"]="y" ;if ("i" in array ) {print "存在"}else{print "不存在"}}'</span>
+存在
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{array["i"]="x"; array["j"]="y" ;if ("abc" in array ) {print "存在"}else{print "不存在"}}'</span>
+不存在</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>若要遍历数组中的每个元素，要使用for循环</p>
+<pre><code>for(var in array) {for-body}</code></pre>
+<p>注意：var会遍历array的每个索引</p>
+<p>范例：遍历数组</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{weekdays["mon"]="Monday";weekdays["tue"]="Tuesday";for(i in weekdays) {print weekdays[i]}}'</span>
+Tuesday
+Monday
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN {</span>
+a<span class="token punctuation">[</span><span class="token string">"x"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"welcome"</span>
+a<span class="token punctuation">[</span><span class="token string">"y"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"to"</span>
+a<span class="token punctuation">[</span><span class="token string">"z"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"Magedu"</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">in</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     print i,a<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token string">'
+x welcome
+y to
+z Magedu
+
+[root@centos8 ~]#awk -F: '</span><span class="token punctuation">{</span>user<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">}</span>END<span class="token punctuation">{</span>for<span class="token punctuation">(</span>i <span class="token keyword">in</span> user<span class="token punctuation">)</span><span class="token punctuation">{</span>print <span class="token string">"username: "</span>i,<span class="token string">"uid: "</span>user<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">}</span>' /etc/passwd
+username: adm uid: <span class="token number">3</span>
+username: rpc uid: <span class="token number">32</span>
+username: dnsmasq uid: <span class="token number">985</span>
+username: radvd uid: <span class="token number">75</span>
+username: <span class="token function">sync</span> uid: <span class="token number">5</span>
+username: mail uid: <span class="token number">8</span>
+username: exim uid: <span class="token number">93</span>
+username: tss uid: <span class="token number">59</span>
+username: gluster uid: <span class="token number">996</span>
+username: unbound uid: <span class="token number">995</span>
+username: <span class="token function">halt</span> uid: <span class="token number">7</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat  ss.log | sed -nr '1!s/^([^0-9]+) .*/\1/p'|sort |uniq -c</span>
+    <span class="token number">529</span> ESTAB    
+      <span class="token number">9</span> LISTEN   
+    <span class="token number">128</span> SYN-RECV 
+     <span class="token number">95</span> TIME-WAIT
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ss -ant | awk 'NR!=1{state[1]++}END{for(i in state){print i,state[i]}}'</span>
+SYN-RECV <span class="token number">128</span>
+LISTEN <span class="token number">9</span>
+ESTAB <span class="token number">529</span>
+TIME-WAIT <span class="token number">95</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#netstat -tan | awk '/^tcp/{state[NF]++}END{for(i in state){print i,state[i]}}'</span>
+LISTEN <span class="token number">9</span>
+SYN_RECV <span class="token number">126</span>
+ESTABLISHED <span class="token number">523</span>
+FIN_WAIT2 <span class="token number">40</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '{ip[1]++}END{for(i in ip){print i,ip[i]}}' /var/log/httpd/access_log</span>
+<span class="token number">172.20</span>.0.200 <span class="token number">1482</span>
+<span class="token number">172.20</span>.21.121 <span class="token number">2</span>
+<span class="token number">172.20</span>.30.91 <span class="token number">29</span>
+<span class="token number">172.16</span>.102.29 <span class="token number">864</span>
+<span class="token number">172.20</span>.0.76 <span class="token number">1565</span>
+<span class="token number">172.20</span>.9.9 <span class="token number">15</span>
+<span class="token number">172.20</span>.1.125 <span class="token number">463</span>
+<span class="token number">172.20</span>.61.11 <span class="token number">2</span>
+<span class="token number">172.20</span>.73.73 <span class="token number">198</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '{ip[1]++}END{for(i in ip){print ip[i],i}}' access_log  |sort -nr| head -3</span>
+<span class="token number">4870</span> <span class="token number">172.20</span>.116.228
+<span class="token number">3429</span> <span class="token number">172.20</span>.116.208
+<span class="token number">2834</span> <span class="token number">172.20</span>.0.222
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk '{ip[$1]++}END{for(i in ip){print i,ip[i]}}' access_log |sort -k2 -nr|head -3</span>
+<span class="token number">172.20</span>.116.228 <span class="token number">4870</span>
+<span class="token number">172.20</span>.116.208 <span class="token number">3429</span>
+<span class="token number">172.20</span>.0.222 <span class="token number">2834</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：多维数组</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{</span>
+<span class="token operator">&gt;</span> array<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">11</span>
+<span class="token operator">&gt;</span> array<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">12</span>
+<span class="token operator">&gt;</span> array<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">13</span>
+<span class="token operator">&gt;</span> array<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">21</span>
+<span class="token operator">&gt;</span> array<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">22</span>
+<span class="token operator">&gt;</span> array<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token number">23</span>
+<span class="token operator">&gt;</span> <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">in</span> array<span class="token punctuation">)</span>
+<span class="token operator">&gt;</span>     <span class="token keyword">for</span> <span class="token punctuation">(</span>j <span class="token keyword">in</span> array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token operator">&gt;</span>         print array<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span>j<span class="token punctuation">]</span>
+<span class="token operator">&gt;</span> <span class="token punctuation">}</span>'
+<span class="token number">11</span>
+<span class="token number">12</span>
+<span class="token number">13</span>
+<span class="token number">21</span>
+<span class="token number">22</span>
+<span class="token number">23</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>awk函数</h5>
+<p>awk 的函数分为内置和自定义函数</p>
+<h6>常见内置函数</h6>
+<p>数值处理：<br>
+rand()：返回0和1之间一个随机数</p>
+<p>srand()：配合rand() 函数,生成随机数的种子</p>
+<p>int()：返回整数</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{srand();print rand()}'</span>
+<span class="token number">0.790437</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{srand();print rand()}'</span>
+<span class="token number">0.283736</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{srand();print rand()}'</span>
+<span class="token number">0.948082</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk 'BEGIN{srand();print rand()}'</span>
+<span class="token number">0.371798</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  'BEGIN{srand(); for (i=1;i&lt;=10;i++)print int(rand()*100) }' </span>
+<span class="token number">35</span>
+<span class="token number">17</span>
+<span class="token number">35</span>
+<span class="token number">95</span>
+<span class="token number">19</span>
+<span class="token number">15</span>
+<span class="token number">70</span>
+<span class="token number">54</span>
+<span class="token number">46</span>
+<span class="token number">93</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>字符串处理：</p>
+<p>length([s])：返回指定字符串的长度</p>
+<p>sub(r,s,[t])：对t字符串搜索r表示模式匹配的内容，并将第一个匹配内容替换为s</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo "2008:08:08 08:08:08" | awk 'sub(/:/,"-",1)'</span>
+<span class="token number">2008</span>-08:08 08:08:08
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo "2008:08:08 08:08:08" | awk '{sub(/:/,"-",1);print $0}'</span>
+<span class="token number">2008</span>-08:08 08:08:08</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>gsub(r,s,[t])：对t字符串进行搜索r表示的模式匹配的内容，并全部替换为s所表示的内容</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo "2008:08:08 08:08:08" | awk 'gsub(/:/,"-",0)'</span>
+<span class="token number">2008</span>-08-08 08-08-08
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo "2008:08:08 08:08:08" | awk '{gsub(/:/,"-",0);print $0}'</span>
+<span class="token number">2008</span>-08-08 08-08-08</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>split(s,array,[r])：以r为分隔符，切割字符串s，并将切割后的结果保存至array所表示的数组中，第一个索引值为1,第二个索引值为2,…</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#netstat -tn | awk '/^tcp/{split($5,ip,":");count[ip[1]]++}END{for(i in count){print i,count[i]}}'</span>
+<span class="token number">10.0</span>.0.1 <span class="token number">1</span>
+<span class="token number">10.0</span>.0.6 <span class="token number">1</span>
+<span class="token number">10.0</span>.0.7 <span class="token number">673</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>system 函数：可以awk中调用shell命令<br>
+空格是awk中的字符串连接符，如果system中需要使用awk中的变量可以使用空格分隔，或者说除了awk的变量外其他一律用""引用起来</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">awk</span> <span class="token string">'BEGIN{system("hostname")}'</span> 
+<span class="token function">awk</span> <span class="token string">'BEGIN{score=100; system("echo  your score is " score) }'</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#netstat -tn | awk '/^tcp/{split($5,ip,":");count[ip[1]]++}END{for(i in count){if(count[i]&gt;=10){system("iptables -A INPUT -s "i" -j REJECT")}}}'</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h6>自定义函数</h6>
+<p>自定义函数格式：</p>
+<pre><code>function name ( parameter, parameter,  ... ) {
+   statements
+   return expression
+}</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat func.awk</span>
+<span class="token keyword">function</span> max<span class="token punctuation">(</span>x,y<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    x<span class="token operator">&gt;</span>y?var<span class="token operator">=</span>x:var<span class="token operator">=</span>y
+    <span class="token builtin class-name">return</span> var
+<span class="token punctuation">}</span>
+BEGIN<span class="token punctuation">{</span>print max<span class="token punctuation">(</span>a,b<span class="token punctuation">)</span><span class="token punctuation">}</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#awk  -v a=30 -v b=20 -f func.awk</span>
+<span class="token number">30</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>awk脚本</h5>
+<p>将awk程序写成脚本，直接调用或执行</p>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#cat passwd.awk 
+{if(<span class="katex math inline">3&gt;=1000)print</span>1,$3}
+[root@centos8 ~]#awk -F: -f passwd.awk /etc/passwd
+nobody 65534
+wang 1000
+mage 1001</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#cat test.awk
+#!/bin/awk -f
+#this is a awk script
+{if(<span class="katex math inline">3&gt;=1000)print</span>1,$3}
+[root@centos8 ~]#chmod +x test.awk
+[root@centos8 ~]#./test.awk -F: /etc/passwd
+nobody 65534
+wang 1000
+mage 1001</code></pre>
+<p>向awk脚本传递参数</p>
+<p>格式：</p>
+<pre><code>awkfile  var=value var2=value2... Inputfile</code></pre>
+<p>注意：在BEGIN过程中不可用。直到首行输入完成以后，变量才可用。可以通过-v 参数，让awk在执行BEGIN之前得到变量的值。命令行中每一个指定的变量都需要一个-v参数</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat test2.awk </span>
+<span class="token comment">#!/bin/awk -f</span>
+<span class="token punctuation">{</span>if<span class="token punctuation">(</span><span class="token number">3</span> <span class="token operator">&gt;</span><span class="token operator">=</span>min <span class="token operator">&amp;</span><span class="token file-descriptor important">&amp;3</span><span class="token operator">&lt;</span><span class="token operator">=</span>max<span class="token punctuation">)</span>print <span class="token number">1,3</span><span class="token punctuation">}</span> 
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chmod +x test2.awk</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#./test2.awk  -F: min=100 max=200 /etc/passwd</span>
+systemd-resolve <span class="token number">193</span>
+rtkit <span class="token number">172</span>
+pulse <span class="token number">171</span>
+qemu <span class="token number">107</span>
+usbmuxd <span class="token number">113</span>
+abrt <span class="token number">173</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p><strong>练习</strong></p>
+<p>1、文件host_list.log 如下格式，请提取”.magedu.com”前面的主机名部分并写入到回到该文件中</p>
+<pre><code>1 www.magedu.com
+2 blog.magedu.com
+3 study.magedu.com
+4 linux.magedu.com
+5 python.magedu.com
+......
+999 study.magedu.com</code></pre>
+<p>参考答案:</p>
+<pre><code>[root@centos8 ~]#cat host_list.log
+1 www.magedu.com
+2 blog.magedu.com
+3 study.magedu.com
+4 linux.magedu.com
+5 python.magedu.com
+[root@centos8 ~]#awk -F"[ .]"  '{print <span class="katex math inline">2}' host_list.log
+www
+blog
+study
+linux
+python
+[root@centos8 ~]#awk -F"[ .]"  '{print</span>2}' host_list.log &gt;&gt; host_list.log 
+[root@centos8 ~]#cat host_list.log
+1 www.magedu.com
+2 blog.magedu.com
+3 study.magedu.com
+4 linux.magedu.com
+5 python.magedu.com
+www
+blog
+study
+linux
+python</code></pre>
+<p>2、统计/etc/fstab文件中每个文件系统类型出现的次数<br>
+3、统计/etc/fstab文件中每个单词出现的次数<br>
+4、提取出字符串Yd$C@M05MB%9&amp;Bdh7dq+YVixp3vpw中的所有数字<br>
+5、有一文件记录了1-100000之间随机的整数共5000个，存储的格式100,50,35,89…请取出其中最大和最小的整数<br>
+6、解决DOS攻击生产案例：根据web日志或者或者网络连接数，监控当某个IP并发连接数或者短时内PV达到100，即调用防火墙命令封掉对应的IP，监控频率每隔5分钟。防火墙命令为：iptables -A INPUT -s IP -j REJECT</p>
+<p>7、将以下文件内容中FQDN取出并根据其进行计数从高到低排序</p>
+<pre><code>http://mail.magedu.com/index.html
+http://www.magedu.com/test.html
+http://study.magedu.com/index.html
+http://blog.magedu.com/index.html
+http://www.magedu.com/images/logo.jpg
+http://blog.magedu.com/20080102.html
+http://www.magedu.com/images/magedu.jpg</code></pre>
+<p>参考答案:</p>
+<pre><code>[root@centos8 ~]#awk -F"/" '{url[$3]++}END{for(i in url){print url[i],i}}' url.log |sort -nr
+3 www.magedu.com
+2 blog.magedu.com
+1 study.magedu.com
+1 mail.magedu.com</code></pre>
+<p>8、将以下文本以inode为标记，对inode相同的counts进行累加，并且统计出同一inode中，beginnumber的最小值和endnumber的最大值</p>
+<pre><code>inode|beginnumber|endnumber|counts|
+106|3363120000|3363129999|10000|
+106|3368560000|3368579999|20000|
+310|3337000000|3337000100|101|
+310|3342950000|3342959999|10000|
+310|3362120960|3362120961|2|
+311|3313460102|3313469999|9898|
+311|3313470000|3313499999|30000|
+311|3362120962|3362120963|2|</code></pre>
+<p>输出的结果格式为：</p>
+<pre><code>310|3337000000|3362120961|10103|
+311|3313460102|3362120963|39900|
+106|3363120000|3368579999|30000|</code></pre>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+	
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

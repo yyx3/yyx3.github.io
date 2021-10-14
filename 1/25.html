@@ -1,0 +1,506 @@
+<html lang="zh-CN"><!--<![endif]--><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux任务计划 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script><script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux任务计划,linux入门,linux学习,linux教程">
+<meta name="description" content="任务计划 通过任务计划，可以让系统自动的按时间或周期性任务执行任务 未来的某时间点执行一次任务 at 指定时间点，执行一次性任务 batch 系统自行选择空闲时间去执行此处指定的任务 周期性运行某任务 cron 一次性任务 at 工具 由包…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33940"><link rel="prev" title="linux进程管理" href="http://www.yunweipai.com/33936.html">
+<link rel="next" title="linux启动过程" href="http://www.yunweipai.com/33942.html">
+<link rel="canonical" href="http://www.yunweipai.com/33940.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33940.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33940.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux任务计划, linux入门, linux学习, linux教程, Linux教程">
+<meta name="description" content="任务计划 通过任务计划，可以让系统自动的按时间或周期性任务执行任务 未来的某时间点执行一次任务  at                指定时间点，执行一次性任务 batch     系统自行选择空闲时间去执行此处指定的任务  周期性运行某任务  cron  一次性任务 at 工具  由包 at 提供 依赖与atd服务,需要启动才能实现at任务 at队列存放在/var/spool/at目录中  at 命令： at [option] TIM">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post current"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33940" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>任务计划</h3>
+<p>通过任务计划，可以让系统自动的按时间或周期性任务执行任务</p>
+<p>未来的某时间点执行一次任务</p>
+<ul>
+<li>at                指定时间点，执行一次性任务</li>
+<li>batch     系统自行选择空闲时间去执行此处指定的任务</li>
+</ul>
+<p>周期性运行某任务</p>
+<ul>
+<li>cron</li>
+</ul>
+<h4>一次性任务</h4>
+<p>at 工具</p>
+<ul>
+<li>由包 at 提供</li>
+<li>依赖与atd服务,需要启动才能实现at任务</li>
+<li>at队列存放在/var/spool/at目录中</li>
+</ul>
+<p>at 命令：</p>
+<pre><code>at [option] TIME</code></pre>
+<p>常用选项：</p>
+<pre><code>-V          显示版本信息
+-t time     时间格式  [[CC]YY]MMDDhhmm[.ss] 
+-l          列出指定队列中等待运行的作业；相当于atq
+-d          删除指定的作业；相当于atrm
+-c          查看具体作业任务
+-f /path/file   指定的文件中读取任务
+-m          当任务被完成之后，将给用户发送邮件，即使没有标准输出</code></pre>
+<p>注意：</p>
+<ul>
+<li>作业执行命令的结果中的标准输出和错误以邮件通知给 root </li>
+<li>默认CentOS 8 最小化安装没有安装邮件服务,需要自行安装</li>
+</ul>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dnf install postfix -y</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#systemctl enable --now postfix</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>TIME：定义出什么时候进行 at 这项任务的时间</p>
+<pre><code>HH:MM [YYYY-mm-dd]
+noon, midnight, teatime（4pm）
+tomorrow
+now+#{minutes,hours,days, OR weeks}</code></pre>
+<p>范例：at 时间格式</p>
+<pre><code>HH:MM 在今日的 HH:MM 进行，若该时刻已过，则明天此时执行任务
+02:00    
+
+HH:MM YYYY-MM-DD   规定在某年某月的某一天的特殊时刻进行该项任务
+02:00 2016-09-20   
+
+HH:MM[am|pm] [Month] [Date]
+06pm March 17
+17:20 tomorrow
+
+HH:MM[am|pm] + number [minutes|hours|days|weeks]， 在某个时间点再加几个时间后才进行该项任务
+now + 5 min 
+02pm + 3 days</code></pre>
+<p>at任务执行方式：</p>
+<ul>
+<li>交互式 </li>
+<li>输入重定向 </li>
+<li>at -f  file</li>
+</ul>
+<p>/etc/at.{allow,deny}控制用户是否能执行at任务</p>
+<ul>
+<li>白名单：/etc/at.allow 默认不存在，只有该文件中的用户才能执行at命令</li>
+<li>黑名单：/etc/at.deny 默认存在，拒绝该文件中用户执行at命令，而没有在at.deny 文件中的使用者则可执行</li>
+<li>如果两个文件都不存在，只有 root 可以执行 at 命令</li>
+</ul>
+<h4>周期性任务计划 cron</h4>
+<p>周期性任务计划cron相关的程序包：</p>
+<ul>
+<li>cronie：主程序包，提供crond守护进程及相关辅助工具</li>
+<li>crontabs：包含CentOS提供系统维护任务</li>
+<li>cronie-anacron：cronie的补充程序，用于监控cronie任务执行状况，如:cronie中的任务在过去该运行的时间点未能正常运行，则anacron会随后启动一次此任务</li>
+</ul>
+<p>cron 依赖于crond服务，确保crond守护处于运行状态：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#CentOS 7 以后版本:</span>
+systemctl status crond
+
+<span class="token comment">#CentOS 6:</span>
+<span class="token function">service</span> crond status</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>cron任务分为</p>
+<ul>
+<li>系统cron任务：系统维护作业，/etc/crontab</li>
+<li>用户cron任务：  保存在 /var/spool/cron/USERNAME，利用 crontab 命令管理</li>
+</ul>
+<p>计划任务日志：/var/log/cron</p>
+<h5>系统cron计划任务</h5>
+<p>/etc/crontab 格式说明，详情参见  man  5  crontab </p>
+<p>注释行以  #  开头</p>
+<pre><code>[root@centos8 ~]#cat /etc/crontab 
+SHELL=/bin/bash                     #默认的SHELL类型
+PATH=/sbin:/bin:/usr/sbin:/usr/bin  #默认的PATH变量值,可修改为其它路径
+MAILTO=root                         #默认标准输出和错误发邮件给root,可以指向其它用户
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+</code></pre>
+<p>计划任务时间表示法：</p>
+<pre><code>(1) 特定值
+    给定时间点有效取值范围内的值
+(2) *
+    给定时间点上有效取值范围内的所有值
+    表示“每...”
+(3) 离散取值
+    #,#,#
+(4) 连续取值
+    #-#
+(5) 在指定时间范围上，定义步长
+    /#: #即为步长
+
+(6) 特定关健字
+@yearly     0 0 1 1 *
+@annually   0 0 1 1 *
+@monthly    0 0 1 * *
+@weekly     0 0 * * 0
+@daily      0 0 * * *
+@hourly     0 * * * *
+@reboot     Run once after reboot</code></pre>
+<p>计划任务时间表示法：</p>
+<pre><code>(1) 特定值
+    给定时间点有效取值范围内的值
+(2) *
+    给定时间点上有效取值范围内的所有值
+    表示“每...”
+(3) 离散取值
+    #,#,#
+(4) 连续取值
+    #-#
+(5) 在指定时间范围上，定义步长
+    /#: #即为步长
+(6) 特定关健字
+@yearly     0 0 1 1 *
+@annually   0 0 1 1 *
+@monthly    0 0 1 * *
+@weekly     0 0 * * 0
+@daily      0 0 * * *
+@hourly     0 * * * *
+@reboot     Run once after reboot</code></pre>
+<p>范例：</p>
+<pre><code>#晚上9点10分运行echo命令
+10 21 * * *  wang  /bin/echo "Howdy!"
+
+#每3小时echo和wall命令
+0 */3 * * * wang /bin/echo “howdy”;  wall “welcome to Magedu!”</code></pre>
+<p>crond任务相关文件:</p>
+<pre><code>/etc/crontab        配置文件
+/etc/cron.d/        配置文件
+/etc/cron.hourly/   脚本
+/etc/cron.daily/    脚本
+/etc/cron.weekly/   脚本
+/etc/cron.monthly/  脚本</code></pre>
+<h5>anacron</h5>
+<p>运行计算机关机时cron不运行的任务，CentOS6以后版本取消anacron服务，由crond服务管理，对笔记本电脑、台式机、工作站、偶尔要关机的服务器及其它不一直开机的系统很重要对很有用</p>
+<p>由/etc/cron.hourly/0anacron执行，当执行任务时，更新/var/spool/anacron/cron.daily 文件的时间戳</p>
+<p>配置文件：/etc/anacrontab，负责执行/etc/ cron.daily /etc/cron.weekly /etc/cron.monthly中系统任务</p>
+<p>/etc/anacrontab格式说明</p>
+<p>字段1：如果在这些日子里没有运行这些任务……<br>
+字段2：在重新引导后等待这么多分钟后运行它<br>
+字段3：任务识别器，在日志文件中标识<br>
+字段4：要执行的任务</p>
+<h5>管理临时文件</h5>
+<p>CentOS 7 使用 systemd-tmpfiles-setup服务实现<br>
+CentOS 6 使用/etc/cron.daily/tmpwatch定时清除临时文件</p>
+<p>配置文件：</p>
+<pre><code>/etc/tmpfiles.d/*.conf
+/run/tmpfiles.d/*.conf
+/usr/lib/tmpfiles/*.conf</code></pre>
+<p>/usr/lib/tmpfiles.d/tmp.conf</p>
+<p>d /tmp 1777 root root 10d<br>
+d /var/tmp 1777 root root 30d</p>
+<p>命令：</p>
+<pre><code>systemd-tmpfiles –clean|remove|create  configfile</code></pre>
+<h5>用户计划任务</h5>
+<p>crontab命令: </p>
+<ul>
+<li>
+每个用户都有专用的cron任务文件：/var/spool/cron/USERNAME
+</li>
+<li>
+默认标准输出和错误会被发邮件给对应的用户,如:wang创建的任务就发送至wang的邮箱
+</li>
+<li>
+root能够修改其它用户的作业
+</li>
+<li>
+用户的cron 中默认 PATH=/usr/bin:/bin,如果使用其它路径,在任务文件的第一行加PATH=/path
+</li>
+</ul>
+<p>crontab命令格式：</p>
+<pre><code>crontab [-u user] [-l | -r | -e] [-i] </code></pre>
+<p>常用选项：</p>
+<pre><code>-l      列出所有任务
+-e      编辑任务
+-r      移除所有任务
+-i      同-r一同使用，以交互式模式移除指定任务
+-u user 仅root可运行，指定用户管理cron任务</code></pre>
+<p>控制用户执行计划任务：<br>
+/etc/cron.{allow,deny}</p>
+<p>范例:修改默认的cron的文本编辑工具</p>
+<pre><code>root@ubuntu1804:~# crontab  -e
+no crontab for root - using an empty one
+
+Select an editor.  To change later, run 'select-editor'.
+  1. /bin/nano        &lt;---- easiest
+  2. /usr/bin/vim.basic
+  3. /usr/bin/vim.tiny
+  4. /bin/ed
+
+Choose 1-4 [1]:
+root@ubuntu1804:~# cat  /etc/profile.d/env.sh
+export EDITOR=vim</code></pre>
+<p>范例:</p>
+<pre><code>[root@centos8 ~]#cat check_disk.sh 
+#!/bin/bash
+#
+#********************************************************************
+#Author:        wangxiaochun
+#QQ:            29308620
+#Date:          2020-01-17
+#FileName：      check_disk.sh
+#URL:           http://www.magedu.com
+#Description：       The test script
+#Copyright (C):     2020 All rights reserved
+#********************************************************************
+df | awk  -F ' +|%'  '/^\/dev\/sd/{if(5&gt;10){system("echo "1" will be full,use:" $5 "| mail -s warning root@wangxiaochun.com")} }'
+
+[root@centos8 ~]#crontab  -l
+*/10 * * * *  /root/check_disk.sh</code></pre>
+<p>范例:</p>
+<pre><code>[root@centos8 ~]#cat check_disk2.sh 
+#!/bin/bash
+#
+#********************************************************************
+#Author:        wangxiaochun
+#QQ:            29308620
+#Date:          2020-01-17
+#FileName：      check_disk2.sh
+#URL:           http://www.magedu.com
+#Description：       The test script
+#Copyright (C):     2020 All rights reserved
+#********************************************************************
+WARNING=2
+df  | awk  -F ' +|%'  '/^\/dev\/sd/{print 1,5}'|while read DISK USE;do 
+if [ USE -gtWARNING ];then
+   echo "DISK will be full,use:USE" | mail -s diskwarning root@wangxiaochun.com
+fi
+done
+[root@centos8 ~]#crontab  -l
+*/10 * * * *  /root/check_disk2.sh</code></pre>
+<p>面试题:11月每天的6-12点之间每隔2小时执行/app/bin/test.sh</p>
+<pre><code>[root@centos8 ~]#crontab  -l
+0 6-12/2 * 11 * /app/bin/test.sh</code></pre>
+<p>注意：运行结果的标准输出和错误以邮件通知给相关用户<br>
+(1) COMMAND &gt; /dev/null<br>
+(2) COMMAND &amp;&gt; /dev/null</p>
+<p>cron任务中不建议使用%，它有特殊用途，它表示换行的特殊意义，且第一个%后的所有字符串会被将成当作命令的标准输入<br>
+如果在命令中要使用%，则需要用 \ 转义<br>
+注意：将%放置于单引号中是不支持的</p>
+<p>范例： </p>
+<pre><code>30 2 * * * /bin/cp -a /etc/ /data/etc<code>date +\%F_\%T</code>
+30 2 * * * /bin/cp -a /etc/ /data/etc<code>date +‘%F_%T’</code>   有问题</code></pre>
+<p>思考：<br>
+(1) 如何在秒级别运行任务？</p>
+<pre><code>for min in 0 1 2; do echo "hi"; sleep 20; done</code></pre>
+<p>(2) 如何实现每7分钟运行一次任务?</p>
+<p>sleep命令：</p>
+<pre><code>sleep NUMBER[SUFFIX]...
+
+SUFFIX: 
+s: 秒, 默认
+m: 分
+h: 小时
+d: 天</code></pre>
+<p>范例:</p>
+<pre><code>[root@centos8 ~]#usleep 
+warning: usleep is deprecated, and will be removed in near future!
+warning: use "sleep 1e-06" instead...</code></pre>
+
+				
+			</div>
+
+			<div class="clear"></div>
+	</div>		</div>
+
+	</div>
+
+</div>	
+</body></html>

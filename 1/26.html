@@ -1,0 +1,502 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux启动过程 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux启动过程,linux学习,linux教程">
+<meta name="description" content="CentOS 6 的启动管理 Linux 组成 kernel 实现进程管理、内存管理、网络管理、驱动程序、文件系统、安全功能等功能 rootfs 包括程序和 glibc 库 &ZeroWidthSpace; 程序：二进制执行文件 &ZeroWidthSpace; 库：函数集合, function, …">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33942"><link rel="prev" title="linux任务计划" href="http://www.yunweipai.com/33940.html">
+<link rel="next" title="linux内核管理" href="http://www.yunweipai.com/33947.html">
+<link rel="canonical" href="http://www.yunweipai.com/33942.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33942.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33942.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux启动过程, linux学习, linux教程, Linux教程">
+<meta name="description" content="CentOS 6 的启动管理 Linux 组成   kernel 实现进程管理、内存管理、网络管理、驱动程序、文件系统、安全功能等功能   rootfs 包括程序和 glibc 库  &ZeroWidthSpace; 程序：二进制执行文件  &ZeroWidthSpace; 库：函数集合, function, 调用接口（头文件负责描述）   内核设计流派  宏内核(monolithic kernel)：又称单内核和强内核，Unix，Linux 把所有系统服务都放到内核里，所有功能集成于同一个程序">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post current"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33942" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>CentOS 6 的启动管理</h3>
+<h4>Linux 组成</h4>
+<ul>
+<li>
+kernel 实现进程管理、内存管理、网络管理、驱动程序、文件系统、安全功能等功能
+</li>
+<li>
+rootfs 包括程序和 glibc 库<p></p>
+<p>&ZeroWidthSpace; 程序：二进制执行文件</p>
+<p>&ZeroWidthSpace; 库：函数集合, function, 调用接口（头文件负责描述）
+</p></li>
+</ul>
+<h4>内核设计流派</h4>
+<ul>
+<li>宏内核(monolithic kernel)：又称单内核和强内核，Unix，Linux<br>
+把所有系统服务都放到内核里，所有功能集成于同一个程序，分层实现不同功能，系统庞大复杂， Linux其实在单内核内核实现了模块化，也就相当于吸收了微内核的优点</li>
+<li>微内核(micro kernel)：Windows，Solaris，HarmonyOS<br>
+简化内核功能，在内核之外的用户态尽可能多地实现系统服务，同时加入相互之间的安全保护，每种功能使用一个单独子系统实现，将内核功能移到用户空间，性能差</li>
+</ul>
+<h4>1.3 CentOS 6启动流程</h4>
+<h5>CentOS 6 启动流程</h5>
+<p><img title="linux启动过程插图" alt="linux启动过程插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200109143713562-480x232.png"></p>
+<ol>
+<li>加载BIOS的硬件信息，获取第一个启动设备</li>
+<li>读取第一个启动设备MBR的引导加载程序(grub)的启动信息</li>
+<li>加载核心操作系统的核心信息，核心开始解压缩，并尝试驱动所有的硬件设备</li>
+<li>核心执行init程序，并获取默认的运行信息</li>
+<li>init程序执行/etc/rc.d/rc.sysinit文件，重新挂载根文件系统</li>
+<li>启动核心的外挂模块</li>
+<li>init执行运行的各个批处理文件(scripts)</li>
+<li>init执行/etc/rc.d/rc.local</li>
+<li>执行/bin/login程序，等待用户登录</li>
+<li>登录之后开始以Shell控制主机</li>
+</ol>
+<h5>硬件启动POST</h5>
+<p>POST：Power-On-Self-Test，加电自检，是BIOS功能的一个主要部分。负责完成对CPU、主板、内存、硬盘子系统、显示子系统、串并行接口、键盘等硬件情况的检测</p>
+<p>主板的ROM：BIOS，Basic Input and Output System，保存着有关计算机系统最重要的基本输入输出程序，系统信息设置、开机加电自检程序和系统启动自举程序等 </p>
+<p>主板的RAM：CMOS互补金属氧化物半导体，保存各项参数的设定，按次序查找引导设备，第一个有引导程序的设备为本次启动设备</p>
+<h5>bootloader</h5>
+<h6>grub 功能和组成</h6>
+<p>bootloader: 引导加载器，引导程序</p>
+<ul>
+<li>windows: ntloader，仅是启动OS</li>
+<li>Linux：功能丰富，提供菜单，允许用户选择要启动系统或不同的内核版本；把用户选定的内核装载到内存中的特定空间中，解压、展开，并把系统控制权移交给内核       </li>
+</ul>
+<p>Linux的bootloader</p>
+<ul>
+<li>LILO：LInux LOader</li>
+<li>GRUB: GRand Unified Bootloader,  CentOS 6 GRUB 0.97: GRUB Legacy， CentOS 7 以后使用GRUB 2.02</li>
+</ul>
+<p>GRUB 启动阶段</p>
+<ul>
+<li>
+primary boot loader : <p></p>
+<p>1st stage：MBR的前446个字节)</p>
+<p>1.5 stage： mbr 之后的扇区，让stage1中的bootloader能识别stage2所在的分区上的文件系统
+</p></li>
+<li>
+secondary boot loader ：2nd stage，分区文件/boot/grub/
+</li>
+</ul>
+<h6>CentOS 6 grub 安装</h6>
+<p>安装grub：</p>
+<p>(1) grub-install  安装grub stage1和stage1_5到/dev/DISK磁盘上，并复制GRUB相关文件到 DIR/boot目录下</p>
+<pre><code>grub-install --root-directory=DIR /dev/DISK</code></pre>
+<pre><code>(2) grub
+grub&gt; root (hd#,#)
+grub&gt; setup (hd#)</code></pre>
+<h6>grub legacy 管理</h6>
+<p>配置文件：/boot/grub/grub.conf  ramfs 提高速度<br>
+CentOS 5  /boot/initrd-VERSION-release.img<br>
+CentOS 6 以后版本 /boot/initramfs-VERSION-release.img  </p>
+<ul>
+<li>
+模块文件：/lib/modules/VERSION-release<p></p>
+<p>ramdisk文件的制作：
+</p></li>
+<li>
+mkinitrd命令
+</li>
+</ul>
+<pre><code>mkinitrd /boot/initramfs-(uname -r).img(uname -r)</code></pre>
+<ul>
+<li>dracut命令 </li>
+</ul>
+<pre><code>dracut /boot/initramfs-(uname -r).img(uname -r) </code></pre>
+<h5>init初始化</h5>
+<p>POST –&gt; BootSequence (BIOS) –&gt; Bootloader(MBR) –&gt; kernel(ramdisk) –&gt; rootfs(只读) –&gt; init（systemd）</p>
+<p>init程序的类型：</p>
+<p>SysV: init, CentOS 5之前<br>
+配置文件：/etc/inittab<br>
+Upstart: init,CentOS 6<br>
+配置文件：/etc/inittab, /etc/init/*.conf<br>
+Systemd：systemd, CentOS 7<br>
+配置文件：/usr/lib/systemd/system<br>
+/etc/systemd/system</p>
+<h6>运行级别</h6>
+<p>运行级别：为系统运行或维护等目的而设定；0-6：7个级别，一般使用3, 5做为默认级别</p>
+<pre><code>0：关机
+1：单用户模式(root自动登录), single, 维护模式
+2：多用户模式，启动网络功能，但不会启动NFS；维护模式
+3：多用户模式，正常模式；文本界面
+4：预留级别；可同3级别
+5：多用户模式，正常模式；图形界面
+6：重启</code></pre>
+<p>切换级别：</p>
+<pre><code>init #</code></pre>
+<p>查看级别：</p>
+<pre><code>runlevel 
+who -r</code></pre>
+<p>定义运行级别</p>
+<pre><code>/etc/inittab</code></pre>
+<p>CentOS 5 的inittab文件还定义以下内容</p>
+<pre><code>初始运行级别(RUN LEVEL)
+系统初始化脚本
+对应运行级别的脚本目录
+捕获某个关键字顺序
+定义UPS电源终端/恢复脚本
+在虚拟控制台生成getty
+在运行级别5初始化X</code></pre>
+<p>CentOS 5 的inittab文件每一行格式：</p>
+<pre><code>id:runlevel:action:process
+
+id：是惟一标识该项的字符序列
+runlevels： 定义了操作所使用的运行级别
+action： 指定了要执行的特定操作
+         wait: 切换至此级别运行一次
+         respawn：此process终止，就重新启动之
+         initdefault：设定默认运行级别；process省略
+         sysinit：设定系统初始化方式
+process：定义了要执行的进程</code></pre>
+<p>范例：CentOS 5 的inittab文件</p>
+<pre><code>id:5:initdefault:
+si::sysinit:/etc/rc.d/rc.sysinit
+l0:0:wait:/etc/rc.d/rc 0
+l1:1:wait:/etc/rc.d/rc 1
+l2:2:wait:/etc/rc.d/rc 2
+l3:3:wait:/etc/rc.d/rc 3
+l4:4:wait:/etc/rc.d/rc 4
+l5:5:wait:/etc/rc.d/rc 5
+l6:6:wait:/etc/rc.d/rc 6
+ca::ctrlaltdel:/sbin/shutdown -t3 -r now
+pf::powerfail:/sbin/shutdown -f -h +2 "Power Failure; System Shutting Down”
+pr:12345:powerokwait:/sbin/shutdown -c "Power Restored; Shutdown Cancelled”
+1:2345:respawn:/sbin/mingetty tty1
+2:2345:respawn:/sbin/mingetty tty2
+3:2345:respawn:/sbin/mingetty tty3
+4:2345:respawn:/sbin/mingetty tty4
+5:2345:respawn:/sbin/mingetty tty5
+6:2345:respawn:/sbin/mingetty tty6
+x:5:respawn:/etc/X11/prefdm -nodaemon</code></pre>
+<p>CentOS 6 /etc/inittab和相关文件</p>
+<p>CentOS 6 init程序为  upstart, 其配置文件/etc/inittab, /etc/init/*.conf，配置文件的语法 遵循 upstart配置文件语法格式，和CentOS5不同</p>
+<pre><code>/etc/inittab 设置系统默认的运行级别
+/etc/init/control-alt-delete.conf
+/etc/init/tty.conf
+/etc/init/start-ttys.conf
+/etc/init/rc.conf
+/etc/init/prefdm.conf</code></pre>
+<h6>初始化脚本 sysinit</h6>
+<p>/etc/rc.d/rc.sysinit:</p>
+<p>系统初始化脚本功能</p>
+<pre><code>(1) 设置主机名
+(2) 设置欢迎信息
+(3) 激活udev和selinux 
+(4) 挂载/etc/fstab文件中定义的文件系统
+(5) 检测根文件系统，并以读写方式重新挂载根文件系统
+(6) 设置系统时钟
+(7) 激活swap设备
+(8) 根据/etc/sysctl.conf文件设置内核参数
+(9) 激活lvm及software raid设备
+(10)加载额外设备的驱动程序
+(11)清理操作</code></pre>
+<h6>服务管理</h6>
+<p>service 命令：手动管理服务</p>
+<pre><code>service 服务 start|stop|restart
+service --status-all</code></pre>
+<p>/etc/rc.d/rc 控制服务脚本的开机自动运行</p>
+<pre><code>for srv in /etc/rc.d/rcN.d/K*; do
+    srv stop
+done
+for srv in /etc/rc.d/rcN.d/S*; dosrv start
+done</code></pre>
+<p>说明：rc N –&gt; 意味着读取/etc/rc.d/rcN.d/<br>
+K<em>: K##</em>：##运行次序；数字越小，越先运行；数字越小的服务，通常为依赖到别的服务<br>
+S<em>: S##</em>：##运行次序；数字越小，越先运行；数字越小的服务，通常为被依赖到的服务</p>
+<p>配置服务开机启动</p>
+<ul>
+<li>chkconfig命令</li>
+<li>ntsysv命令</li>
+</ul>
+<p>chkconfig 命令管理服务</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#查看服务在所有级别的启动或关闭设定情形：</span>
+<span class="token function">chkconfig</span> <span class="token punctuation">[</span>--list<span class="token punctuation">]</span> <span class="token punctuation">[</span>name<span class="token punctuation">]</span>
+
+<span class="token comment">#添加服务</span>
+SysV的服务脚本放置于/etc/rc.d/init.d <span class="token punctuation">(</span>/etc/init.d<span class="token punctuation">)</span>
+<span class="token comment">#!/bin/bash</span>
+chkconfig: LLLL nn nn  <span class="token comment">#LLLL 表示初始在哪个级别下启动，-表示都不启动</span>
+description <span class="token builtin class-name">:</span> 描述信息
+
+<span class="token function">chkconfig</span> --add name
+
+<span class="token comment">#删除服务</span>
+<span class="token function">chkconfig</span> --del name
+
+<span class="token comment">#修改指定的运行级别</span>
+<span class="token function">chkconfig</span> <span class="token punctuation">[</span>--level levels<span class="token punctuation">]</span> name <span class="token operator">&lt;</span>on<span class="token operator">|</span>off<span class="token operator">|</span>reset<span class="token operator">&gt;</span>
+说明：--level LLLL: 指定要设置的级别；省略时表示2345</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#vim /etc/init.d/testsrv </span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#cat  /etc/init.d/testsrv </span>
+<span class="token comment">#!/bin/bash</span>
+<span class="token comment">#chkconfig: - 96 3</span>
+<span class="token comment">#description: test serivce script</span>
+
+<span class="token builtin class-name">.</span> /etc/init.d/functions
+<span class="token function-name function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token function">touch</span> /var/lock/subsys/testsrv
+    action <span class="token string">"Starting testsrv"</span>
+    <span class="token function">sleep</span> <span class="token number">3</span>
+<span class="token punctuation">}</span>
+<span class="token function-name function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+       <span class="token function">rm</span> -f /var/lock/subsys/testsrv
+       action <span class="token string">"Shutting down testsrv"</span>
+<span class="token punctuation">}</span>
+<span class="token function-name function">restart</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    stop
+    start
+<span class="token punctuation">}</span>
+<span class="token function-name function">status</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">[</span> -e /var/lock/subsys/testsrv <span class="token punctuation">]</span> <span class="token punctuation">;</span><span class="token keyword">then</span>
+        <span class="token builtin class-name">echo</span>  <span class="token string">"testsrv is running..."</span>
+    <span class="token keyword">else</span> 
+            <span class="token builtin class-name">echo</span> <span class="token string">"testsrv is stopped"</span>
+        <span class="token keyword">fi</span>
+<span class="token punctuation">}</span> 
+
+<span class="token keyword">case</span> <span class="token variable">$1</span> <span class="token keyword">in</span> 
+start<span class="token punctuation">)</span>
+    start
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+stop<span class="token punctuation">)</span>
+    stop
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+restart<span class="token punctuation">)</span>
+    restart
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+status<span class="token punctuation">)</span>
+    status
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+*<span class="token punctuation">)</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Usage: /etc/init.d/testsrv {start|stop|restart|status}"</span>
+    <span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token keyword">esac</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#chmod +x  /etc/init.d/testsrv </span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#chkconfig --add testsrv</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#chkconfig --list testsrv</span>
+testsrv         <span class="token number">0</span>:off   <span class="token number">1</span>:off   <span class="token number">2</span>:off   <span class="token number">3</span>:off   <span class="token number">4</span>:off   <span class="token number">5</span>:off   <span class="token number">6</span>:off</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h6>非独立服务</h6>
+<p>服务分为独立服务和非独立服务</p>
+<p>瞬态（Transient）服务被超级守护进程 xinetd 进程所管理，也称为非独立服务</p>
+<p>进入的请求首先被xinetd代理</p>
+<p>配置文件：</p>
+<pre><code>/etc/xinetd.conf
+/etc/xinetd.d/&lt;service&gt;</code></pre>
+<p>用chkconfig控制非独立服务开机启动<br>
+示例：chkconfig  tftp  on</p>
+<h6>开机启动文件 rc.local</h6>
+<p>/etc/rc.d/rc.local</p>
+<p>注意：正常级别下，最后启动一个服务S99local没有链接至/etc/rc.d/init.d一个服务脚本，而是指向了/etc/rc.d/rc.local脚本<br>
+不便或不需写为服务脚本放置于/etc/rc.d/init.d/目录，且又想开机时自动运行的命令，可直接放置于/etc/rc.d/rc.local文件中<br>
+/etc/rc.d/rc.local在指定运行级别脚本后运行</p>
+<h5>CentOS 启动过程总结</h5>
+<p>/sbin/init –&gt; (/etc/inittab) –&gt; 设置默认运行级别 –&gt; 运行系统初始脚本、完成系统初始化 –&gt; (关闭对应下需要关闭的服务)启动需要启动服务 –&gt; 设置登录终端 </p>
+<p>参看：<a href="http://www.yunweipai.com/go?_=b3764936f9aHR0cDovL3M0LjUxY3RvLmNvbS93eWZzMDIvTTAyLzg3LzIwL3dLaW9tMWZWQkVMalhzdmFBQVVrdUw4M3QyUTMwNC5qcGc=" rel="external nofollow" target="_blank">http://</a><a href="http://www.yunweipai.com/go?_=b3764936f9aHR0cDovL3M0LjUxY3RvLmNvbS93eWZzMDIvTTAyLzg3LzIwL3dLaW9tMWZWQkVMalhzdmFBQVVrdUw4M3QyUTMwNC5qcGc=" rel="external nofollow" target="_blank">s4.51cto.com/wyfs02/M02/87/20/wKiom1fVBELjXsvaAAUkuL83t2Q304.jpg</a></p>
+<p><img title="linux启动过程插图(1)" alt="linux启动过程插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/wKiom1fVBELjXsvaAAUkuL83t2Q304-480x484.jpg"></p>
+
+				
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+		
+		</div>
+
+	</div>
+
+</div>	
+	
+</body></html>

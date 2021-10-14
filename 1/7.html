@@ -1,0 +1,572 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux帮助 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,Linux命令,linux学习,linux安装,linux帮助,linux教程,linux用法">
+<meta name="description" content="获得帮助 获取帮助的能力决定了技术的能力！ 多层次的帮助 whatis command --help man and info /usr/share/doc/ Red Hat documentation 、Ubuntu documentat…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33857"><link rel="prev" title="linux命令" href="http://www.yunweipai.com/33855.html">
+<link rel="next" title="linux系统目录结构" href="http://www.yunweipai.com/33859.html">
+<link rel="canonical" href="http://www.yunweipai.com/33857.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33857.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33857.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, Linux命令, linux学习, linux安装, linux帮助, linux教程, linux用法, Linux教程">
+<meta name="description" content="获得帮助 获取帮助的能力决定了技术的能力！ 多层次的帮助  whatis command --help man and info /usr/share/doc/ Red Hat documentation 、Ubuntu documentation 软件项目网站 其它网站 搜索  whatis whatis 使用数据库来显示命令的简短描述 刚安装后不可立即使用，需要制作数据库 #CentOS 7 版本以后 mandb  #CentOS ">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453919"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post current"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+   <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33857" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>获得帮助</h3>
+<p>获取帮助的能力决定了技术的能力！</p>
+<p>多层次的帮助</p>
+<ul>
+<li>whatis</li>
+<li>command –help</li>
+<li>man and info</li>
+<li>/usr/share/doc/</li>
+<li>Red Hat documentation 、Ubuntu documentation</li>
+<li>软件项目网站</li>
+<li>其它网站</li>
+<li>搜索</li>
+</ul>
+<h4>whatis</h4>
+<p>whatis 使用数据库来显示命令的简短描述<br>
+刚安装后不可立即使用，需要制作数据库</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#CentOS 7 版本以后</span>
+mandb 
+<span class="token comment">#CentOS 6 版本之前</span>
+makewhatis</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#whatis cal
+cal (1)              - display a calendar
+cal (1p)             - print a calendar
+[root@centos8 ~]#man -f cal
+cal (1)              - display a calendar
+cal (1p)             - print a calendar</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whatis ls</span>
+ls: nothing appropriate.
+<span class="token comment">#生成man相关数据库</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#mandb</span>
+Processing manual pages under /usr/share/man<span class="token punctuation">..</span>.
+Updating index cache <span class="token keyword">for</span> path `/usr/share/man/mann'. Wait<span class="token punctuation">..</span>.done.
+Checking <span class="token keyword">for</span> stray cats under /usr/share/man<span class="token punctuation">..</span>.
+<span class="token punctuation">..</span>.省略<span class="token punctuation">..</span>.
+<span class="token number">0</span> old database entries were purged.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whatis ls</span>
+<span class="token function">ls</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>               - list directory contents</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>查看命令的帮助</h4>
+<p>内部命令：</p>
+<ul>
+<li>help COMMAND </li>
+<li>man bash</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#type history</span>
+<span class="token function">history</span> is a shell <span class="token builtin class-name">builtin</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#help history</span>
+history: <span class="token function">history</span> <span class="token punctuation">[</span>-c<span class="token punctuation">]</span> <span class="token punctuation">[</span>-d offset<span class="token punctuation">]</span> <span class="token punctuation">[</span>n<span class="token punctuation">]</span> or <span class="token function">history</span> -anrw <span class="token punctuation">[</span>filename<span class="token punctuation">]</span> or <span class="token function">history</span> -ps arg <span class="token punctuation">[</span>arg<span class="token punctuation">..</span>.<span class="token punctuation">]</span>
+    Display or manipulate the <span class="token function">history</span> list.
+
+    Display the <span class="token function">history</span> list with line numbers, prefixing each modified
+    entry with a `*'.  An argument of N lists only the last N entries.
+
+    Options:
+      -c        <span class="token function">clear</span> the <span class="token function">history</span> list by deleting all of the entries
+      -d offset delete the <span class="token function">history</span> entry at position OFFSET.
+
+      -a        append <span class="token function">history</span> lines from this session to the <span class="token function">history</span> <span class="token function">file</span>
+      -n        <span class="token builtin class-name">read</span> all <span class="token function">history</span> lines not already <span class="token builtin class-name">read</span> from the <span class="token function">history</span> <span class="token function">file</span>
+                and append them to the <span class="token function">history</span> list
+      -r        <span class="token builtin class-name">read</span> the <span class="token function">history</span> <span class="token function">file</span> and append the contents to the <span class="token function">history</span>
+                list
+      -w        <span class="token function">write</span> the current <span class="token function">history</span> to the <span class="token function">history</span> <span class="token function">file</span>
+
+      -p        perform <span class="token function">history</span> expansion on each ARG and display the result
+                without storing it <span class="token keyword">in</span> the <span class="token function">history</span> list
+      -s        append the ARGs to the <span class="token function">history</span> list as a single entry
+
+    If FILENAME is given, it is used as the <span class="token function">history</span> file.  Otherwise,
+    <span class="token keyword">if</span> <span class="token environment constant">HISTFILE</span> has a value, that is used, <span class="token keyword">else</span> ~/.bash_history.
+
+    If the HISTTIMEFORMAT variable is <span class="token builtin class-name">set</span> and not null, its value is used
+    as a <span class="token function">format</span> string <span class="token keyword">for</span> strftime<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> to print the <span class="token function">time</span> stamp associated
+    with each displayed <span class="token function">history</span> entry.  No <span class="token function">time</span> stamps are printed otherwise.
+
+    Exit Status:
+    Returns success unless an invalid option is given or an error occurs.</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>外部命令和软件：    </p>
+<ul>
+<li>
+COMMAND –help  或  COMMAND -h
+</li>
+<li>
+使用手册(manual)<p></p>
+<p>&ZeroWidthSpace;  man COMMAND
+</p></li>
+<li>
+信息页<br>
+info COMMAND
+</li>
+<li>
+程序自身的帮助文档<br>
+README<br>
+INSTALL<br>
+ChangeLog
+</li>
+<li>
+程序官方文档<br>
+官方站点：Documentation
+</li>
+<li>
+发行版的官方文档
+</li>
+<li>
+(7) Google
+</li>
+</ul>
+<h4>–help 或 -h 选项</h4>
+<p>显示用法总结和参数列表，大多数命令使用，但并非所有的</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#date --help</span>
+Usage: <span class="token function">date</span> <span class="token punctuation">[</span>OPTION<span class="token punctuation">]</span><span class="token punctuation">..</span>. <span class="token punctuation">[</span>+FORMAT<span class="token punctuation">]</span>
+  or:  <span class="token function">date</span> <span class="token punctuation">[</span>-u<span class="token operator">|</span>--utc<span class="token operator">|</span>--universal<span class="token punctuation">]</span> <span class="token punctuation">[</span>MMDDhhmm<span class="token punctuation">[</span><span class="token punctuation">[</span>CC<span class="token punctuation">]</span>YY<span class="token punctuation">]</span><span class="token punctuation">[</span>.ss<span class="token punctuation">]</span><span class="token punctuation">]</span>
+Display the current <span class="token function">time</span> <span class="token keyword">in</span> the given FORMAT, or <span class="token builtin class-name">set</span> the system date.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cal -h</span>
+Usage:
+ <span class="token function">cal</span> <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">[</span>day<span class="token punctuation">]</span> month<span class="token punctuation">]</span> year<span class="token punctuation">]</span>
+ <span class="token function">cal</span> <span class="token punctuation">[</span>options<span class="token punctuation">]</span> <span class="token operator">&lt;</span>timestamp<span class="token operator">|</span>monthname<span class="token operator">&gt;</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#strace --help</span>
+strace: invalid option -- <span class="token string">'-'</span>
+Try <span class="token string">'strace -h'</span> <span class="token keyword">for</span> <span class="token function">more</span> information.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl --help</span>
+Invalid <span class="token builtin class-name">command</span> <span class="token string">'--help'</span><span class="token punctuation">;</span> <span class="token builtin class-name">type</span> <span class="token string">"help"</span> <span class="token keyword">for</span> a list.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#date -h</span>
+date: invalid option -- <span class="token string">'h'</span>
+Try <span class="token string">'date --help'</span> <span class="token keyword">for</span> <span class="token function">more</span> information.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#shutdown -h</span>
+Shutdown scheduled <span class="token keyword">for</span> Fri <span class="token number">2020</span>-03-20 08:26:27 CST, use <span class="token string">'shutdown -c'</span> to cancel.</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>格式说明：</p>
+<ul>
+<li>[] 表示可选项</li>
+<li>CAPS或  表示变化的数据</li>
+<li>… 表示一个列表</li>
+<li>x |y| z 的意思是“ x 或 y 或 z ”</li>
+<li>-abc的 意思是 -a -b –c</li>
+<li>{ }  表示分组</li>
+</ul>
+<p>范例：<br>
+1、显示当前时间，格式：2016-06-18 10:20:30<br>
+2、显示前天是星期几<br>
+3、设置当前日期为2019-08-07 06:05:10</p>
+<h4>man 命令</h4>
+<p>man 提供命令帮助的文件,手册页存放在/usr/share/man</p>
+<p>几乎每个命令都有man的“页面”</p>
+<p>中文man需安装包</p>
+<ul>
+<li>man-pages</li>
+<li>man-pages-zh-CN</li>
+</ul>
+<p>man 页面分组为不同的“章节”,统称为Linux手册，man 1 man </p>
+<ul>
+<li>1：用户命令</li>
+<li>2：系统调用</li>
+<li>3：C库调用</li>
+<li>4：设备文件及特殊文件</li>
+<li>5：配置文件格式</li>
+<li>6：游戏</li>
+<li>7：杂项</li>
+<li>8：管理类的命令</li>
+<li>9：Linux 内核API </li>
+</ul>
+<p>man命令的配置文件：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#CentOS 6 之前版 man 的配置文件</span>
+/etc/man.config 
+<span class="token comment">#CentOS 7 之后版 man 的配置文件</span>
+/etc/man_db.conf
+<span class="token comment">#ubuntu  man 的配置文件</span>
+/etc/manpath.config</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>格式：</p>
+<pre><code>MANPATH /PATH/TO/SOMEWHERE   #指明man文件搜索位置</code></pre>
+<p>也可以指定位置下搜索COMMAND命令的手册页并显示</p>
+<pre><code>man -M /PATH/TO/SOMEWHERE COMMAND</code></pre>
+<p>查看man手册页</p>
+<pre><code>man  [章节]  keyword</code></pre>
+<p>man 帮助段落说明</p>
+<ul>
+<li>NAME  名称及简要说明</li>
+<li>SYNOPSIS 用法格式说明</li>
+<li>[]    可选内容</li>
+<li>必选内容</li>
+<li>a|b   二选一</li>
+<li>{ }   分组</li>
+<li>…   同一内容可出现多次</li>
+<li>DESCRIPTION 详细说明</li>
+<li>OPTIONS  选项说明</li>
+<li>EXAMPLES 示例</li>
+<li>FILES  相关文件</li>
+<li>AUTHOR 作者</li>
+<li>COPYRIGHT 版本信息</li>
+<li>REPORTING BUGS bug信息</li>
+<li>SEE ALSO 其它帮助参考</li>
+</ul>
+<p>列出所有帮助</p>
+<pre><code>man -a keyword </code></pre>
+<p>搜索man手册</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#列出所有匹配的页面，使用 whatis  数据库</span>
+<span class="token function">man</span> -k keyword </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>相当于 whatis</p>
+<pre><code>man -f keyword </code></pre>
+<p>打印man帮助文件的路径</p>
+<pre><code>man -w  [章节] keyword</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dnf install man-pages</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#man -w 1 passwd</span>
+/usr/share/man/man1/passwd.1.gz
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whatis passwd</span>
+openssl-passwd <span class="token punctuation">(</span>1ssl<span class="token punctuation">)</span> - compute password hashes
+<span class="token function">passwd</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>           - update user's authentication tokens
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#man 1ssl openssl-passwd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#man 7 ascii</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#man 7 utf8</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>man命令的操作方法：使用less命令实现</p>
+<ul>
+<li>space, ^v, ^f, ^F: 向文件尾翻屏</li>
+<li>b, ^b: 向文件首部翻屏</li>
+<li>d, ^d: 向文件尾部翻半屏</li>
+<li>u, ^u: 向文件首部翻半屏</li>
+<li>RETURN, ^N, e, ^E or j or ^J: 向文件尾部翻一行    </li>
+<li>y or ^Y or ^P or k or ^K：向文件首部翻一行</li>
+<li>q: 退出</li>
+<li>#：跳转至第#行</li>
+<li>1G: 回到文件首部</li>
+<li>G：翻至文件尾部</li>
+<li>/KEYWORD<br>
+以KEYWORD指定的字符串为关键字，从当前位置向文件尾部搜索；不区分字符大小写<br>
+n：下一个<br>
+N：上一个</li>
+<li>?KEYWORD<br>
+以KEYWORD指定的字符串为关键字，从当前位置向文件首部搜索；不区分字符大小写<br>
+n：跟搜索命令同方向，下一个<br>
+N：跟搜索命令反方向，上一个</li>
+</ul>
+<p>范例：<br>
+1、在本机字符终端登录时，除显示原有信息外，再显示当前登录终端号，主机名和当前时间<br>
+2、今天18：30自动关机，并提示用户</p>
+<h4>info</h4>
+<p>man常用于命令参考 ，GNU工具 info 适合通用文档参考<br>
+没有参数,列出所有的页面<br>
+info  页面的结构就像一个网站<br>
+每一页分为“节点”<br>
+链接节点之前 *</p>
+<p>info 命令格式</p>
+<pre><code>info [ 命令 ]</code></pre>
+<p>导航info页</p>
+<ul>
+<li>方向键，PgUp，PgDn 导航</li>
+<li>Tab键 移动到下一个链接</li>
+<li>d  显示主题目录</li>
+<li>Home 显示主题首部</li>
+<li>Enter进入 选定链接</li>
+<li>n/p/u/l 进入下/前/上一层/最后一个链接</li>
+<li>s 文字 文本搜索</li>
+<li>q 退出 info</li>
+</ul>
+<h4>Linux 安装提供的本地文档获取帮助</h4>
+<p>Applications -&gt; documentation-&gt;help（centos7）</p>
+<p>System-&gt;help（centos6）</p>
+<h4>命令自身提供的官方使用指南</h4>
+<p>/usr/share/doc 目录</p>
+<p>多数安装了的软件包的子目录,包括了这些软件的相关原理说明<br>
+常见文档：README INSTALL CHANGES<br>
+不适合其它地方的文档的位置<br>
+配置文件范例<br>
+HTML/PDF/PS 格式的文档<br>
+授权书详情</p>
+<h4>系统及第三方应用官方文档</h4>
+<h5>通过在线文档获取帮助</h5>
+<p><a href="http://www.yunweipai.com/go?_=70dbe01f39aHR0cDovL3d3dy5naXRodWIuY29t" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=70dbe01f39aHR0cDovL3d3dy5naXRodWIuY29t" rel="external nofollow" target="_blank">http://www.github.com</a><br>
+<a href="http://www.yunweipai.com/go?_=c080ffa0e4aHR0cHM6Ly93d3cua2VybmVsLm9yZy9kb2MvaHRtbC9sYXRlc3Qv" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=c080ffa0e4aHR0cHM6Ly93d3cua2VybmVsLm9yZy9kb2MvaHRtbC9sYXRlc3Qv" rel="external nofollow" target="_blank">https://www.kernel.org/doc/html/latest/</a><br>
+<a href="http://www.yunweipai.com/go?_=cab6ad063aaHR0cDovL2h0dHBkLmFwYWNoZS5vcmc=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=cab6ad063aaHR0cDovL2h0dHBkLmFwYWNoZS5vcmc=" rel="external nofollow" target="_blank">http://httpd.apache.org</a><br>
+<a href="http://www.yunweipai.com/go?_=3ab5784e97aHR0cDovL3d3dy5uZ2lueC5vcmc=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=3ab5784e97aHR0cDovL3d3dy5uZ2lueC5vcmc=" rel="external nofollow" target="_blank">http://www.nginx.org</a><br>
+<a href="http://www.yunweipai.com/go?_=e38b387ec1aHR0cHM6Ly9tYXJpYWRiLmNvbS9rYi9lbg==" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=e38b387ec1aHR0cHM6Ly9tYXJpYWRiLmNvbS9rYi9lbg==" rel="external nofollow" target="_blank">https://mariadb.com/kb/en</a><br>
+<a href="http://www.yunweipai.com/go?_=9ad11c40e8aHR0cHM6Ly9kZXYubXlzcWwuY29tL2RvYy8=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=9ad11c40e8aHR0cHM6Ly9kZXYubXlzcWwuY29tL2RvYy8=" rel="external nofollow" target="_blank">https://dev.mysql.com/doc/</a><br>
+<a href="http://www.yunweipai.com/go?_=a8128cf58eaHR0cDovL3RvbWNhdC5hcGFjaGUub3Jn" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=a8128cf58eaHR0cDovL3RvbWNhdC5hcGFjaGUub3Jn" rel="external nofollow" target="_blank">http://tomcat.apache.org</a><br>
+<a href="http://www.yunweipai.com/go?_=f94dc40a23aHR0cHM6Ly9qZW5raW5zLmlvL3poL2RvYy8=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=f94dc40a23aHR0cHM6Ly9qZW5raW5zLmlvL3poL2RvYy8=" rel="external nofollow" target="_blank">https://jenkins.io/zh/doc/</a><br>
+<a href="http://www.yunweipai.com/go?_=f7f023ff3caHR0cHM6Ly9rdWJlcm5ldGVzLmlvL2RvY3MvaG9tZS8=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=f7f023ff3caHR0cHM6Ly9rdWJlcm5ldGVzLmlvL2RvY3MvaG9tZS8=" rel="external nofollow" target="_blank">https://kubernetes.io/docs/home/</a><br>
+<a href="http://www.yunweipai.com/go?_=45acc9f10caHR0cHM6Ly9kb2NzLm9wZW5zdGFjay5vcmcvdHJhaW4v" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=45acc9f10caHR0cHM6Ly9kb2NzLm9wZW5zdGFjay5vcmcvdHJhaW4v" rel="external nofollow" target="_blank">https://docs.openstack.org/train/</a><br>
+<a href="http://www.yunweipai.com/go?_=c8c0e16c1daHR0cDovL3d3dy5weXRob24ub3Jn" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=c8c0e16c1daHR0cDovL3d3dy5weXRob24ub3Jn" rel="external nofollow" target="_blank">http://www.python.org</a><br>
+<a href="http://www.yunweipai.com/go?_=62652ceaf0aHR0cDovL3BocC5uZXQ=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=62652ceaf0aHR0cDovL3BocC5uZXQ=" rel="external nofollow" target="_blank">http://php.net</a></p>
+<h5>Linux官方在线文档和知识库</h5>
+<p>通过发行版官方的文档光盘或网站可以获得安装指南、部署指南、虚拟化指南等</p>
+<p>&ZeroWidthSpace;    <a href="http://www.yunweipai.com/go?_=018959730faHR0cDovL2tiYXNlLnJlZGhhdC5jb20=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=018959730faHR0cDovL2tiYXNlLnJlZGhhdC5jb20=" rel="external nofollow" target="_blank">http://kbase.redhat.com</a><br>
+&ZeroWidthSpace;    <a href="http://www.yunweipai.com/go?_=77136027adaHR0cDovL3d3dy5yZWRoYXQuY29tL2RvY3M=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=77136027adaHR0cDovL3d3dy5yZWRoYXQuY29tL2RvY3M=" rel="external nofollow" target="_blank">http://www.redhat.com/docs</a><br>
+&ZeroWidthSpace;    <a href="http://www.yunweipai.com/go?_=026dbb4c23aHR0cDovL2FjY2Vzcy5yZWRoYXQuY29t" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=026dbb4c23aHR0cDovL2FjY2Vzcy5yZWRoYXQuY29t" rel="external nofollow" target="_blank">http://access.redhat.com</a><br>
+&ZeroWidthSpace;    <a href="http://www.yunweipai.com/go?_=997b8c7233aHR0cHM6Ly9oZWxwLnVidW50dS5jb20vbHRzL3NlcnZlcmd1aWRlL2luZGV4Lmh0bWw=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=997b8c7233aHR0cHM6Ly9oZWxwLnVidW50dS5jb20vbHRzL3NlcnZlcmd1aWRlL2luZGV4Lmh0bWw=" rel="external nofollow" target="_blank">https://help.ubuntu.com/lts/serverguide/index.html</a><br>
+&ZeroWidthSpace;    <a href="http://www.yunweipai.com/go?_=796e797f54aHR0cDovL3RsZHAub3Jn" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=796e797f54aHR0cDovL3RsZHAub3Jn" rel="external nofollow" target="_blank">http://tldp.org</a></p>
+<h5>红帽全球技术支持服务</h5>
+<p>rhn.redhat.com或者本地卫星服务器/代理服务器<br>
+RHN账户为及其注册和基于网络管理的RHN用户<br>
+sosreport  收集所有系统上的日志信息的工具，并自动打成压缩包，方便技术支持人员和红帽全球支持提供分析问题依据       </p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dnf -y install sos </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment"># sosreport</span>
+sosreport <span class="token punctuation">(</span>version <span class="token number">3.6</span><span class="token punctuation">)</span>
+This <span class="token builtin class-name">command</span> will collect diagnostic and configuration information from
+this CentOS Linux system and installed applications.
+
+An archive containing the collected information will be generated <span class="token keyword">in</span>
+/var/tmp/sos.8fs1kg3w and may be provided to a CentOS support
+representative.
+
+Any information provided to CentOS will be treated <span class="token keyword">in</span> accordance with
+the published support policies at:
+
+  https://wiki.centos.org/
+
+The generated archive may contain data considered sensitive and its
+content should be reviewed by the originating organization before being
+passed to any third party.
+
+No changes will be made to system configuration.
+
+Press ENTER to continue, or CTRL-C to quit.
+
+Please enter the <span class="token keyword">case</span> <span class="token function">id</span> that you are generating this report <span class="token keyword">for</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>: <span class="token number">2</span>
+
+ Setting up archive <span class="token punctuation">..</span>.
+ Setting up plugins <span class="token punctuation">..</span>.
+ Running plugins. Please <span class="token function">wait</span> <span class="token punctuation">..</span>.
+
+  Finishing plugins              <span class="token punctuation">[</span>Running: processor<span class="token punctuation">]</span>
+  Finished running plugins
+Creating compressed archive<span class="token punctuation">..</span>.
+
+Your sosreport has been generated and saved in:
+  /var/tmp/sosreport-centos8-2-2020-03-20-xllummc.tar.xz
+
+The checksum is: ffbbe6fa9f009f4024e272fbce500bff
+
+Please send this <span class="token function">file</span> to your support representative.
+
+<span class="token punctuation">[</span>root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#ll /var/tmp/sosreport-centos8-2-2020-03-20-xllummc.tar.xz</span>
+-rw------- <span class="token number">1</span> root root <span class="token number">4409596</span> Mar <span class="token number">20</span> <span class="token number">18</span>:57 /var/tmp/sosreport-centos8-2-2020-03-20-xllummc.tar.xz
+<span class="token punctuation">[</span>root@centos8 sysconfig<span class="token punctuation">]</span><span class="token comment">#cd</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /var/tmp/sosreport-centos8-2-2020-03-20-xllummc.tar.xz</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>网站和搜索</h4>
+<p><a href="http://www.yunweipai.com/go?_=306d5c92d2aHR0cDovL3d3dy5nb29nbGUuY29t" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=306d5c92d2aHR0cDovL3d3dy5nb29nbGUuY29t" rel="external nofollow" target="_blank">http://www.google.com</a></p>
+<pre><code>Openstack filetype:pdf
+rhca site:redhat.com/docs</code></pre>
+<p><a href="http://www.yunweipai.com/go?_=98fa35f000aHR0cDovL3d3dy5zbGlkZXNoYXJlLm5ldA==" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=98fa35f000aHR0cDovL3d3dy5zbGlkZXNoYXJlLm5ldA==" rel="external nofollow" target="_blank">http://www.slideshare.net</a></p>
+
+				
+			</div>
+
+			<div class="clear"></div>		
+
+		</div>
+	
+		</div>
+
+	</div>
+
+</div>	
+
+	
+</body></html>

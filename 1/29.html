@@ -1,0 +1,692 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux安全配置 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,OpenSSL">
+<meta name="description" content="OpenSSL 介绍 OpenSSL是一个开放源代码的软件库包，应用程序可以使用这个包来进行安全通信，避免窃听，同时确认另一端连线者的身份。这个包广泛被应用在互联网的网页服务器上 其主要库是以C语言所写成，实现了基本的加密功能，实现了SSL…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33969"><link rel="prev" title="linux加密管理" href="http://www.yunweipai.com/33949.html">
+<link rel="next" title="Nginx使用Logrotate工具实现日志切割" href="http://www.yunweipai.com/33976.html">
+<link rel="canonical" href="http://www.yunweipai.com/33969.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33969.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33969.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, OpenSSL, Linux教程">
+<meta name="description" content="OpenSSL 介绍 OpenSSL是一个开放源代码的软件库包，应用程序可以使用这个包来进行安全通信，避免窃听，同时确认另一端连线者的身份。这个包广泛被应用在互联网的网页服务器上 其主要库是以C语言所写成，实现了基本的加密功能，实现了SSL与TLS协议。OpenSSL可以运行在OpenVMS、 Microsoft Windows以及绝大多数类Unix操作系统上（包括Solaris，Linux，Mac OS X与各种版本的开放源代码BSD">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post current"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33969" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h4>OpenSSL 介绍</h4>
+<p>OpenSSL是一个开放源代码的软件库包，应用程序可以使用这个包来进行安全通信，避免窃听，同时确认另一端连线者的身份。这个包广泛被应用在互联网的网页服务器上</p>
+<p>其主要库是以C语言所写成，实现了基本的加密功能，实现了SSL与TLS协议。OpenSSL可以运行在OpenVMS、 Microsoft Windows以及绝大多数类Unix操作系统上（包括Solaris，Linux，Mac OS X与各种版本的开放源代码BSD操作系统）</p>
+<p>OpenSSL计划在1998年开始，其目标是发明一套自由的加密工具，在互联网上使用。OpenSSL以Eric Young以及Tim Hudson两人开发的SSLeay为基础，随着两人前往RSA公司任职，SSLeay在1998年12月停止开发。因此在1998年12月，社群另外分支出OpenSSL，继续开发下去</p>
+<p>OpenSSL管理委员会当前由7人组成有13个开发人员[3]具有提交权限（其中许多人也是OpenSSL管理委员会的一部分）。只有两名全职员工（研究员），其余的是志愿者</p>
+<p>该项目每年的预算不到100万美元，主要依靠捐款。 TLS 1.3的开发由Akamai赞助</p>
+<p>心脏出血漏洞：OpenSSL 1.0.1版本（不含1.0.1g）含有一个严重漏洞，可允许攻击者读取服务器的内存信息。该漏洞于2014年4月被公诸于世，影响三分之二的活跃网站</p>
+<p>包括三个组件：</p>
+<ul>
+<li>libcrypto：用于实现加密和解密的库 </li>
+<li>libssl：用于实现ssl通信协议的安全库 </li>
+<li>openssl：多用途命令行工具 </li>
+</ul>
+<h4>2.2 Base64 编码</h4>
+<p>Base64是网络上最常见的用于传输 8Bit 字节码的编码方式之一，Base64就是一种基于64个可打印字符来表示二进制数据的方法</p>
+<p><img title="linux安全配置插图" alt="linux安全配置插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111193854662-480x288.png"></p>
+<p><strong>base64的编码过程如下：</strong></p>
+<p>将每3个字节放入一个24位的缓冲区中，最后不足3个字节的，缓冲区的剩余部分用0来填补。然后每次取出6位（2的6次方为64，使用64个字符即可表示所有），将高2位用0来填充，组成一个新的字节，计算出这个新字节的十进制值，对应上面的编码表，输出相应的字符。这样不断地进行下去，就可完成对所有数据的编码工作。</p>
+<p>按照以上规则对文本Man编码如下：</p>
+<p><img title="linux安全配置插图(1)" alt="linux安全配置插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111195339505-480x100.png"></p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo  -n Man | base64</span>
+TWFu
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo TWFu | base64 -d</span>
+Man<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo  -n ab | base64</span>
+<span class="token assign-left variable">YWI</span><span class="token operator">=</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo  -n ab | base64 | base64 -d</span>
+ab<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>openssl命令</h4>
+<p>两种运行模式：</p>
+<ul>
+<li>交互模式</li>
+<li>批处理模式</li>
+</ul>
+<p>三种子命令：</p>
+<ul>
+<li>标准命令</li>
+<li>消息摘要命令</li>
+<li>加密命令</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl version</span>
+OpenSSL <span class="token number">1.1</span>.1 FIPS  <span class="token number">11</span> Sep <span class="token number">2018</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl  help</span>
+Standard commands
+asn1parse         ca                ciphers           cms               
+crl               crl2pkcs7         dgst              dhparam           
+dsa               dsaparam          ec                ecparam           
+enc               engine            errstr            gendsa            
+genpkey           genrsa            <span class="token builtin class-name">help</span>              list              
+nseq              ocsp              <span class="token function">passwd</span>            pkcs12            
+pkcs7             pkcs8             pkey              pkeyparam 
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl</span>
+OpenSSL<span class="token operator">&gt;</span> <span class="token builtin class-name">help</span>
+Standard commands
+asn1parse         ca                ciphers           cms               
+crl               crl2pkcs7         dgst              dhparam           
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>       
+OpenSSL<span class="token operator">&gt;</span> ca --help
+Usage: ca <span class="token punctuation">[</span>options<span class="token punctuation">]</span>
+Valid options are:
+ -help                   Display this summary
+ -verbose                Verbose output during processing
+ -config val             A config <span class="token function">file</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>
+OpenSSL<span class="token operator">&gt;</span>q
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>2.3.1 openssl命令对称加密</h5>
+<p>工具：openssl enc, gpg<br>
+算法：3des, aes, blowfish, twofish</p>
+<p>enc命令：帮助：man enc</p>
+<p>加密：</p>
+<pre><code>openssl enc -e -des3 -a -salt -in testfile -out testfile.cipher</code></pre>
+<p>解密：</p>
+<pre><code>openssl enc -d -des3 -a -salt –in testfile.cipher -out testfile</code></pre>
+<h5>openssl命令单向加密</h5>
+<p>工具：openssl dgst</p>
+<p>算法：md5sum, sha1sum, sha224sum,sha256sum…</p>
+<p>dgst命令：帮助：man dgst</p>
+<pre><code>openssl dgst -md5 [-hex默认] /PATH/SOMEFILE
+openssl dgst -md5 testfile
+md5sum /PATH/TO/SOMEFILE</code></pre>
+<p>补充知识：</p>
+<p>MAC: Message Authentication Code，单向加密的一种延伸应用，用于实现网络通信中保证所传输数据的完整性机制<br>
+HMAC：hash-based MAC，使用md5或sha1算法</p>
+<h5>2.3.3 openssl命令生成用户密码</h5>
+<p>passwd命令:帮助：man sslpasswd</p>
+<pre><code>openssl passwd -1 -salt SALT(最多8位)
+openssl passwd -1 –salt  centos</code></pre>
+<h5>2.3.4 openssl命令生成随机数</h5>
+<p>随机数生成器：伪随机数字，利用键盘和鼠标，块设备中断生成随机数<br>
+/dev/random：仅从熵池返回随机数；随机数用尽，阻塞<br>
+/dev/urandom：从熵池返回随机数；随机数用尽，会利用软件生成伪随机数,非阻塞</p>
+<p>帮助：man sslrand</p>
+<pre><code>openssl rand -base64|-hex NUM
+
+NUM: 表示字节数，使用-hex，每个字符为十六进制，相当于4位二进制，出现的字符数为NUM*2</code></pre>
+<p>范例：生成随机10位长度密码</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl rand -base64 9 |head -c10</span>
+ip97t6qQes<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#tr -dc '[:alnum:]' &lt; /dev/urandom  |head -c10</span>
+DO2mDp3eZu<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>openssl命令实现PKI</h5>
+<p>公钥加密：<br>
+算法：RSA, ELGamal<br>
+工具：gpg, openssl rsautl（man rsautl）<br>
+数字签名：<br>
+算法：RSA, DSA, ELGamal<br>
+密钥交换：<br>
+算法：dh<br>
+DSA：Digital Signature Algorithm<br>
+DSS：Digital Signature Standard<br>
+RSA：</p>
+<p>openssl命令生成密钥对儿：man genrsa<br>
+<strong>生成私钥</strong></p>
+<pre><code>openssl genrsa -out /PATH/TO/PRIVATEKEY.FILE NUM_BITS</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#生成对称秘钥加密的私钥</span>
+<span class="token punctuation">(</span>umask 077<span class="token punctuation">;</span> openssl genrsa –out test.key –des <span class="token number">2048</span><span class="token punctuation">)</span>
+
+<span class="token comment">#将加密对称秘钥key解密</span>
+openssl rsa -in test.key –out test2.key </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>从私钥中提取出公钥</p>
+<pre><code>openssl rsa -in PRIVATEKEYFILE –pubout –out PUBLICKEYFILE</code></pre>
+<p>范例：</p>
+<pre><code>openssl rsa –in test.key –pubout –out test.key.pub</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#(umask 066;openssl genrsa -out /data/app.key)</span>
+Generating RSA private key, <span class="token number">2048</span> bit long modulus
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>+++
+.+++
+e is <span class="token number">65537</span> <span class="token punctuation">(</span>0x10001<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#ls -l /data/</span>
+total <span class="token number">4</span>
+-rw------- <span class="token number">1</span> root root <span class="token number">1679</span> Feb  <span class="token number">3</span> <span class="token number">15</span>:26 app.key
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl genrsa -out  /data/app.key 1024</span>
+Generating RSA private key, <span class="token number">1024</span> bit long modulus <span class="token punctuation">(</span><span class="token number">2</span> primes<span class="token punctuation">)</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>.+++++
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>+++++
+e is <span class="token number">65537</span> <span class="token punctuation">(</span>0x010001<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /data/app.key</span>
+-rw------- <span class="token number">1</span> root root <span class="token number">891</span> Feb  <span class="token number">3</span> <span class="token number">14</span>:52 /data/app.key</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl rsa -in /data/app.key -pubout -out /data/app.key.pub</span>
+writing RSA key
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ls -l /data/</span>
+total <span class="token number">8</span>
+-rw------- <span class="token number">1</span> root root <span class="token number">887</span> Feb  <span class="token number">3</span> <span class="token number">15</span>:28 app.key
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">272</span> Feb  <span class="token number">3</span> <span class="token number">15</span>:32 app.key.pub
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat /data/app.key.pub </span>
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCvkS+Z4NWAMoXEwNUyn58J0oI+
+ZjXotZUJLfbVHvGd3Ug6Rk52imHp1J629edUn0Cw7KoPfQLegmWsldG4v931HCdl
+ELT2vj+QE7KJhc1tGFomzCnX8Q41tRrVVbHPxQYvNmMRXRqIdqXGxFpR758EngxF
+zAGcnLTrDz/I2GocrQIDAQAB
+-----END PUBLIC KEY-----</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：生成加密的私钥，并解密</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl genrsa -out /data/app.key -des3 1024 </span>
+Generating RSA private key, <span class="token number">1024</span> bit long modulus <span class="token punctuation">(</span><span class="token number">2</span> primes<span class="token punctuation">)</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>+++++
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>.+++++
+e is <span class="token number">65537</span> <span class="token punctuation">(</span>0x010001<span class="token punctuation">)</span>
+Enter pass phrase <span class="token keyword">for</span> /data/app.key:
+Verifying - Enter pass phrase <span class="token keyword">for</span> /data/app.key:
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ls -l /data</span>
+total <span class="token number">4</span>
+-rw------- <span class="token number">1</span> root root <span class="token number">963</span> Feb  <span class="token number">3</span> <span class="token number">15</span>:27 app.key
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat /data/app.key </span>
+-----BEGIN RSA PRIVATE KEY-----
+Proc-Type: <span class="token number">4</span>,ENCRYPTED
+DEK-Info: DES-EDE3-CBC,577C3B861BAD86B6
+
+VM8P7vx1UUcSJyXCB0pDO9xgmdNgsMOcl6NitdUvBA9Jx2oLyxsT6TYbbvZvlF55
+aQB0bq43atECDBz2+v1ghacPp78S2wuGuTR1hdWwfFKJNr6d/5yXO4y1ZOt3RLvR
+E4K6TCeSwZTIUNeQyuh+vstarQmaLQmdObb3lsMG+WipQj3hb0oGdZcWjuQ0gi1B
+RKN1duhsWFQbdXZamBqWQqCbvigmqRwjk7S6GE3YwVhys1T4N0BFX/edNCMnzb79
+<span class="token number">6</span>/mR+LJ2Wz/ecJXB5250rVby3h88ZNsgARg7jUM9zI6jf7G4t1etRlCJ8A9TvDe8
+J/5lkDUSWEh1dnB+xw5uamDY7f3GanuKTEe54DxuBwmbBpphV1QTTefSJ01Q6l9K
+wS0zV6WE+vCt99dE9J8+GXGD77twRcbmjDWfaoibvwMu00crB9K5dbxdSX50jlD9
+Mj+bVr9tcwQW/WzA+V05Ndb74e8OE97pEFjTX8DeIxcZomDUcpNGpQ0eWvyE+A2x
+Srux9nN8z9dUF963V4NjQGUg1owQPAlfO6zBGObXnynOqKDmBj+8FfWrnHnZUVt5
+3HTV+uSkLuA+8lGoNoxH4/6ZLfvY0Y5+WSg3st2EvwGT74SNNrsNYD0qGt1LujQx
+IiwfCI0uv8rqgtLtsYmJmYI0t7hWUVmb6QgX1Qh0Kvzc0A34IMDjY6dhXTKnxeF3
+LGkrFAgl3+6tKXxMuQDLB6Jy9m3SOwW/JoXMVVcYHrSPzTgAl2sgAkgEq8nf4yfm
+ZP9WHrDe10yXY+5K2h8UiFhvrnQ+YnH4BcTrKuEa9T7pxToo0cTdqg<span class="token operator">==</span>
+-----END RSA PRIVATE KEY-----
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl rsa -in /data/app.key  -out /data/app.key</span>
+Enter pass phrase <span class="token keyword">for</span> /data/app.key:
+writing RSA key
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ls -l /data</span>
+total <span class="token number">4</span>
+-rw------- <span class="token number">1</span> root root <span class="token number">887</span> Feb  <span class="token number">3</span> <span class="token number">15</span>:28 app.key
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat /data/app.key </span>
+-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQCvkS+Z4NWAMoXEwNUyn58J0oI+ZjXotZUJLfbVHvGd3Ug6Rk52
+imHp1J629edUn0Cw7KoPfQLegmWsldG4v931HCdlELT2vj+QE7KJhc1tGFomzCnX
+8Q41tRrVVbHPxQYvNmMRXRqIdqXGxFpR758EngxFzAGcnLTrDz/I2GocrQIDAQAB
+AoGAQ/uDJCGkanSlya8lnumiKqqB1mm7nDWb1ScgOhw2UPubeT06Krqg+WtkXdJQ
+VjsoUJoDq+WrU7/IYRDOWayp5Be3EXCdyldSrWu1+wqJ1Vnpk2oUAEyr+lzcHhW1
+FNQ/5rb8kIUjR7DZpwnsYJxDygnaKaNKiUiF2FsMX8JcS8ECQQDoZt3zSsXYeR4t
+Y9kPPA19npQXx9K4Wv2wsCR904pznzoaJ9Kj+6E/3AdxtXcTD0GiZe8vW+H6WCmW
+gB1NpGiRAkEAwWTwO9ZncQnA+X2PYTkizBp/JdEdRjcL/D2g+g3rpL2nLChI56C5
+zA4NsJFmblE2uY1OLIJBGExiZP/XS74gXQJBAISTOgYyH48P+OEX1plUPrXsorq2
+KUU10wbaVNbauF6g9Lo7AXS+dQxC7pQ1Wsoqp9yGnd28Yrs3U/Ig/5ZtNaECQG+/
+kKUy3bDOjwhbCjeGmVnQ0bmbXMwO0MkfH15+HrShtfBpEr9s+w8y66wkSEjkere7
+M/m6Bj0xHgX4Y4JryS0CQQChBua8JXCCUGLle7+IEEcgQZSF4PdLrmnhrRG7Qrrg
+yd6pPuvd2jAGv5fMhjROmf9MWc4DFiRK0B6dz7OyF9j/
+-----END RSA PRIVATE KEY-----</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>建立私有CA实现证书申请颁发</h4>
+<p>建立私有CA：</p>
+<ul>
+<li>OpenCA：OpenCA开源组织使用Perl对OpenSSL进行二次开发而成的一套完善的PKI免费软件</li>
+<li>openssl</li>
+</ul>
+<p>证书申请及签署步骤：<br>
+1、生成申请请求<br>
+2、RA核验<br>
+3、CA签署<br>
+4、获取证书</p>
+<p>openssl的配置文件：</p>
+<pre><code>/etc/pki/tls/openssl.cnf</code></pre>
+<p>三种策略：match匹配、optional可选、supplied提供<br>
+match：要求申请填写的信息跟CA设置信息必须一致<br>
+optional：可有可无，跟CA设置信息可不一致<br>
+supplied：必须填写这项申请信息</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat /etc/pki/tls/openssl.cnf </span>
+<span class="token comment">#</span>
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>
+<span class="token comment">####################################################################</span>
+<span class="token punctuation">[</span> ca <span class="token punctuation">]</span>
+default_ca  <span class="token operator">=</span> CA_default        <span class="token comment"># The default ca section</span>
+
+<span class="token comment">####################################################################</span>
+<span class="token punctuation">[</span> CA_default <span class="token punctuation">]</span>
+
+<span class="token function">dir</span>     <span class="token operator">=</span> /etc/pki/CA       <span class="token comment"># Where everything is kept</span>
+certs       <span class="token operator">=</span> dir/certs        <span class="token comment"># Where the issued certs are kept</span>
+crl_dir     <span class="token operator">=</span>dir/crl      <span class="token comment"># Where the issued crl are kept</span>
+database    <span class="token operator">=</span> dir/index.txt    <span class="token comment"># database index file.</span>
+<span class="token comment">#unique_subject = no            # Set to 'no' to allow creation of</span>
+                    <span class="token comment"># several certs with same subject.</span>
+new_certs_dir   <span class="token operator">=</span>dir/newcerts     <span class="token comment"># default place for new certs.</span>
+
+certificate <span class="token operator">=</span> dir/cacert.pem   <span class="token comment"># The CA certificate</span>
+serial      <span class="token operator">=</span>dir/serial       <span class="token comment"># The current serial number</span>
+crlnumber   <span class="token operator">=</span> dir/crlnumber    <span class="token comment"># the current crl number</span>
+                    <span class="token comment"># must be commented out to leave a V1 CRL</span>
+crl     <span class="token operator">=</span>dir/crl.pem      <span class="token comment"># The current CRL</span>
+private_key <span class="token operator">=</span> dir/private/cakey.pem<span class="token comment"># The private key</span>
+RANDFILE    <span class="token operator">=</span>dir/private/.rand    <span class="token comment"># private random number file</span>
+
+x509_extensions <span class="token operator">=</span> usr_cert      <span class="token comment"># The extensions to add to the cert</span>
+
+<span class="token comment"># Comment out the following two lines for the "traditional"</span>
+<span class="token comment"># (and highly broken) format.</span>
+name_opt    <span class="token operator">=</span> ca_default        <span class="token comment"># Subject Name options</span>
+cert_opt    <span class="token operator">=</span> ca_default        <span class="token comment"># Certificate field options</span>
+
+default_days    <span class="token operator">=</span> <span class="token number">365</span>           <span class="token comment"># how long to certify for</span>
+<span class="token assign-left variable">default_crl_days</span><span class="token operator">=</span> <span class="token number">30</span>            <span class="token comment"># how long before next CRL</span>
+default_md  <span class="token operator">=</span> sha256        <span class="token comment"># use SHA-256 by default</span>
+preserve    <span class="token operator">=</span> no            <span class="token comment"># keep passed DN ordering</span>
+
+policy      <span class="token operator">=</span> policy_match
+
+<span class="token comment"># For the CA policy</span>
+<span class="token punctuation">[</span> policy_match <span class="token punctuation">]</span>
+countryName     <span class="token operator">=</span> match
+stateOrProvinceName <span class="token operator">=</span> match
+organizationName    <span class="token operator">=</span> match
+organizationalUnitName  <span class="token operator">=</span> optional
+commonName      <span class="token operator">=</span> supplied
+emailAddress        <span class="token operator">=</span> optional
+
+<span class="token comment"># For the 'anything' policy</span>
+<span class="token comment"># At this point in time, you must list all acceptable 'object'</span>
+<span class="token comment"># types.</span>
+<span class="token punctuation">[</span> policy_anything <span class="token punctuation">]</span>
+countryName     <span class="token operator">=</span> optional
+stateOrProvinceName <span class="token operator">=</span> optional
+localityName        <span class="token operator">=</span> optional
+organizationName    <span class="token operator">=</span> optional
+organizationalUnitName  <span class="token operator">=</span> optional
+commonName      <span class="token operator">=</span> supplied
+emailAddress        <span class="token operator">=</span> optional
+
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>创建私有CA</h5>
+<p>1、创建CA所需要的文件</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#生成证书索引数据库文件</span>
+<span class="token function">touch</span> /etc/pki/CA/index.txt 
+
+<span class="token comment">#指定第一个颁发证书的序列号</span>
+<span class="token builtin class-name">echo</span> 01 <span class="token operator">&gt;</span> /etc/pki/CA/serial </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>2、 生成CA私钥   </p>
+<pre><code>cd /etc/pki/CA/
+(umask 066; openssl genrsa -out  private/cakey.pem 2048)</code></pre>
+<p>3、生成CA自签名证书</p>
+<pre><code>openssl req -new -x509 -key /etc/pki/CA/private/cakey.pem -days 3650 -out     /etc/pki/CA/cacert.pem</code></pre>
+<p>选项说明：</p>
+<pre><code>-new：生成新证书签署请求
+-x509：专用于CA生成自签证书
+-key：生成请求时用到的私钥文件
+-days n：证书的有效期限
+-out /PATH/TO/SOMECERTFILE: 证书的保存路径</code></pre>
+<p>国家代码：<a href="http://www.yunweipai.com/go?_=bea987521eaHR0cHM6Ly9jb3VudHJ5LWNvZGUuY2wv" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=bea987521eaHR0cHM6Ly9jb3VudHJ5LWNvZGUuY2wv" rel="external nofollow" target="_blank">https://country-code.cl/</a></p>
+<p>范例：生成自签名证书</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl req -utf8 -newkey rsa:1024 -subj "/CN=www.magedu.org" -keyout app.key -nodes -x509 -out app.crt</span>
+Generating a RSA private key
+<span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span><span class="token punctuation">..</span>.+++++
+<span class="token punctuation">..</span>.+++++
+writing new private key to <span class="token string">'app.key'</span>
+-----
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#openssl x509 -in app.crt -noout -text</span>
+Certificate:
+    Data:
+        Version: <span class="token number">3</span> <span class="token punctuation">(</span>0x2<span class="token punctuation">)</span>
+        Serial Number:
+            <span class="token number">39</span>:9e:7c:e3:9a:0f:e3:d3:62:ea:8f:02:c9:cd:1e:f3:4a:77:cb:ff
+        Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN <span class="token operator">=</span> www.magedu.org
+        Validity
+            Not Before: Feb  <span class="token number">4</span> <span class="token number">15</span>:51:39 <span class="token number">2020</span> GMT
+            Not After <span class="token builtin class-name">:</span> Mar  <span class="token number">5</span> <span class="token number">15</span>:51:39 <span class="token number">2020</span> GMT
+        Subject: CN <span class="token operator">=</span> www.magedu.org
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                RSA Public-Key: <span class="token punctuation">(</span><span class="token number">1024</span> bit<span class="token punctuation">)</span>
+                Modulus:
+                    00:e1:7e:41:d5:50:03:07:73:13:b2:62:a6:cf:c0:
+                    <span class="token number">61</span>:b1:25:1c:54:56:3e:8f:b3:aa:0e:97:49:50:de:
+                    de:ed:7f:2f:0f:fd:17:22:72:f5:36:19:29:65:ff:
+                    ad:ce:81:10:f3:23:8c:fb:af:32:7b:da:bc:3a:a5:
+                    <span class="token number">62</span>:1c:8d:e3:f8:1b:a8:1d:82:86:e0:bc:d6:e1:28:
+                    e0:37:33:16:6c:55:89:76:13:0e:50:37:65:39:da:
+                    <span class="token number">90</span>:99:a0:d3:6f:af:4e:8d:34:6c:21:e1:ba:10:86:
+                    8e:fd:fb:e2:83:fe:e7:8c:18:14:dc:f2:7d:6c:37:
+                    fe:4e:e0:8d:99:65:d4:f6:9f
+                Exponent: <span class="token number">65537</span> <span class="token punctuation">(</span>0x10001<span class="token punctuation">)</span>
+        X509v3 extensions:
+            X509v3 Subject Key Identifier: 
+                1F:67:31:48:D6:DA:6E:36:C9:6B:EC:3C:61:85:6A:52:C2:B2:06:17
+            X509v3 Authority Key Identifier: 
+                keyid:1F:67:31:48:D6:DA:6E:36:C9:6B:EC:3C:61:85:6A:52:C2:B2:06:17
+
+            X509v3 Basic Constraints: critical
+                CA:TRUE
+    Signature Algorithm: sha256WithRSAEncryption
+         4f:75:d5:f8:99:ea:dc:4f:fd:57:05:ba:1e:ad:72:23:ae:b8:
+         ea:93:1d:43:21:f8:66:cb:85:49:6c:b8:8f:1e:f4:a0:e5:ac:
+         e5:2e:45:03:33:2f:6a:4a:28:97:30:f0:18:dd:c1:f7:46:0b:
+         3c:b0:b6:d6:bf:23:7d:3b:74:52:75:61:96:f9:b0:04:99:6c:
+         <span class="token number">52</span>:f4:5d:1c:76:33:52:48:4f:d4:1f:4e:5e:00:0c:18:75:c3:
+         ef:75:bc:c7:ea:37:6e:34:36:b2:a0:f6:6f:06:69:0a:c6:74:
+         d8:67:4c:16:81:2a:0b:ea:1c:16:ea:8e:48:dd:ba:0b:67:69:
+         <span class="token number">19</span>:1e
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>申请证书并颁发证书</h5>
+<p>1、为需要使用证书的主机生成生成私钥</p>
+<pre><code>(umask 066; openssl genrsa –out   /data/test.key 2048)</code></pre>
+<p>2、为需要使用证书的主机生成证书申请文件</p>
+<pre><code>openssl req -new -key /data/test.key    -out /data/test.csr</code></pre>
+<p>3、在CA签署证书并将证书颁发给请求者</p>
+<pre><code>openssl ca -in /tmp/test.csr –out   /etc/pki/CA/certs/test.crt -days 100</code></pre>
+<p>注意：默认要求 国家，省，公司名称三项必须和CA一致</p>
+<p>4、查看证书中的信息：</p>
+<pre><code>openssl x509 -in /PATH/FROM/CERT_FILE -noout   -text|issuer|subject|serial|dates
+
+#查看指定编号的证书状态
+openssl  ca -status SERIAL  </code></pre>
+<h5>吊销证书</h5>
+<p>在客户端获取要吊销的证书的serial</p>
+<pre><code>openssl x509 -in /PATH/FROM/CERT_FILE   -noout   -serial  -subject</code></pre>
+<p>在CA上，根据客户提交的serial与subject信息，对比检验是否与index.txt文件中的信息一致，吊销证书：</p>
+<pre><code>openssl ca -revoke /etc/pki/CA/newcerts/SERIAL.pem</code></pre>
+<p>指定第一个吊销证书的编号,注意：第一次更新证书吊销列表前，才需要执行</p>
+<pre><code>echo 01 &gt; /etc/pki/CA/crlnumber</code></pre>
+<p>更新证书吊销列表</p>
+<pre><code>openssl ca -gencrl -out /etc/pki/CA/crl.pem</code></pre>
+<p>查看crl文件：</p>
+<pre><code>openssl crl -in /etc/pki/CA/crl.pem -noout -text</code></pre>
+<h5>CentOS 7 创建自签名证书</h5>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#cd /etc/pki/tls/certs</span>
+<span class="token punctuation">[</span>root@centos7 certs<span class="token punctuation">]</span><span class="token comment">#make</span>
+This makefile allows you to create:
+  o public/private key pairs
+  o SSL certificate signing requests <span class="token punctuation">(</span>CSRs<span class="token punctuation">)</span>
+  o self-signed SSL <span class="token builtin class-name">test</span> certificates
+
+To create a key pair, run <span class="token string">"make SOMETHING.key"</span><span class="token builtin class-name">.</span>
+To create a CSR, run <span class="token string">"make SOMETHING.csr"</span><span class="token builtin class-name">.</span>
+To create a <span class="token builtin class-name">test</span> certificate, run <span class="token string">"make SOMETHING.crt"</span><span class="token builtin class-name">.</span>
+To create a key and a <span class="token builtin class-name">test</span> certificate <span class="token keyword">in</span> one file, run <span class="token string">"make SOMETHING.pem"</span><span class="token builtin class-name">.</span>
+
+To create a key <span class="token keyword">for</span> use with Apache, run <span class="token string">"make genkey"</span><span class="token builtin class-name">.</span>
+To create a CSR <span class="token keyword">for</span> use with Apache, run <span class="token string">"make certreq"</span><span class="token builtin class-name">.</span>
+To create a <span class="token builtin class-name">test</span> certificate <span class="token keyword">for</span> use with Apache, run <span class="token string">"make testcert"</span><span class="token builtin class-name">.</span>
+
+To create a <span class="token builtin class-name">test</span> certificate with serial number other than random, <span class="token function">add</span> <span class="token assign-left variable">SERIAL</span><span class="token operator">=</span>num
+You can also specify key length with <span class="token assign-left variable">KEYLEN</span><span class="token operator">=</span>n and expiration <span class="token keyword">in</span> days with <span class="token assign-left variable">DAYS</span><span class="token operator">=</span>n
+Any additional options can be passed to openssl req via EXTRA_FLAGS
+
+Examples:
+  <span class="token function">make</span> server.key
+  <span class="token function">make</span> server.csr
+  <span class="token function">make</span> server.crt
+  <span class="token function">make</span> stunnel.pem
+  <span class="token function">make</span> genkey
+  <span class="token function">make</span> certreq
+  <span class="token function">make</span> testcert
+  <span class="token function">make</span> server.crt <span class="token assign-left variable">SERIAL</span><span class="token operator">=</span><span class="token number">1</span>
+  <span class="token function">make</span> stunnel.pem <span class="token assign-left variable">EXTRA_FLAGS</span><span class="token operator">=</span>-sha384
+  <span class="token function">make</span> testcert <span class="token assign-left variable">DAYS</span><span class="token operator">=</span><span class="token number">600</span>
+<span class="token punctuation">[</span>root@centos7 certs<span class="token punctuation">]</span><span class="token comment">#ls</span>
+ca-bundle.crt  ca-bundle.trust.crt  make-dummy-cert  Makefile  renew-dummy-cert
+<span class="token punctuation">[</span>root@centos7 certs<span class="token punctuation">]</span><span class="token comment">#cat Makefile </span>
+UTF8 :<span class="token operator">=</span> <span class="token punctuation">(</span>shell locale -c LC_CTYPE -k <span class="token operator">|</span> <span class="token function">grep</span> -q charmap.*UTF-8 <span class="token operator">&amp;&amp;</span> <span class="token builtin class-name">echo</span> -utf8<span class="token punctuation">)</span>
+<span class="token assign-left variable">DAYS</span><span class="token operator">=</span><span class="token number">365</span>
+<span class="token assign-left variable">KEYLEN</span><span class="token operator">=</span><span class="token number">2048</span>
+<span class="token assign-left variable">TYPE</span><span class="token operator">=</span>rsa:<span class="token punctuation">(</span>KEYLEN<span class="token punctuation">)</span>
+<span class="token assign-left variable">EXTRA_FLAGS</span><span class="token operator">=</span>
+ifdef SERIAL
+    <span class="token assign-left variable">EXTRA_FLAGS</span><span class="token operator">+=</span>-set_serial <span class="token variable"><span class="token variable">$(</span>SERIAL<span class="token variable">)</span></span>
+endif
+
+.PHONY: usage
+.SUFFIXES: .key .csr .crt .pem
+.PRECIOUS: %.key %.csr %.crt %.pem
+
+usage:
+    @echo <span class="token string">"This makefile allows you to create:"</span>
+    @echo <span class="token string">"  o public/private key pairs"</span>
+    @echo <span class="token string">"  o SSL certificate signing requests (CSRs)"</span>
+    @echo <span class="token string">"  o self-signed SSL test certificates"</span>
+    @echo
+    @echo <span class="token string">"To create a key pair, run <span class="token entity">\"</span>make SOMETHING.key<span class="token entity">\"</span>."</span>
+    @echo <span class="token string">"To create a CSR, run <span class="token entity">\"</span>make SOMETHING.csr<span class="token entity">\"</span>."</span>
+    @echo <span class="token string">"To create a test certificate, run <span class="token entity">\"</span>make SOMETHING.crt<span class="token entity">\"</span>."</span>
+    @echo <span class="token string">"To create a key and a test certificate in one file, run <span class="token entity">\"</span>make SOMETHING.pem<span class="token entity">\"</span>."</span>
+    @echo
+    @echo <span class="token string">"To create a key for use with Apache, run <span class="token entity">\"</span>make genkey<span class="token entity">\"</span>."</span>
+    @echo <span class="token string">"To create a CSR for use with Apache, run <span class="token entity">\"</span>make certreq<span class="token entity">\"</span>."</span>
+    @echo <span class="token string">"To create a test certificate for use with Apache, run <span class="token entity">\"</span>make testcert<span class="token entity">\"</span>."</span>
+    @echo
+    @echo <span class="token string">"To create a test certificate with serial number other than random, add SERIAL=num"</span>
+    @echo <span class="token string">"You can also specify key length with KEYLEN=n and expiration in days with DAYS=n"</span>
+    @echo <span class="token string">"Any additional options can be passed to openssl req via EXTRA_FLAGS"</span>
+    @echo
+    @echo Examples:
+    @echo <span class="token string">"  make server.key"</span>
+    @echo <span class="token string">"  make server.csr"</span>
+    @echo <span class="token string">"  make server.crt"</span>
+    @echo <span class="token string">"  make stunnel.pem"</span>
+    @echo <span class="token string">"  make genkey"</span>
+    @echo <span class="token string">"  make certreq"</span>
+    @echo <span class="token string">"  make testcert"</span>
+    @echo <span class="token string">"  make server.crt SERIAL=1"</span>
+    @echo <span class="token string">"  make stunnel.pem EXTRA_FLAGS=-sha384"</span>
+    @echo <span class="token string">"  make testcert DAYS=600"</span>
+
+%.pem:
+    <span class="token builtin class-name">umask</span> <span class="token number">77</span> <span class="token punctuation">;</span> <span class="token punctuation">\</span>
+    <span class="token assign-left variable">PEM1</span><span class="token operator">=</span>/bin/mktemp /tmp/openssl.XXXXXX <span class="token punctuation">;</span> <span class="token punctuation">\</span>
+    <span class="token assign-left variable">PEM2</span><span class="token operator">=</span>/bin/mktemp /tmp/openssl.XXXXXX</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+				
+			</div>
+
+			<div class="clear"></div>
+		</div>		</div>
+
+	</div>
+
+</div>	
+</body></html>

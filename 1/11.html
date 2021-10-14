@@ -1,0 +1,833 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux权限管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux权限管理">
+<meta name="description" content="文件权限管理 文件所有者和属组属性操作 设置文件的所有者chown chown 命令可以修改文件的属主，也可以修改文件属组 格式 chown [OPTION]... [OWNER][:[GROUP]] FILE... chown [OPTI…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33871"><link rel="prev" title="linux用户管理" href="http://www.yunweipai.com/33868.html">
+<link rel="next" title="linux-文本处理-vim" href="http://www.yunweipai.com/33875.html">
+<link rel="canonical" href="http://www.yunweipai.com/33871.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33871.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33871.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux权限管理, Linux教程">
+<meta name="description" content="文件权限管理  文件所有者和属组属性操作 设置文件的所有者chown chown 命令可以修改文件的属主，也可以修改文件属组 格式 chown [OPTION]... [OWNER][:[GROUP]] FILE... chown [OPTION]... --reference=RFILE FILE... 用法说明： OWNER           #只修改所有者 OWNER:GROUP     #同时修改所有者和属组 :GROUP  ">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post current"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33871" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>文件权限管理</h3>
+<p><img title="linux权限管理插图" alt="linux权限管理插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191212202023223-480x103.png"></p>
+<h4>文件所有者和属组属性操作</h4>
+<h5>设置文件的所有者chown</h5>
+<p>chown 命令可以修改文件的属主，也可以修改文件属组</p>
+<p>格式</p>
+<pre><code>chown [OPTION]... [OWNER][:[GROUP]] FILE...
+chown [OPTION]... --reference=RFILE FILE...</code></pre>
+<p>用法说明：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">OWNER           <span class="token comment">#只修改所有者</span>
+OWNER:GROUP     <span class="token comment">#同时修改所有者和属组</span>
+:GROUP          <span class="token comment">#只修改属组，冒号也可用 . 替换</span>
+--reference<span class="token operator">=</span>RFILE  <span class="token comment">#参考指定的的属性，来修改   </span>
+-R              <span class="token comment">#递归，此选项慎用，非常危险！</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cp /etc/fstab  f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/data
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">4</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chown wang f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">4</span>
+-rw-r--r-- <span class="token number">1</span> wang root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chown :admins f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-r--r-- <span class="token number">1</span> wang admins <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chown root.bin f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll </span>
+total <span class="token number">4</span>
+-rw-r--r-- <span class="token number">1</span> root bin <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chown wang:admins f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">4</span>
+-rw-r--r-- <span class="token number">1</span> wang admins <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cp /etc/issue f2.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">8</span>
+-rw-r--r-- <span class="token number">1</span> wang admins <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+-rw-r--r-- <span class="token number">1</span> root root    <span class="token number">23</span> Dec <span class="token number">18</span> <span class="token number">10</span>:15 f2.txt
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chown --reference=f1.txt f2.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">8</span>
+-rw-r--r-- <span class="token number">1</span> wang admins <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+-rw-r--r-- <span class="token number">1</span> wang admins  <span class="token number">23</span> Dec <span class="token number">18</span> <span class="token number">10</span>:15 f2.txt</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chown  -R wang.admins /data/</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>设置文件的属组信息chgrp</h5>
+<p>chgrp 命令可以只修改文件的属组</p>
+<p>格式</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"> <span class="token function">chgrp</span> <span class="token punctuation">[</span>OPTION<span class="token punctuation">]</span><span class="token punctuation">..</span>. GROUP FILE<span class="token punctuation">..</span>.
+ <span class="token function">chgrp</span> <span class="token punctuation">[</span>OPTION<span class="token punctuation">]</span><span class="token punctuation">..</span>. --reference<span class="token operator">=</span>RFILE FILE<span class="token punctuation">..</span>.</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>-R 递归</p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-r--r-- <span class="token number">1</span> wang root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chgrp admins f1.txt </span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-r--r-- <span class="token number">1</span> wang admins <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">10</span>:13 f1.txt</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>文件权限</h4>
+<h5>文件权限说明</h5>
+<p>文件的权限主要针对三类对象进行定义</p>
+<pre><code>owner   属主, u
+group   属组, g
+other   其他, o</code></pre>
+<p>注意：用户的最终权限，是从左向右进行顺序匹配，即，所有者，所属组，其他人，一旦匹配权限立即生效，不再向右查看其权限</p>
+<p>每个文件针对每类访问者都定义了三种常用权限</p>
+<p>每个文件针对每类访问者都定义了三种权限</p>
+<pre><code>r   Readable
+w   Writable
+x   eXcutable</code></pre>
+<p><strong>对文件的权限：</strong></p>
+<pre><code>r   可使用文件查看类工具，比如：cat，可以获取其内容
+w   可修改其内容
+x   可以把此文件提请内核启动为一个进程，即可以执行（运行）此文件（此文件的内容必须是可执行）</code></pre>
+<p><strong>对目录的权限：</strong></p>
+<pre><code>r   可以使用ls查看此目录中文件列表
+w   可在此目录中创建文件，也可删除此目录中的文件，而和此被删除的文件的权限无关
+x   可以cd进入此目录，可以使用ls -l查看此目录中文件元数据（须配合r权限），属于目录的可访问的最小权限
+X   只给目录x权限，不给无执行权限的文件x权限</code></pre>
+<p><strong>数学法的权限</strong></p>
+<p><img title="linux权限管理插图(1)" alt="linux权限管理插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191212202525490-480x102.png"></p>
+<p>八进制数字</p>
+<pre><code>--- 000 0
+--x 001 1
+-w- 010 2
+-wx 011 3
+r-- 100 4
+r-x 101 5
+rw- 110 6
+rwx 111 7</code></pre>
+<p>例如：</p>
+<pre><code>rw-r----- 640   
+rwxr-xr-x 755   </code></pre>
+<h5>修改文件权限chmod</h5>
+<p>格式</p>
+<pre><code>chmod [OPTION]... MODE[,MODE]... FILE...
+chmod [OPTION]... OCTAL-MODE FILE...
+#参考RFILE文件的权限，将FILE的修改为同RFILE
+chmod [OPTION]... --reference=RFILE FILE...</code></pre>
+<p>说明： </p>
+<pre><code>MODE：who opt permission
+who:u,g,o,a 
+opt:+,-,=
+permission:r,w,x
+
+修改指定一类用户的所有权限
+u=  g= o= ug=  a= u=,g=
+
+修改指定一类用户某个或某个权限
+u+  u- g+ g- o+ o- a+ a- + -
+
+-R: 递归修改权限</code></pre>
+<p>范例:  设置 X 权限</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll dir</span>
+total <span class="token number">8</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">11</span>:09 f1.txt
+-rwxr--r-- <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">11</span>:09 f2.txt
+drw-r--r-- <span class="token number">2</span> root root   <span class="token number">6</span> Dec <span class="token number">18</span> <span class="token number">11</span>:15 subdir
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll -d dir</span>
+drwxr-xr-- <span class="token number">3</span> root root <span class="token number">48</span> Dec <span class="token number">18</span> <span class="token number">11</span>:15 <span class="token function">dir</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chmod -R a+X dir</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll -d dir</span>
+drwxr-xr-x <span class="token number">3</span> root root <span class="token number">48</span> Dec <span class="token number">18</span> <span class="token number">11</span>:15 <span class="token function">dir</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll dir</span>
+total <span class="token number">8</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">11</span>:09 f1.txt
+-rwxr-xr-x <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">11</span>:09 f2.txt
+drwxr-xr-x <span class="token number">2</span> root root   <span class="token number">6</span> Dec <span class="token number">18</span> <span class="token number">11</span>:15 subdir</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">chmod</span>  u+wx,g-r,o<span class="token operator">=</span>rx <span class="token function">file</span>
+<span class="token function">chmod</span>  -R g+rwX /testdir
+<span class="token function">chmod</span>  <span class="token number">600</span>  <span class="token function">file</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p><strong>范例：面试题</strong></p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">执行 <span class="token function">cp</span> /etc/issue  /data/dir 所需要的最小权限？
+/bin/cp     需要x权限
+/etc/       需要x权限
+/etc/issue  需要r 权限
+/data       需要x权限
+/data/dir   需要w,x 权限</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>新建文件和目录的默认权限</h4>
+<p>umask 的值可以用来保留在创建文件权限</p>
+<p>实现方式：</p>
+<ul>
+<li>新建文件的默认权限: 666-umask，如果所得结果某位存在执行（奇数）权限，则将其权限+1,偶数不变</li>
+<li>新建目录的默认权限: 777-umask  </li>
+</ul>
+<p>非特权用户umask默认是 002</p>
+<p>root的umask 默认是 022</p>
+<p>查看umask</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token builtin class-name">umask</span>
+<span class="token comment">#模式方式显示</span>
+<span class="token builtin class-name">umask</span> –S 
+<span class="token comment">#输出可被调用</span>
+<span class="token builtin class-name">umask</span> –p </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>修改umask</p>
+<pre><code>umask #</code></pre>
+<p>范例：</p>
+<pre><code>umask 002
+umask u=rw,g=r,o=</code></pre>
+<p>持久保存umask</p>
+<ul>
+<li>全局设置： /etc/bashrc </li>
+<li>用户设置：~/.bashrc</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#umask</span>
+0022
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#umask -S</span>
+<span class="token assign-left variable">u</span><span class="token operator">=</span>rwx,g<span class="token operator">=</span>rx,o<span class="token operator">=</span>rx
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#umask -p</span>
+<span class="token builtin class-name">umask</span> 0022</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#umask
+0022
+[root@centos8 ~]#( umask 666; touch /data/f1.txt )
+[root@centos8 ~]#umask
+0022
+[root@centos8 ~]#ll /data/f1.txt
+---------- 1 root root 0 Mar 27 14:55 /data/f1.txt</code></pre>
+<h4>Linux文件系统上的特殊权限</h4>
+<p>前面介绍了三种常见的权限：r, w, x  还有三种特殊权限：SUID, SGID, Sticky</p>
+<h5>特殊权限SUID</h5>
+<p>前提：进程有属主和属组；文件有属主和属组</p>
+<ol>
+<li>任何一个可执行程序文件能不能启动为进程,取决发起者对程序文件是否拥有执行权限</li>
+<li>启动为进程之后，其进程的属主为发起者,进程的属组为发起者所属的组</li>
+<li>进程访问文件时的权限，取决于进程的发起者</li>
+</ol>
+<p>&ZeroWidthSpace;   (a) 进程的发起者，同文件的属主：则应用文件属主权限<br>
+&ZeroWidthSpace;   (b) 进程的发起者，属于文件属组；则应用文件属组权限<br>
+&ZeroWidthSpace;   (c) 应用文件“其它”权限</p>
+<p>二进制的可执行文件上SUID权限功能：</p>
+<ul>
+<li>任何一个可执行程序文件能不能启动为进程：取决发起者对程序文件是否拥有执行权限</li>
+<li>启动为进程之后，其进程的属主为原程序文件的属主</li>
+<li>SUID只对二进制可执行程序有效</li>
+<li>SUID设置在目录上无意义</li>
+</ul>
+<p>SUID权限设定：</p>
+<pre><code>chmod u+s FILE...
+chmod 6xxx FILE
+chmod u-s FILE...</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#ls -l /usr/bin/passwd
+-rwsr-xr-x. 1 root root 34928 May 11  2019 /usr/bin/passwd</code></pre>
+<h5>特殊权限SGID</h5>
+<p>二进制的可执行文件上SGID权限功能：</p>
+<ul>
+<li>任何一个可执行程序文件能不能启动为进程：取决发起者对程序文件是否拥有执行权限</li>
+<li>启动为进程之后，其进程的属组为原程序文件的属组</li>
+</ul>
+<p>SGID权限设定：</p>
+<pre><code>chmod g+s FILE... 
+chmod 2xxx FILE
+chmod g-s FILE...</code></pre>
+<p>目录上的SGID权限功能：</p>
+<p>默认情况下，用户创建文件时，其属组为此用户所属的主组，一旦某目录被设定了SGID，则对此目录有写权限的用户在此目录中创建的文件所属的组为此目录的属组，通常用于创建一个协作目录</p>
+<p>SGID权限设定：</p>
+<pre><code>chmod g+s DIR...
+chmod 2xxx DIR
+chmod g-s DIR...</code></pre>
+<h5>特殊权限 Sticky 位</h5>
+<p>具有写权限的目录通常用户可以删除该目录中的任何文件，无论该文件的权限或拥有权<br>
+在目录设置Sticky 位，只有文件的所有者或root可以删除该文件<br>
+sticky 设置在文件上无意义</p>
+<p>Sticky权限设定：</p>
+<pre><code>chmod o+t DIR...
+chmod 1xxx DIR
+chmod o-t DIR...</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#ll -d /tmp
+drwxrwxrwt. 15 root root 4096 Dec 12 20:16 /tmp</code></pre>
+<h5>特殊权限数字法</h5>
+<p>SUID SGID STICKY</p>
+<pre><code>000 0
+001 1
+010 2
+011 3
+100 4
+101 5
+110 6
+111 7</code></pre>
+<p>范例：</p>
+<pre><code>chmod 4777 /tmp/a.txt</code></pre>
+<p>权限位映射<br>
+SUID: user,占据属主的执行权限位<br>
+s：属主拥有x权限<br>
+S：属主没有x权限<br>
+SGID: group,占据属组的执行权限位<br>
+s： group拥有x权限<br>
+S：group没有x权限<br>
+Sticky: other,占据other的执行权限位<br>
+t：other拥有x权限<br>
+T：other没有x权限</p>
+<h4>设定文件特殊属性</h4>
+<p>设置文件的特殊属性，可以访问 root 用户误操作删除或修改文件</p>
+<p>不能删除，改名，更改</p>
+<pre><code>chattr +i </code></pre>
+<p>只能追加内容，不能删除，改名</p>
+<pre><code>chattr +a</code></pre>
+<p>显示特定属性 </p>
+<pre><code>lsattr </code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chattr +i dir</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#lsattr  dir</span>
+------------------ dir/fstab
+------------------ dir/f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#lsattr  *</span>
+------------------ dir/fstab
+------------------ dir/f1.txt
+------------------ f11.txt
+------------------ f22.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">8</span>
+drwxr-xr-x <span class="token number">2</span> root root  <span class="token number">33</span> Dec <span class="token number">18</span> <span class="token number">14</span>:32 <span class="token function">dir</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">719</span> Dec <span class="token number">18</span> <span class="token number">14</span>:30 f11.txt
+-rw-r--r-- <span class="token number">1</span> root root   <span class="token number">6</span> Dec <span class="token number">18</span> <span class="token number">14</span>:30 f22.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#rm -rf dir</span>
+rm: cannot remove <span class="token string">'dir/fstab'</span><span class="token builtin class-name">:</span> Operation not permitted
+rm: cannot remove <span class="token string">'dir/f1.txt'</span><span class="token builtin class-name">:</span> Operation not permitted
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#lsattr </span>
+------------------ ./f11.txt
+------------------ ./f22.txt
+----i------------- ./dir
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chattr -i dir</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#lsattr  </span>
+------------------ ./f11.txt
+------------------ ./f22.txt
+------------------ ./dir</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>访问控制列表</h4>
+<h5>ACL权限功能</h5>
+<p>ACL：Access Control List，实现灵活的权限管理<br>
+除了文件的所有者，所属组和其它人，可以对更多的用户设置权限<br>
+CentOS7 默认创建的xfs和ext4文件系统具有ACL功能<br>
+CentOS7 之前版本，默认手工创建的ext4文件系统无ACL功能,需手动增加</p>
+<pre><code>tune2fs –o acl /dev/sdb1
+mount –o acl /dev/sdb1  /mnt/test</code></pre>
+<p>ACL生效顺序：</p>
+<p>所有者，自定义用户，所属组|自定义组，其他人</p>
+<h5>ACL相关命令</h5>
+<p>setfacl  可以设置ACL权限</p>
+<p>getfacl  可查看设置的ACL权限</p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">14</span>:37 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#setfacl -m u:wang:- f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll </span>
+total <span class="token number">4</span>
+-rw-r--r--+ <span class="token number">1</span> root root <span class="token number">709</span> Dec <span class="token number">18</span> <span class="token number">14</span>:37 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:---
+group::r--
+mask::r--
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#su wang</span>
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>cat f1.txt
+cat: f1.txt: Permission denied
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>echo xx <span class="token operator">&gt;&gt;</span> f1.txt
+bash: f1.txt: Permission denied</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+group::r--
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#setfacl -m u:wang:0 f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#setfacl -m g:admins:w f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-rw-r--+ <span class="token number">1</span> root root <span class="token number">718</span> Dec <span class="token number">18</span> <span class="token number">14</span>:44 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:---
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#id wang</span>
+<span class="token assign-left variable">uid</span><span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span> <span class="token assign-left variable">groups</span><span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#id mage</span>
+<span class="token assign-left variable">uid</span><span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">(</span>mage<span class="token punctuation">)</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">(</span>mage<span class="token punctuation">)</span> <span class="token assign-left variable">groups</span><span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">(</span>mage<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#su mage</span>
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span>cat f1.txt
+
+<span class="token comment">#</span>
+<span class="token comment"># /etc/fstab</span>
+<span class="token comment"># Created by anaconda on Wed Dec 11 11:11:16 2019</span>
+<span class="token comment">#</span>
+<span class="token comment"># Accessible filesystems, by reference, are maintained under '/dev/disk/'.</span>
+<span class="token comment"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info.</span>
+<span class="token comment">#</span>
+<span class="token comment"># After editing this file, run 'systemctl daemon-reload' to update systemd</span>
+<span class="token comment"># units generated from this file.</span>
+<span class="token comment">#</span>
+<span class="token assign-left variable">UUID</span><span class="token operator">=</span>1b950ef9-7142-46bd-975c-c4ac1e0d47e8 /                       xfs     defaults        <span class="token number">0</span> <span class="token number">0</span>
+<span class="token assign-left variable">UUID</span><span class="token operator">=</span>667a4c81-8b4b-4a39-a111-b11cb6d09309 /boot                   ext4    defaults        <span class="token number">1</span> <span class="token number">2</span>
+<span class="token assign-left variable">UUID</span><span class="token operator">=</span>38d14714-c018-41d5-922c-49e415decbca /data                   xfs     defaults        <span class="token number">0</span> <span class="token number">0</span>
+<span class="token assign-left variable">UUID</span><span class="token operator">=</span>a0efb2bb-8227-4317-a79d-0a70d515046c swap                    swap    defaults        <span class="token number">0</span> <span class="token number">0</span>
+magedata
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span>echo magedata2 <span class="token operator">&gt;&gt;</span> f1.txt
+bash: f1.txt: Permission denied
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span>exit
+<span class="token builtin class-name">exit</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#gpasswd -a mage admins</span>
+Adding user mage to group admins
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#id mage</span>
+<span class="token assign-left variable">uid</span><span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">(</span>mage<span class="token punctuation">)</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">(</span>mage<span class="token punctuation">)</span> <span class="token assign-left variable">groups</span><span class="token operator">=</span><span class="token number">1001</span><span class="token punctuation">(</span>mage<span class="token punctuation">)</span>,1002<span class="token punctuation">(</span>admins<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#su mage</span>
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span>echo magedata3 <span class="token operator">&gt;&gt;</span> f1.txt 
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span>cat f1.txt
+cat: f1.txt: Permission denied
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span>exit
+<span class="token builtin class-name">exit</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#su wang</span>
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>cat f1.txt
+cat: f1.txt: Permission denied
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>echo wangdata <span class="token operator">&gt;&gt;</span> f1.txt
+bash: f1.txt: Permission denied
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>exit
+<span class="token builtin class-name">exit</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#groupmems -a wang -g admins</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#id wang</span>
+<span class="token assign-left variable">uid</span><span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span> <span class="token assign-left variable">groups</span><span class="token operator">=</span><span class="token number">1000</span><span class="token punctuation">(</span>wang<span class="token punctuation">)</span>,1002<span class="token punctuation">(</span>admins<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#su wang</span>
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>getfacl f1.txt 
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:---
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>cat f1.txt
+cat: f1.txt: Permission denied
+<span class="token punctuation">[</span>wang@centos8 data<span class="token punctuation">]</span>echo wangdata2 <span class="token operator">&gt;&gt;</span> f1.txt
+bash: f1.txt: Permission denied</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">mount</span> -o acl /directory
+getfacl  <span class="token function">file</span> <span class="token operator">|</span>directory
+setfacl  -m  u:wang:rwx <span class="token function">file</span><span class="token operator">|</span>directory
+setfacl  -m  g:admins:rw <span class="token function">file</span><span class="token operator">|</span> directory
+setfacl  -x  u:wang  <span class="token function">file</span> <span class="token operator">|</span>directory
+<span class="token comment">#清除所有ACL权限</span>
+setfacl -b  file1       
+<span class="token comment">#复制file1的acl权限给file2</span>
+getfacl  file1 <span class="token operator">|</span> setfacl --set-file<span class="token operator">=</span>-   file2  </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p><strong>mask 权限</strong></p>
+<ul>
+<li>mask只影响除所有者和other的之外的人和组的最大权限</li>
+<li>mask需要与用户的权限进行逻辑与运算后，才能变成有限的权限(Effective  Permission)</li>
+<li>
+用户或组的设置必须存在于mask权限设定范围内才会生效       <p></p>
+<p>范例：
+</p></li>
+</ul>
+<pre><code>setfacl  -m mask::rx  file</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-rw-r--+ <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#chmod g=r f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll f1.txt</span>
+-rw-r--r--+ <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f1.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:---
+group::r--
+group:admins:-w-        <span class="token comment">#effective:---</span>
+mask::r--
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#setfacl -m mask::rw f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:---
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#setfacl -m u:wang:rwx f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:rwx
+group::r--
+group:admins:-w-
+mask::rwx
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#setfacl -m mask::rw f1.txt</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl f1.txt</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:rwx           <span class="token comment">#effective:rw-</span>
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>–set选项会把原有的ACL项都删除，用新的替代，需要注意的是一定要包含UGO的设置，不能象-m一样只是添加ACL就可以</p>
+<p>范例：</p>
+<pre><code>setfacl --set u::rw,u:wang:rw,g::r,o::- file1</code></pre>
+<h5>备份和还原ACL</h5>
+<p>主要的文件操作命令cp和mv都支持ACL，只是cp命令需要加上-p 参数。但是tar等常见的备份工具是不会保留目录和文件的ACL信息</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#备份ACL</span>
+getfacl -R /tmp/dir <span class="token operator">&gt;</span> acl.txt
+<span class="token comment">#消除ACL权限</span>
+setfacl -R -b /tmp/dir
+<span class="token comment">#还原ACL权限</span>
+setfacl -R  --set-file<span class="token operator">=</span>acl.txt  /tmp/dir
+<span class="token comment">#还原ACL权限</span>
+setfacl --restore acl.txt
+<span class="token comment">#查看ACL权限</span>
+getfacl -R /tmp/dir</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#getfacl *</span>
+<span class="token comment"># file: f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:rwx           <span class="token comment">#effective:rw-</span>
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token comment"># file: f2.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+group::r--
+other::r--
+
+<span class="token comment"># file: f3.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:rwx           <span class="token comment">#effective:rw-</span>
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cd </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#tar cvf data.tar /data/</span>
+tar: Removing leading `/<span class="token string">' from member names
+/data/
+/data/f1.txt
+/data/f2.txt
+/data/f3.txt
+[root@centos8 ~]#tar xvf data.tar  -C /opt
+data/
+data/f1.txt
+data/f2.txt
+data/f3.txt
+[root@centos8 ~]#ls /opt
+data
+[root@centos8 ~]#cd /opt/data
+[root@centos8 data]#ll
+total 12
+-rw-rw-r-- 1 root root 728 Dec 18 14:51 f1.txt
+-rw-r--r-- 1 root root 728 Dec 18 15:01 f2.txt
+-rw-rw-r-- 1 root root 728 Dec 18 14:51 f3.txt
+[root@centos8 data]#getfacl -R /data &gt; /root/acl.txt
+getfacl: Removing leading '</span>/' from absolute path names
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cat /root/acl.txt</span>
+<span class="token comment"># file: data</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: admins</span>
+user::rwx
+group::rwx
+other::rwx
+
+<span class="token comment"># file: data/f1.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:rwx   <span class="token comment">#effective:rw-</span>
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token comment"># file: data/f2.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+group::r--
+other::r--
+
+<span class="token comment"># file: data/f3.txt</span>
+<span class="token comment"># owner: root</span>
+<span class="token comment"># group: root</span>
+user::rw-
+user:wang:rwx   <span class="token comment">#effective:rw-</span>
+group::r--
+group:admins:-w-
+mask::rw-
+other::r--
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#ll /opt/data</span>
+total <span class="token number">12</span>
+-rw-rw-r-- <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f1.txt
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">15</span>:01 f2.txt
+-rw-rw-r-- <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f3.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#cd </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#setfacl -R --set-file=/root/acl.txt /opt</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /opt/data/</span>
+total <span class="token number">12</span>
+-rw-rw-r--+ <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f1.txt
+-rw-rw-r--+ <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">15</span>:01 f2.txt
+-rw-rw-r--+ <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f3.txt
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#setfacl -b -R /opt/data</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ll /opt/data</span>
+total <span class="token number">12</span>
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f1.txt
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">15</span>:01 f2.txt
+-rw-r--r-- <span class="token number">1</span> root root <span class="token number">728</span> Dec <span class="token number">18</span> <span class="token number">14</span>:51 f3.txt
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+		
+
+		</div>
+	
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

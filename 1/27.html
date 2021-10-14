@@ -1,0 +1,414 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux内核管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,Linux内核,linux学习,linux教程">
+<meta name="description" content="内核模块管理和编译 单内核体系设计、但充分借鉴了微内核设计体系的优点，为内核引入模块化机制 内核组成部分： kernel：内核核心，一般为bzImage，通常在/boot目录下 名称为 vmlinuz-VERSION-RELEASE ker…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33947"><link rel="prev" title="linux启动过程" href="http://www.yunweipai.com/33942.html">
+<link rel="next" title="linux加密管理" href="http://www.yunweipai.com/33949.html">
+<link rel="canonical" href="http://www.yunweipai.com/33947.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33947.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33947.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, Linux内核, linux学习, linux教程, Linux教程">
+<meta name="description" content="内核模块管理和编译 单内核体系设计、但充分借鉴了微内核设计体系的优点，为内核引入模块化机制 内核组成部分： kernel：内核核心，一般为bzImage，通常在/boot目录下 名称为 vmlinuz-VERSION-RELEASE kernel object：内核对象，一般放置于 /lib/modules/VERSION-RELEASE/ &ZeroWidthSpace;   辅助文件：ramdisk &ZeroWidthSpace;       initrd &ZeroWidthSpace;       initramf">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post current"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33947" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>内核模块管理和编译</h3>
+<p>单内核体系设计、但充分借鉴了微内核设计体系的优点，为内核引入模块化机制<br>
+内核组成部分：<br>
+kernel：内核核心，一般为bzImage，通常在/boot目录下<br>
+名称为 vmlinuz-VERSION-RELEASE<br>
+kernel object：内核对象，一般放置于<br>
+/lib/modules/VERSION-RELEASE/</p>
+<p>&ZeroWidthSpace;   辅助文件：ramdisk<br>
+&ZeroWidthSpace;       initrd<br>
+&ZeroWidthSpace;       initramfs</p>
+<h4>内核版本</h4>
+<p>运行中的内核：<br>
+uname命令：<br>
+uname – print system information<br>
+uname [OPTION]…<br>
+-n: 显示节点名称<br>
+-r: 显示VERSION-RELEASE<br>
+-a:显示所有信息</p>
+<h4>内核模块命令</h4>
+<p>lsmod命令：</p>
+<ul>
+<li>显示由核心已经装载的内核模块</li>
+<li>显示的内容来自于: /proc/modules文件</li>
+</ul>
+<p>modinfo命令：</p>
+<p>功能：管理内核模块</p>
+<p>配置文件：/etc/modprobe.conf, /etc/modprobe.d/*.conf</p>
+<ul>
+<li>显示模块的详细描述信息</li>
+</ul>
+<pre><code>modinfo [ -k kernel ]  [ modulename|filename... ]</code></pre>
+<p>常用选项：   </p>
+<pre><code>-n：只显示模块文件路径
+-p：显示模块参数
+-a：作者
+-d：描述</code></pre>
+<p>范例：</p>
+<pre><code>lsmod |grep xfs 
+modinfo  xfs</code></pre>
+<ul>
+<li>
+装载或卸载内核模块<p></p>
+<pre><code>modprobe [ -C config-file ]  [ modulename ]  [ module parame-ters... ]
+modprobe [ -r ] modulename…</code></pre>
+</li>
+</ul>
+<p>depmod命令：内核模块依赖关系文件及系统信息映射文件的生成工具</p>
+<p>insmod命令：指定模块文件，不自动解决依赖模块</p>
+<pre><code>insmod [ filename ]  [ module options... ]</code></pre>
+<p>范例：</p>
+<pre><code>insmod <code>modinfo –n exportfs</code>
+lnsmod <code>modinfo –n xfs</code></code></pre>
+<p>rmmod命令：卸载模块</p>
+<pre><code>rmmod [ modulename ]</code></pre>
+<p>范例：</p>
+<pre><code>rmmod xfs
+rmmod exportfs</code></pre>
+<h4>编译内核</h4>
+<p>编译安装内核准备：<br>
+(1) 准备好开发环境<br>
+(2) 获取目标主机上硬件设备的相关信息<br>
+(3) 获取目标主机系统功能的相关信息，例如:需要启用相应的文件系统<br>
+(4) 获取内核源代码包，    www.kernel.org</p>
+<h5>编译准备</h5>
+<h6>目标主机硬件设备相关信息</h6>
+<p>CPU：</p>
+<pre><code>cat /proc/cpuinfo
+x86info -a
+lscpu</code></pre>
+<p>PCI设备：lspci -v ，-vv</p>
+<pre><code>[root@centos8 ~]#lspci
+00:00.0 Host bridge: Intel Corporation 440BX/ZX/DX - 82443BX/ZX/DX Host bridge (rev 01)
+00:01.0 PCI bridge: Intel Corporation 440BX/ZX/DX - 82443BX/ZX/DX AGP bridge (rev 01)
+00:07.0 ISA bridge: Intel Corporation 82371AB/EB/MB PIIX4 ISA (rev 08)
+00:07.1 IDE interface: Intel Corporation 82371AB/EB/MB PIIX4 IDE (rev 01)
+00:07.3 Bridge: Intel Corporation 82371AB/EB/MB PIIX4 ACPI (rev 08)
+00:07.7 System peripheral: VMware Virtual Machine Communication Interface (rev 10)
+00:0f.0 VGA compatible controller: VMware SVGA II Adapter
+00:10.0 SCSI storage controller: Broadcom / LSI 53c1030 PCI-X Fusion-MPT Dual Ultra320 SCSI (rev 01)
+00:11.0 PCI bridge: VMware PCI bridge (rev 02)
+00:15.0 PCI bridge: VMware PCI Express Root Port (rev 01)
+00:15.1 PCI bridge: VMware PCI Express Root Port (rev 01)</code></pre>
+<p>USB设备：lsusb -v，-vv</p>
+<pre><code>[root@centos8 ~]#dnf install usbutils -y
+[root@centos8 ~]#lsusb
+Bus 001 Device 004: ID 0951:1666 Kingston Technology DataTraveler 100 G3/G4/SE9 G2
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Bus 002 Device 003: ID 0e0f:0002 VMware, Inc. Virtual USB Hub
+Bus 002 Device 002: ID 0e0f:0003 VMware, Inc. Virtual Mouse
+Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+[root@centos8 ~]#lsmod |grep usb
+usb_storage            73728  1 uas</code></pre>
+<p>lsblk  块设备</p>
+<p>全部硬件设备信息：hal-device：CentOS 6</p>
+<h6>开发环境相关包</h6>
+<p>gcc make ncurses-devel flex bison openssl-devel elfutils-libelf-devel</p>
+<h6>内核编译安装实现</h6>
+<ul>
+<li>
+下载源码文件
+</li>
+<li>
+准备文本配置文件/boot/.config
+</li>
+<li>
+make menuconfig：配置内核选项 <p></p>
+<pre><code></code></pre>
+</li>
+<li>
+make [-j #]  或者用以下两步实现：<p></p>
+<p>make -j # bzImage </p>
+<p>make -j # modules
+</p></li>
+<li>
+安装模块：make modules_install
+</li>
+<li>
+安装内核相关文件：make install <p></p>
+<ul>
+<li>安装bzImage为 /boot/vmlinuz-VERSION-RELEASE</li>
+<li>生成initramfs文件</li>
+<li>编辑grub的配置文件</li>
+</ul>
+</li>
+</ul>
+<h6>编译安装内核实战案例</h6>
+<pre><code>[root@centos8 ~]#yum install gcc make ncurses-devel flex bison openssl-devel elfutils-libelf-devel
+[root@centos8 ~]#tar xf linux-5.4.13.tar.xz -C /usr/src
+[root@centos8 ~]#cd /usr/src
+[root@centos8 ~]#ln -sv linux-5.4.13 linux
+[root@centos8 ~]#cd /usr/src/linux
+[root@centos8 ~]#cp /boot/config-$(uname -r)   ./.config
+[root@centos8 ~]#vim .config 
+# CONFIG_MODULE_SIG is not set
+CONFIG_SYSTEM_TRUSTED_KEYS=""
+# CONFIG_DEBUG_INFO is not set
+
+[root@centos8 ~]#make help
+[root@centos8 ~]#make menuconfig
+[root@centos8 ~]#make -j 2   或者 make -j 2 bzImage ; make -j 2 modules
+[root@centos8 ~]#make modules_install
+[root@centos8 ~]#make install
+[root@centos8 ~]#reboot </code></pre>
+<h6>内核编译说明</h6>
+<ol>
+<li>
+配置内核选项<p></p>
+<p>&ZeroWidthSpace;    支持“更新”模式进行配置：make help<br>
+&ZeroWidthSpace;    (a) make config：基于命令行以遍历的方式配置内核中可配置的每个选项<br>
+&ZeroWidthSpace;    (b) make menuconfig：基于curses的文本窗口界面<br>
+&ZeroWidthSpace;    (c) make gconfig：基于GTK (GNOME）环境窗口界面<br>
+&ZeroWidthSpace;    (d) make xconfig：基于QT(KDE)环境的窗口界面</p>
+<p>&ZeroWidthSpace;    支持“全新配置”模式进行配置</p>
+<p>&ZeroWidthSpace;    (a) make defconfig：基于内核为目标平台提供的“默认”配置进行配置<br>
+&ZeroWidthSpace;    (b) make allyesconfig: 所有选项均回答为“yes“<br>
+&ZeroWidthSpace;    (c) make allnoconfig: 所有选项均回答为“no“
+</p></li>
+<li>
+编译内核<p></p>
+<ul>
+<li>
+全编译:<p></p>
+<pre><code>make [-j #] </code></pre>
+</li>
+<li>
+编译内核的一部分功能：<br>
+(a) 只编译某子目录中的相关代码<p></p>
+<pre><code>cd /usr/src/linux; make dir/</code></pre>
+<p>&ZeroWidthSpace;  (b) 只编译一个特定的模块</p>
+<pre><code>cd /usr/src/linux; make dir/file.ko</code></pre>
+<p>&ZeroWidthSpace;      范例：只为e1000编译驱动：</p>
+<pre><code>make drivers/net/ethernet/intel/e1000/e1000.ko</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p>3 交叉编译内核<br>
+编译的目标平台与当前平台不相同</p>
+<p>&ZeroWidthSpace;   make    ARCH=arch_name</p>
+<p>要获取特定目标平台的使用帮助<br>
+make    ARCH=arch_name help<br>
+示例：<br>
+make  ARCH=arm help</p>
+<p>4 重新编译需要事先清理操作</p>
+<pre><code>make clean：清理大多数编译生成的文件，但会保留config文件等
+make mrproper: 清理所有编译生成的文件、config及某些备份文件
+make distclean：mrproper、清理patches以及编辑器备份文件</code></pre>
+<h6>卸载内核</h6>
+<ul>
+<li>删除/lib/modules/目录下不需要的内核库文件</li>
+<li>删除/usr/src/linux/目录下不需要的内核源码</li>
+<li>删除/boot目录下启动的内核和内核映像文件</li>
+<li>更改grub的配置文件，删除不需要的内核启动列表 grub2-mkconfig -o /boot/grub2/grub.cfg</li>
+<li>CentOS 8 还需要删除 /boot/loader/entries/5b85fc7444b240a992c42ce2a9f65db5-新内核版本.conf</li>
+</ul>
+			</div>
+
+			<div class="clear"></div>
+		</div>	
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

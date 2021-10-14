@@ -1,0 +1,537 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux磁盘管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux磁盘管理">
+<meta name="description" content="管理存储 使用磁盘空间过程 设备分区 创建文件系统 挂载新的文件系统 磁盘分区 为什么分区 优化I/O性能 实现磁盘空间配额限制 提高修复速度 隔离系统和程序 安装多个OS 采用不同文件系统 分区方式 两种分区方式：MBR，GPT MBR分…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33903"><link rel="prev" title="linux软件包管理" href="http://www.yunweipai.com/33901.html">
+<link rel="next" title="linux文件系统管理" href="http://www.yunweipai.com/33914.html">
+<link rel="canonical" href="http://www.yunweipai.com/33903.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33903.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33903.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux磁盘管理, Linux教程">
+<meta name="description" content="管理存储 使用磁盘空间过程  设备分区 创建文件系统 挂载新的文件系统  磁盘分区 为什么分区  优化I/O性能 实现磁盘空间配额限制 提高修复速度 隔离系统和程序 安装多个OS 采用不同文件系统  分区方式 两种分区方式：MBR，GPT MBR分区 MBR：Master Boot Record，1982年，使用32位表示扇区数，分区不超过2T 划分分区的单位：  CentOS 5 之前按整柱面划分 CentOS 6 版本后可以按Sec">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post current"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33903" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>管理存储</h3>
+<p>使用磁盘空间过程</p>
+<ol>
+<li>设备分区</li>
+<li>创建文件系统</li>
+<li>挂载新的文件系统</li>
+</ol>
+<h4>磁盘分区</h4>
+<h5>为什么分区</h5>
+<ul>
+<li>优化I/O性能</li>
+<li>实现磁盘空间配额限制</li>
+<li>提高修复速度</li>
+<li>隔离系统和程序</li>
+<li>安装多个OS</li>
+<li>采用不同文件系统</li>
+</ul>
+<h5>分区方式</h5>
+<p>两种分区方式：MBR，GPT</p>
+<h6>MBR分区</h6>
+<p>MBR：Master Boot Record，1982年，使用32位表示扇区数，分区不超过2T</p>
+<p>划分分区的单位：</p>
+<ul>
+<li>CentOS 5 之前按整柱面划分</li>
+<li>CentOS 6 版本后可以按Sector划分</li>
+</ul>
+<p>0磁道0扇区：512bytes<br>
+446bytes: boot loader<br>
+64bytes：分区表，其中每16bytes标识一个分区<br>
+2bytes: 55AA<br>
+MBR分区中一块硬盘最多有4个主分区，也可以3主分区+1扩展(N个逻辑分区)</p>
+<p>MBR分区结构</p>
+<p><img title="linux磁盘管理插图" alt="linux磁盘管理插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222182706495-480x290.png"></p>
+<p>硬盘主引导记录MBR由4个部分组成</p>
+<p><img title="linux磁盘管理插图(1)" alt="linux磁盘管理插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222182806454-480x304.png"></p>
+<ul>
+<li>主引导程序（偏移地址0000H–0088H），它负责从活动分区中装载，并运行系统引导程序</li>
+<li>出错信息数据区，偏移地址0089H–00E1H为出错信息，00E2H–01BDH全为0字节</li>
+<li>分区表（DPT,Disk Partition Table）含4个分区项，偏移地址01BEH–01FDH,每个分区表项长16个字节，共64字节为分区项1、分区项2、分区项3、分区项4</li>
+<li>结束标志字，偏移地址01FE–01FF的2个字节值为结束标志55AA</li>
+</ul>
+<p>MBR中DPT结构</p>
+<p><img title="linux磁盘管理插图(2)" alt="linux磁盘管理插图(2)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222182843157-480x294.png"></p>
+<p>范例: 备份MBR的分区表,并破坏后恢复</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#备份MBR分区表</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dd if=/dev/sda of=/data/dpt.img bs=1 count=64 skip=446</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#scp /data/dpt.img 10.0.0.102:</span>
+
+<span class="token comment">#破坏MBR分区表</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#dd if=/dev/zero of=/dev/sda bs=1 count=64 seek=446</span>
+
+<span class="token comment">#无法启动</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#reboot</span>
+
+<span class="token comment">#用光盘启动,进入rescue mode,选第3项skip to shell</span>
+
+<span class="token comment">#配置网络</span>
+<span class="token comment">#ifconfig ens160 10.0.0.8/24</span>
+<span class="token comment">#scp  10.0.0.102:/root/dpt.img .</span>
+
+<span class="token comment">#恢复MBR分区表</span>
+<span class="token comment">#dd if=dpt.img of=/dev/sda bs=1 seek=446</span>
+<span class="token comment">#exit </span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>GPT分区</p>
+<p>GPT：GUID（Globals Unique Identifiers） partition table 支持128个分区，使用64位，支持8Z（ 512Byte/block ）64Z （ 4096Byte/block）<br>
+使用128位UUID(Universally Unique Identifier) 表示磁盘和分区 GPT分区表自动备份在头和尾两份，并有CRC校验位<br>
+UEFI (Unified Extensible Firmware Interface 统一可扩展固件接口)硬件支持GPT，使得操作系统可以启动</p>
+<p><strong>GPT分区结构</strong></p>
+<p><img title="linux磁盘管理插图(3)" alt="linux磁盘管理插图(3)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222183022874-480x280.png"></p>
+<p>GPT分区结构分为4个区域：</p>
+<ul>
+<li>GPT头</li>
+<li>分区表</li>
+<li>GPT分区</li>
+<li>备份区域</li>
+</ul>
+<h5>BIOS和UEFI</h5>
+<p>BIOS是固化在电脑主板上的程序，主要用于开机系统自检和引导操作系统。目前新式的电脑基本上都是UEFI启动</p>
+<p>BIOS（Basic Input Output System 基本输入输出系统）主要完成系统硬件自检和引导操作系统，操作系统开始启动之后，BIOS的任务就完成了。系统硬件自检：如果系统硬件有故障，主板上的扬声器就会发出长短不同的“滴滴”音，可以简单的判断硬件故障，比如“1长1短”通常表示内存故障，“1长3短”通常表示显卡故障 </p>
+<p>BIOS在1975年就诞生了，使用汇编语言编写，当初只有16位，因此只能访问1M的内存，其中前640K称为基本内存，后384K内存留给开机和各类BIOS本身使用。BIOS只能识别到主引导记录（MBR）初始化的硬盘，最大支持2T的硬盘，4个主分区（逻辑分区中的扩展分区除外），而目前普遍实现了64位系统，传统的BIOS已经无法满足需求了，这时英特尔主导的EFI就诞生了</p>
+<p>EFI（Extensible Firmware Interface）可扩展固件接口，是 Intel 为 PC 固件的体系结构、接口和服务提出的建议标准。其主要目的是为了提供一组在 OS 加载之前（启动前）在所有平台上一致的、正确指定的启动服务，被看做是BIOS 的继任者，或者理解为新版BIOS。<br>
+UEFI是由EFI1.10为基础发展起来的，它的所有者已不再是Intel，而是一个称作Unified EFI Form的国际组织<br>
+UEFI(Unified Extensible Firmware Interface)统一的可扩展固件接口， 是一种详细描述类型接口的标准。UEFI 相当于一个轻量化的操作系统，提供了硬件和操作系统之间的一个接口，提供了图形化的操作界面。最关键的是引入了GPT分区表，支持2T以上的硬盘，硬盘分区不受限制</p>
+<p><strong>BIOS和UEFI区别</strong></p>
+<p>BIOS采用了16位汇编语言编写，只能运行在实模式（内存寻址方式由16位段寄存器的内容乘以16(10H)当做段基地址，加上16位偏移地址形成20位的物理地址）下，可访问的内存空间为1MB，只支持字符操作界面<br>
+UEFI采用32位或者64位的C语言编写，突破了实模式的限制，可以达到最大的寻址空间，支持图形操作界面，使用文件方式保存信息，支持GPT分区启动，适合和较新的系统和硬件的配合使用</p>
+<p><strong>BIOS+MBR与UEFI+GPT</strong></p>
+<p><img title="linux磁盘管理插图(4)" alt="linux磁盘管理插图(4)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222183404752-480x258.png"></p>
+<h5>管理分区</h5>
+<p>列出块设备</p>
+<pre><code>lsblk</code></pre>
+<p>创建分区命令</p>
+<pre><code>fdisk  管理MBR分区
+gdisk  管理GPT分区
+parted 高级分区操作</code></pre>
+<p>重新设置内存中的内核分区表版本</p>
+<pre><code>partprobe</code></pre>
+<h6>parted 命令</h6>
+<p>parted的操作都是实时生效的，小心使用</p>
+<p>格式：</p>
+<pre><code>parted [选项]... [设备 [命令 [参数]...]...] </code></pre>
+<p>范例：</p>
+<pre><code>parted /dev/sdb  mklabel gpt|msdos
+parted /dev/sdb  print 
+parted /dev/sdb  mkpart primary 1 200 （默认M）
+parted /dev/sdb  rm 1
+parted –l   列出所有硬盘分区信息</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb print</span>
+Error: /dev/sdb: unrecognised disk label
+Model: VMware, VMware Virtual S <span class="token punctuation">(</span>scsi<span class="token punctuation">)</span>                                    
+Disk /dev/sdb: <span class="token number">21</span>.5GB
+Sector size <span class="token punctuation">(</span>logical/physical<span class="token punctuation">)</span>: 512B/512B
+Partition Table: unknown
+Disk Flags: 
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted  /dev/sdb mklabel gpt </span>
+Information: You may need to update /etc/fstab.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb print</span>
+Model: VMware, VMware Virtual S <span class="token punctuation">(</span>scsi<span class="token punctuation">)</span>
+Disk /dev/sdb: <span class="token number">21</span>.5GB
+Sector size <span class="token punctuation">(</span>logical/physical<span class="token punctuation">)</span>: 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start  End  Size  File system  Name  Flags
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb mkpart primary  1 1001</span>
+Information: You may need to update /etc/fstab.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb print</span>
+Model: VMware, VMware Virtual S <span class="token punctuation">(</span>scsi<span class="token punctuation">)</span>
+Disk /dev/sdb: <span class="token number">21</span>.5GB
+Sector size <span class="token punctuation">(</span>logical/physical<span class="token punctuation">)</span>: 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name     Flags
+ <span class="token number">1</span>      1049kB  1001MB  1000MB               primary
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb mkpart primary  1002 1102</span>
+Information: You may need to update /etc/fstab.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb print</span>
+Model: VMware, VMware Virtual S <span class="token punctuation">(</span>scsi<span class="token punctuation">)</span>
+Disk /dev/sdb: <span class="token number">21</span>.5GB
+Sector size <span class="token punctuation">(</span>logical/physical<span class="token punctuation">)</span>: 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name     Flags
+ <span class="token number">1</span>      1049kB  1001MB  1000MB               primary
+ <span class="token number">2</span>      1002MB  1102MB  <span class="token number">99</span>.6MB               primary
+
+ <span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb rm 2 </span>
+Information: You may need to update /etc/fstab.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb print                                    </span>
+Model: VMware, VMware Virtual S <span class="token punctuation">(</span>scsi<span class="token punctuation">)</span>
+Disk /dev/sdb: <span class="token number">21</span>.5GB
+Sector size <span class="token punctuation">(</span>logical/physical<span class="token punctuation">)</span>: 512B/512B
+Partition Table: gpt
+Disk Flags: 
+
+Number  Start   End     Size    File system  Name     Flags
+ <span class="token number">1</span>      1049kB  1001MB  1000MB               primary
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb mklabel msdos </span>
+Warning: The existing disk label on /dev/sdb will be destroyed and all data on this disk will be lost. Do you want to continue?
+Yes/No? Y
+Information: You may need to update /etc/fstab.
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb print                           </span>
+Model: VMware, VMware Virtual S <span class="token punctuation">(</span>scsi<span class="token punctuation">)</span>
+Disk /dev/sdb: <span class="token number">21</span>.5GB
+Sector size <span class="token punctuation">(</span>logical/physical<span class="token punctuation">)</span>: 512B/512B
+Partition Table: msdos
+Disk Flags: 
+
+Number  Start  End  Size  Type  File system  Flags
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#parted /dev/sdb</span>
+GNU Parted <span class="token number">3.2</span>
+Using /dev/sdb
+Welcome to GNU Parted<span class="token operator">!</span> Type <span class="token string">'help'</span> to view a list of commands.
+<span class="token punctuation">(</span>parted<span class="token punctuation">)</span> <span class="token builtin class-name">help</span>
+  align-check TYPE N                        check partition N <span class="token keyword">for</span> TYPE<span class="token punctuation">(</span>min<span class="token operator">|</span>opt<span class="token punctuation">)</span> alignment
+  <span class="token builtin class-name">help</span> <span class="token punctuation">[</span>COMMAND<span class="token punctuation">]</span>                           print general help, or <span class="token builtin class-name">help</span> on COMMAND
+  mklabel,mktable LABEL-TYPE               create a new disklabel <span class="token punctuation">(</span>partition table<span class="token punctuation">)</span>
+  mkpart PART-TYPE <span class="token punctuation">[</span>FS-TYPE<span class="token punctuation">]</span> START END     <span class="token function">make</span> a partition
+  name NUMBER NAME                         name partition NUMBER as NAME
+  print <span class="token punctuation">[</span>devices<span class="token operator">|</span><span class="token function">free</span><span class="token operator">|</span>list,all<span class="token operator">|</span>NUMBER<span class="token punctuation">]</span>     display the partition table, available devices, <span class="token function">free</span> space, all found partitions, or a particular partition
+  quit                                     <span class="token builtin class-name">exit</span> program
+  rescue START END                         rescue a lost partition near START and END
+  resizepart NUMBER END                    resize partition NUMBER
+  <span class="token function">rm</span> NUMBER                                delete partition NUMBER
+  <span class="token keyword">select</span> DEVICE                            choose the device to edit
+  disk_set FLAG STATE                      change the FLAG on selected device
+  disk_toggle <span class="token punctuation">[</span>FLAG<span class="token punctuation">]</span>                       toggle the state of FLAG on selected device
+  <span class="token builtin class-name">set</span> NUMBER FLAG STATE                    change the FLAG on partition NUMBER
+  toggle <span class="token punctuation">[</span>NUMBER <span class="token punctuation">[</span>FLAG<span class="token punctuation">]</span><span class="token punctuation">]</span>                   toggle the state of FLAG on partition NUMBER
+  unit UNIT                                <span class="token builtin class-name">set</span> the default unit to UNIT
+  version                                  display the version number and copyright information of GNU Parted
+<span class="token punctuation">(</span>parted<span class="token punctuation">)</span> 
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h6>分区工具fdisk和gdisk</h6>
+<p>gdisk  [device…]             类fdisk 的GPT分区工具</p>
+<p>fdisk -l [-u] [device…]   查看分区</p>
+<p>fdisk  [device…]            管理MBR分区</p>
+<p>子命令：<br>
+p   分区列表<br>
+t   更改分区类型<br>
+n   创建新分区<br>
+d   删除分区<br>
+v   校验分区<br>
+u   转换单位<br>
+w   保存并退出<br>
+q   不保存并退出</p>
+<p>查看内核是否已经识别新的分区</p>
+<pre><code>cat /proc/partations</code></pre>
+<p>Centos6 通知内核重新读取硬盘分区表</p>
+<p>新增分区用 </p>
+<pre><code>partx -a  /dev/DEVICE           
+kpartx -a /dev/DEVICE -f: force</code></pre>
+<p>删除分区用</p>
+<pre><code>partx -d --nr M-N /dev/DEVICE</code></pre>
+<p>范例:非交互式创建分区</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token builtin class-name">echo</span> -e <span class="token string">'n<span class="token entity">\n</span>p<span class="token entity">\n</span><span class="token entity">\n</span><span class="token entity">\n</span>+2G<span class="token entity">\n</span>w<span class="token entity">\n</span>'</span> <span class="token operator">|</span> <span class="token function">fdisk</span> /dev/sdc</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#增加了6,7分区</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#fdisk /dev/sda </span>
+Command <span class="token punctuation">(</span>m <span class="token keyword">for</span> <span class="token builtin class-name">help</span><span class="token punctuation">)</span>: w
+The partition table has been altered<span class="token operator">!</span>
+
+Calling ioctl<span class="token punctuation">(</span><span class="token punctuation">)</span> to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error <span class="token number">16</span>: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next <span class="token function">reboot</span> or after you run partprobe<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> or kpartx<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span>
+Syncing disks.
+
+<span class="token comment">#分区表不同步</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#lsblk</span>
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sr0     <span class="token number">11</span>:0    <span class="token number">1</span>  <span class="token number">3</span>.7G  <span class="token number">0</span> rom  
+sda      <span class="token number">8</span>:0    <span class="token number">0</span>  200G  <span class="token number">0</span> disk 
+├─sda1   <span class="token number">8</span>:1    <span class="token number">0</span>    1G  <span class="token number">0</span> part /boot
+├─sda2   <span class="token number">8</span>:2    <span class="token number">0</span> <span class="token number">97</span>.7G  <span class="token number">0</span> part /
+├─sda3   <span class="token number">8</span>:3    <span class="token number">0</span> <span class="token number">48</span>.8G  <span class="token number">0</span> part /data
+├─sda4   <span class="token number">8</span>:4    <span class="token number">0</span>    1K  <span class="token number">0</span> part 
+└─sda5   <span class="token number">8</span>:5    <span class="token number">0</span>    2G  <span class="token number">0</span> part <span class="token punctuation">[</span>SWAP<span class="token punctuation">]</span>
+
+<span class="token comment">#同步分区表</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#partx  -a /dev/sda</span>
+BLKPG: Device or resource busy
+error adding partition <span class="token number">1</span>
+BLKPG: Device or resource busy
+error adding partition <span class="token number">2</span>
+BLKPG: Device or resource busy
+error adding partition <span class="token number">3</span>
+BLKPG: Device or resource busy
+error adding partition <span class="token number">4</span>
+BLKPG: Device or resource busy
+error adding partition <span class="token number">5</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#lsblk</span>
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sr0     <span class="token number">11</span>:0    <span class="token number">1</span>  <span class="token number">3</span>.7G  <span class="token number">0</span> rom  
+sda      <span class="token number">8</span>:0    <span class="token number">0</span>  200G  <span class="token number">0</span> disk 
+├─sda1   <span class="token number">8</span>:1    <span class="token number">0</span>    1G  <span class="token number">0</span> part /boot
+├─sda2   <span class="token number">8</span>:2    <span class="token number">0</span> <span class="token number">97</span>.7G  <span class="token number">0</span> part /
+├─sda3   <span class="token number">8</span>:3    <span class="token number">0</span> <span class="token number">48</span>.8G  <span class="token number">0</span> part /data
+├─sda4   <span class="token number">8</span>:4    <span class="token number">0</span>    1K  <span class="token number">0</span> part 
+├─sda5   <span class="token number">8</span>:5    <span class="token number">0</span>    2G  <span class="token number">0</span> part <span class="token punctuation">[</span>SWAP<span class="token punctuation">]</span>
+├─sda6   <span class="token number">8</span>:6    <span class="token number">0</span>    2G  <span class="token number">0</span> part 
+└─sda7   <span class="token number">8</span>:7    <span class="token number">0</span>    3G  <span class="token number">0</span> part
+
+<span class="token comment">#删除了6,7分区</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#fdisk /dev/sda </span>
+Command <span class="token punctuation">(</span>m <span class="token keyword">for</span> <span class="token builtin class-name">help</span><span class="token punctuation">)</span>: w
+The partition table has been altered<span class="token operator">!</span>
+
+Calling ioctl<span class="token punctuation">(</span><span class="token punctuation">)</span> to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error <span class="token number">16</span>: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next <span class="token function">reboot</span> or after you run partprobe<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> or kpartx<span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span>
+Syncing disks.
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#</span>
+
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#lsblk</span>
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sr0     <span class="token number">11</span>:0    <span class="token number">1</span>  <span class="token number">3</span>.7G  <span class="token number">0</span> rom  
+sda      <span class="token number">8</span>:0    <span class="token number">0</span>  200G  <span class="token number">0</span> disk 
+├─sda1   <span class="token number">8</span>:1    <span class="token number">0</span>    1G  <span class="token number">0</span> part /boot
+├─sda2   <span class="token number">8</span>:2    <span class="token number">0</span> <span class="token number">97</span>.7G  <span class="token number">0</span> part /
+├─sda3   <span class="token number">8</span>:3    <span class="token number">0</span> <span class="token number">48</span>.8G  <span class="token number">0</span> part /data
+├─sda4   <span class="token number">8</span>:4    <span class="token number">0</span>    1K  <span class="token number">0</span> part 
+├─sda5   <span class="token number">8</span>:5    <span class="token number">0</span>    2G  <span class="token number">0</span> part <span class="token punctuation">[</span>SWAP<span class="token punctuation">]</span>
+├─sda6   <span class="token number">8</span>:6    <span class="token number">0</span>    2G  <span class="token number">0</span> part 
+└─sda7   <span class="token number">8</span>:7    <span class="token number">0</span>    3G  <span class="token number">0</span> part 
+
+<span class="token comment">#同步分区表</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#partx -d --nr 6-7 /dev/sda</span>
+<span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#lsblk</span>
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+sr0     <span class="token number">11</span>:0    <span class="token number">1</span>  <span class="token number">3</span>.7G  <span class="token number">0</span> rom  
+sda      <span class="token number">8</span>:0    <span class="token number">0</span>  200G  <span class="token number">0</span> disk 
+├─sda1   <span class="token number">8</span>:1    <span class="token number">0</span>    1G  <span class="token number">0</span> part /boot
+├─sda2   <span class="token number">8</span>:2    <span class="token number">0</span> <span class="token number">97</span>.7G  <span class="token number">0</span> part /
+├─sda3   <span class="token number">8</span>:3    <span class="token number">0</span> <span class="token number">48</span>.8G  <span class="token number">0</span> part /data
+├─sda4   <span class="token number">8</span>:4    <span class="token number">0</span>    1K  <span class="token number">0</span> part 
+└─sda5   <span class="token number">8</span>:5    <span class="token number">0</span>    2G  <span class="token number">0</span> part <span class="token punctuation">[</span>SWAP<span class="token punctuation">]</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>CentOS 5,7,8 使用partprobe同步分区表</p>
+<pre><code>partprobe [/dev/DEVICE]</code></pre>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+		</div>	</div>
+
+	</div>
+
+</div>		
+</body></html>

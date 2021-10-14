@@ -1,0 +1,1141 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux网络配置 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux网络配置">
+<meta name="description" content="网络配置 基本网络配置 将Linux主机接入到网络，需要配置网络相关设置 一般包括如下内容： 主机名 IP/netmask 路由：默认网关 DNS服务器 主DNS服务器 次DNS服务器 第三个DNS服务器 CentOS 6 之前版本网卡名称…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33931"><link rel="prev" title="linux网络基础" href="http://www.yunweipai.com/33918.html">
+<link rel="next" title="linux进程管理" href="http://www.yunweipai.com/33936.html">
+<link rel="canonical" href="http://www.yunweipai.com/33931.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33931.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33931.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux网络配置, Linux教程">
+<meta name="description" content="网络配置 基本网络配置 将Linux主机接入到网络，需要配置网络相关设置 一般包括如下内容：   主机名   IP/netmask   路由：默认网关   DNS服务器  主DNS服务器 次DNS服务器 第三个DNS服务器   CentOS 6 之前版本网卡名称 接口命名方式：CentOS 6 以太网：eth[0,1,2,...] ppp：ppp[0,1,2,...] 网络接口识别并命名相关的udev配置文件： /etc/udev/ru">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post current"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33931" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>网络配置</h3>
+<h4>基本网络配置</h4>
+<p>将Linux主机接入到网络，需要配置网络相关设置</p>
+<p>一般包括如下内容：</p>
+<ul>
+<li>
+主机名
+</li>
+<li>
+IP/netmask
+</li>
+<li>
+路由：默认网关
+</li>
+<li>
+DNS服务器<p></p>
+<p>主DNS服务器<br>
+次DNS服务器<br>
+第三个DNS服务器
+</p></li>
+</ul>
+<h4>CentOS 6 之前版本网卡名称</h4>
+<p>接口命名方式：CentOS 6<br>
+以太网：eth[0,1,2,…]<br>
+ppp：ppp[0,1,2,…]<br>
+网络接口识别并命名相关的udev配置文件：<br>
+/etc/udev/rules.d/70-persistent-net.rules<br>
+查看网卡：<br>
+dmesg |grep –i eth<br>
+ethtool -i eth0<br>
+卸载网卡驱动：<br>
+modprobe -r e1000<br>
+rmmod e1000<br>
+装载网卡驱动：<br>
+modprobe e1000</p>
+<h4>网络配置命令</h4>
+<h5>网络配置方式</h5>
+<ul>
+<li>静态指定:<br>
+ifconfig, route, netstat<br>
+ip: object {link, addr, route}, ss, tc<br>
+system-config-network-tui，setup<br>
+配置文件</li>
+<li>动态分配：DHCP: Dynamic Host Configuration Protocol</li>
+</ul>
+<h5>ifconfig命令</h5>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">ifconfig</span> <span class="token punctuation">[</span>interface<span class="token punctuation">]</span>
+<span class="token function">ifconfig</span> -a
+<span class="token function">ifconfig</span> IFACE <span class="token punctuation">[</span>up<span class="token operator">|</span>down<span class="token punctuation">]</span>
+<span class="token function">ifconfig</span> interface <span class="token punctuation">[</span>aftype<span class="token punctuation">]</span> options <span class="token operator">|</span> address <span class="token punctuation">..</span>.
+<span class="token function">ifconfig</span> IFACE IP/netmask <span class="token punctuation">[</span>up<span class="token punctuation">]</span>
+<span class="token function">ifconfig</span> IFACE IP netmask NETMASK</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>注意：立即生效<br>
+启用混杂模式：[-]promisc</p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 10.0.0.68 netmask 255.255.0.0</span>
+
+<span class="token comment">#清除eth0上面的IP地址</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 0.0.0.0/0</span>
+
+<span class="token comment">#启用和禁用网卡</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 down</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 up</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0:1 172.16.0.8/24</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig </span>
+eth0: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">416</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,BROADCAST,RUNNING,MULTICAST<span class="token operator">&gt;</span>  mtu <span class="token number">1500</span>
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.0</span>.0.0  broadcast <span class="token number">10.255</span>.255.255
+        inet6 fe80::20c:29ff:fe45:a8a1  prefixlen <span class="token number">64</span>  scopeid 0x2<span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>link<span class="token operator">&gt;</span>
+        ether 00:0c:29:45:a8:a1  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Ethernet<span class="token punctuation">)</span>
+        RX packets <span class="token number">813</span>  bytes <span class="token number">75898</span> <span class="token punctuation">(</span><span class="token number">74.1</span> KiB<span class="token punctuation">)</span>
+        RX errors <span class="token number">0</span>  dropped <span class="token number">0</span>  overruns <span class="token number">0</span>  frame <span class="token number">0</span>
+        TX packets <span class="token number">563</span>  bytes <span class="token number">76262</span> <span class="token punctuation">(</span><span class="token number">74.4</span> KiB<span class="token punctuation">)</span>
+        TX errors <span class="token number">0</span>  dropped <span class="token number">0</span> overruns <span class="token number">0</span>  carrier <span class="token number">0</span>  collisions <span class="token number">0</span>
+
+eth0:1: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">416</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,BROADCAST,RUNNING,MULTICAST<span class="token operator">&gt;</span>  mtu <span class="token number">1500</span>
+        inet <span class="token number">172.16</span>.0.8  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">172.16</span>.0.255
+        ether 00:0c:29:45:a8:a1  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Ethernet<span class="token punctuation">)</span>
+
+lo: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">7</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,LOOPBACK,RUNNING<span class="token operator">&gt;</span>  mtu <span class="token number">65536</span>
+        inet <span class="token number">127.0</span>.0.1  netmask <span class="token number">255.0</span>.0.0
+        inet6 ::1  prefixlen <span class="token number">128</span>  scopeid 0x1<span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>host<span class="token operator">&gt;</span>
+        loop  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Local Loopback<span class="token punctuation">)</span>
+        RX packets <span class="token number">2</span>  bytes <span class="token number">140</span> <span class="token punctuation">(</span><span class="token number">140.0</span> B<span class="token punctuation">)</span>
+        RX errors <span class="token number">0</span>  dropped <span class="token number">0</span>  overruns <span class="token number">0</span>  frame <span class="token number">0</span>
+        TX packets <span class="token number">2</span>  bytes <span class="token number">140</span> <span class="token punctuation">(</span><span class="token number">140.0</span> B<span class="token punctuation">)</span>
+        TX errors <span class="token number">0</span>  dropped <span class="token number">0</span> overruns <span class="token number">0</span>  carrier <span class="token number">0</span>  collisions <span class="token number">0</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0:1 down</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig </span>
+eth0: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">416</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,BROADCAST,RUNNING,MULTICAST<span class="token operator">&gt;</span>  mtu <span class="token number">1500</span>
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.0</span>.0.0  broadcast <span class="token number">10.255</span>.255.255
+        inet6 fe80::20c:29ff:fe45:a8a1  prefixlen <span class="token number">64</span>  scopeid 0x2<span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>link<span class="token operator">&gt;</span>
+        ether 00:0c:29:45:a8:a1  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Ethernet<span class="token punctuation">)</span>
+        RX packets <span class="token number">864</span>  bytes <span class="token number">80572</span> <span class="token punctuation">(</span><span class="token number">78.6</span> KiB<span class="token punctuation">)</span>
+        RX errors <span class="token number">0</span>  dropped <span class="token number">0</span>  overruns <span class="token number">0</span>  frame <span class="token number">0</span>
+        TX packets <span class="token number">601</span>  bytes <span class="token number">81681</span> <span class="token punctuation">(</span><span class="token number">79.7</span> KiB<span class="token punctuation">)</span>
+        TX errors <span class="token number">0</span>  dropped <span class="token number">0</span> overruns <span class="token number">0</span>  carrier <span class="token number">0</span>  collisions <span class="token number">0</span>
+
+lo: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">7</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,LOOPBACK,RUNNING<span class="token operator">&gt;</span>  mtu <span class="token number">65536</span>
+        inet <span class="token number">127.0</span>.0.1  netmask <span class="token number">255.0</span>.0.0
+        inet6 ::1  prefixlen <span class="token number">128</span>  scopeid 0x1<span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>host<span class="token operator">&gt;</span>
+        loop  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Local Loopback<span class="token punctuation">)</span>
+        RX packets <span class="token number">2</span>  bytes <span class="token number">140</span> <span class="token punctuation">(</span><span class="token number">140.0</span> B<span class="token punctuation">)</span>
+        RX errors <span class="token number">0</span>  dropped <span class="token number">0</span>  overruns <span class="token number">0</span>  frame <span class="token number">0</span>
+        TX packets <span class="token number">2</span>  bytes <span class="token number">140</span> <span class="token punctuation">(</span><span class="token number">140.0</span> B<span class="token punctuation">)</span>
+        TX errors <span class="token number">0</span>  dropped <span class="token number">0</span> overruns <span class="token number">0</span>  carrier <span class="token number">0</span>  collisions <span class="token number">0</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig -s </span>
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+eth0             <span class="token number">1500</span>   <span class="token number">673005</span>      <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">0</span>        <span class="token number">672688</span>      <span class="token number">0</span>      <span class="token number">0</span>      <span class="token number">0</span> BMRU
+lo              <span class="token number">65536</span>       <span class="token number">70</span>      <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">0</span>            <span class="token number">70</span>      <span class="token number">0</span>      <span class="token number">0</span>      <span class="token number">0</span> LRU
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig -s  eth0</span>
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+eth0             <span class="token number">1500</span>   <span class="token number">673011</span>      <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">0</span>        <span class="token number">672694</span>      <span class="token number">0</span>      <span class="token number">0</span>      <span class="token number">0</span> BMRU
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>route命令</h5>
+<p>路由表管理命令</p>
+<p>路由表主要构成:</p>
+<ul>
+<li>Destination: 目标网络ID,表示可以到达的目标网络ID,0.0.0.0/0 表示所有未知网络,又称为默认路由,优先级最低</li>
+<li>Genmask:目标网络对应的netmask</li>
+<li>Iface: 到达对应网络,应该从当前主机哪个网卡发送出来</li>
+<li>Gateway: 到达非直连的网络,将数据发送到临近(下一个)路由器的临近本主机的接口的IP地址,如果是直连网络,gateway是0.0.0.0</li>
+<li>Metric: 开销cost,值越小,路由记录的优先级最高</li>
+</ul>
+<p>查看路由表：</p>
+<pre><code>route
+route -n</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#route </span>
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+default         _gateway        <span class="token number">0.0</span>.0.0         UG    <span class="token number">100</span>    <span class="token number">0</span>        <span class="token number">0</span> eth0
+<span class="token number">10.0</span>.0.0        <span class="token number">0.0</span>.0.0         <span class="token number">255.255</span>.255.0   U     <span class="token number">100</span>    <span class="token number">0</span>        <span class="token number">0</span> eth0
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#route  -n</span>
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+<span class="token number">0.0</span>.0.0         <span class="token number">10.0</span>.0.2        <span class="token number">0.0</span>.0.0         UG    <span class="token number">100</span>    <span class="token number">0</span>        <span class="token number">0</span> eth0
+<span class="token number">10.0</span>.0.0        <span class="token number">0.0</span>.0.0         <span class="token number">255.255</span>.255.0   U     <span class="token number">100</span>    <span class="token number">0</span>        <span class="token number">0</span> eth0</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>添加：route add</p>
+<pre><code>route add  [-net|-host|default]  target [netmask Nm] [gw GW] [[dev] If]</code></pre>
+<p>删除：route del</p>
+<pre><code>route del [-net|-host] target [gw Gw] [netmask Nm] [[dev] If]</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#目标：192.168.1.3  网关：172.16.0.1</span>
+route <span class="token function">add</span> -host <span class="token number">192.168</span>.1.3 gw <span class="token number">172.16</span>.0.1 dev eth0
+
+<span class="token comment">#目标：192.168.0.0 网关：172.16.0.1</span>
+route <span class="token function">add</span> -net <span class="token number">192.168</span>.0.0 netmask <span class="token number">255.255</span>.255.0 gw <span class="token number">172.16</span>.0.1 dev eth0
+route <span class="token function">add</span> -net <span class="token number">192.168</span>.0.0/24 gw <span class="token number">172.16</span>.0.1 dev eth0
+route <span class="token function">add</span>  -net <span class="token number">192.168</span>.8.0/24 dev eth1 metric <span class="token number">200</span>
+
+<span class="token comment">#默认路由，网关：172.16.0.1</span>
+route <span class="token function">add</span> -net <span class="token number">0.0</span>.0.0 netmask <span class="token number">0.0</span>.0.0 gw <span class="token number">172.16</span>.0.1
+route <span class="token function">add</span> default gw <span class="token number">172.16</span>.0.1
+
+<span class="token comment">#目标：192.168.1.3  网关：172.16.0.1</span>
+route del -host <span class="token number">192.168</span>.1.3
+
+<span class="token comment">#目标：192.168.0.0 网关：172.16.0.1</span>
+route del -net <span class="token number">192.168</span>.0.0 netmask <span class="token number">255.255</span>.255.0</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p><strong>范例：实现静态路由</strong></p>
+<p>环境：</p>
+<pre><code>四台主机：
+A主机：eth0 NAT模式
+R1主机：eth0 NAT模式,eth1 仅主机模式
+R2主机：eth0 桥接模式,eth1 仅主机模式
+B主机：eth0 桥接模式</code></pre>
+<p><img title="linux网络配置插图" alt="linux网络配置插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200113183945291-480x103.png"></p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#配置A主机</span>
+<span class="token function">ifconfig</span> eth0 <span class="token number">10.0</span>.0.123/8
+route <span class="token function">add</span> -net <span class="token number">10.0</span>.0.0/8 dev eth0
+route <span class="token function">add</span> default gw <span class="token number">10.0</span>.0.200 dev eth0
+
+<span class="token comment">#配置R1</span>
+<span class="token function">ifconfig</span> eth0 <span class="token number">10.0</span>.0.200/8
+<span class="token function">ifconfig</span> eth1 <span class="token number">192.168</span>.0.200/24
+route <span class="token function">add</span> -net <span class="token number">10.0</span>.0.0/8 dev eth0
+route <span class="token function">add</span> -net <span class="token number">192.168</span>.0.0/24 dev eth1
+route <span class="token function">add</span> -net <span class="token number">172.16</span>.0.0/16 gw <span class="token number">192.168</span>.0.201 dev eth1 
+<span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">&gt;</span> /proc/sys/net/ipv4/ip_forward 
+
+<span class="token comment">#配置R2</span>
+<span class="token function">ifconfig</span> eth0 <span class="token number">172.16</span>.0.200/16
+<span class="token function">ifconfig</span> eth1 <span class="token number">192.168</span>.0.201/24
+route <span class="token function">add</span> -net <span class="token number">192.168</span>.0.0/24 dev eth1
+route <span class="token function">add</span> -net <span class="token number">172.16</span>.0.0/16 dev eth0
+route <span class="token function">add</span> -net <span class="token number">10.0</span>.0.0/8 gw <span class="token number">10.0</span>.0.200 dev eth1 
+<span class="token builtin class-name">echo</span> <span class="token number">1</span> <span class="token operator">&gt;</span> /proc/sys/net/ipv4/ip_forward 
+
+<span class="token comment">#配置B</span>
+<span class="token function">ifconfig</span> eth0 <span class="token number">172.16</span>.0.123/16
+route <span class="token function">add</span> -net <span class="token number">172.16</span>.0.0/16 dev eth0
+route <span class="token function">add</span> default gw <span class="token number">172.16</span>.0.200 dev eth0</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>配置动态路由</h5>
+<p>通过守护进程获取动态路由<br>
+安装quagga包,通过命令vtysh配置<br>
+支持多种路由协议：RIP、OSPF和BGP</p>
+<h5>netstat命令</h5>
+<p>显示网络连接：</p>
+<pre><code>netstat [--tcp|-t] [--udp|-u] [--raw|-w] [--listening|-l] [--all|-a] [--numeric|-n] [--extend|-e[--extend|-e]]  [--program|-p]</code></pre>
+<p>常用选项</p>
+<pre><code>-t: tcp协议相关
+-u: udp协议相关
+-w: raw socket相关
+-l: 处于监听状态
+-a: 所有状态
+-n: 以数字显示IP和端口
+-e：扩展格式
+-p: 显示相关进程及PID</code></pre>
+<p>常用组合：</p>
+<pre><code>-tan, -uan, -tnl, -unl</code></pre>
+<p>显示路由表：</p>
+<pre><code>netstat  {--route|-r} [--numeric|-n]
+-r: 显示内核路由表
+-n: 数字格式</code></pre>
+<h5>显示接口统计数据</h5>
+<pre><code>netstat  {--interfaces|-I|-i} [iface] [--all|-a] [--extend|-e] [--program|-p] [--numeric|-n] 
+netstat -i
+netstat –I=IFACE
+ifconfig -s IFACE</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#netstat -Ieth0</span>
+Kernel Interface table
+Iface             MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+eth0             <span class="token number">1500</span>     <span class="token number">4660</span>      <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">0</span>          <span class="token number">2460</span>      <span class="token number">0</span>      <span class="token number">0</span>      <span class="token number">0</span> BMRU
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig -s eth0</span>
+Iface      MTU    RX-OK RX-ERR RX-DRP RX-OVR    TX-OK TX-ERR TX-DRP TX-OVR Flg
+eth0             <span class="token number">1500</span>     <span class="token number">4745</span>      <span class="token number">0</span>      <span class="token number">0</span> <span class="token number">0</span>          <span class="token number">2518</span>      <span class="token number">0</span>      <span class="token number">0</span>      <span class="token number">0</span> BMRU
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#netstat -nt</span>
+Active Internet connections <span class="token punctuation">(</span>w/o servers<span class="token punctuation">)</span>
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        <span class="token number">0</span>     <span class="token number">52</span> <span class="token number">10.0</span>.0.8:22             <span class="token number">10.0</span>.0.1:4927           ESTABLISHED</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>ip命令</h5>
+<p>来自于iproute包,代替ifconfig</p>
+<h6>配置Linux网络属性</h6>
+<pre><code>ip [ OPTIONS ] OBJECT { COMMAND | help }</code></pre>
+<p>ip 命令说明：</p>
+<pre><code>OBJECT := { link | addr | route }
+ip link - network device configuration
+set dev IFACE，可设置属性：up and down：激活或禁用指定接口，相当于 ifup/ifdown
+show    [dev IFACE] [up]：：指定接口 ，up 仅显示处于激活状态的接口</code></pre>
+<p>ip 地址管理</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">ip</span> addr <span class="token punctuation">{</span> <span class="token function">add</span> <span class="token operator">|</span> del <span class="token punctuation">}</span> IFADDR dev STRING <span class="token punctuation">[</span>label LABEL<span class="token punctuation">]</span> <span class="token punctuation">[</span>scope <span class="token punctuation">{</span>global<span class="token operator">|</span><span class="token function">link</span><span class="token operator">|</span>host<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">[</span>broadcast ADDRESS<span class="token punctuation">]</span>
+
+<span class="token punctuation">[</span>label LABEL<span class="token punctuation">]</span>：添加地址时指明网卡别名
+<span class="token punctuation">[</span>scope <span class="token punctuation">{</span>global<span class="token operator">|</span><span class="token function">link</span><span class="token operator">|</span>host<span class="token punctuation">}</span><span class="token punctuation">]</span>：指明作用域,global: 全局可用.link: 仅链接可用,host: 本机可用
+<span class="token punctuation">[</span>broadcast ADDRESS<span class="token punctuation">]</span>：指明广播地址  
+
+<span class="token function">ip</span> address show 
+<span class="token function">ip</span> addr flush  </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#禁用网卡</span>
+<span class="token function">ip</span> <span class="token function">link</span> <span class="token builtin class-name">set</span> eth1 down
+
+<span class="token comment">#网卡改名</span>
+<span class="token function">ip</span> <span class="token function">link</span> <span class="token builtin class-name">set</span> eth1 name wangnet  
+
+<span class="token comment">#启用网卡</span>
+<span class="token function">ip</span> <span class="token function">link</span> <span class="token builtin class-name">set</span> wangnet up
+
+<span class="token comment">#网卡别名</span>
+<span class="token function">ip</span> addr <span class="token function">add</span> <span class="token number">172.16</span>.100.100/16 dev eth0 label eth0:0
+<span class="token function">ip</span> addr del <span class="token number">172.16</span>.100.100/16 dev eth0 label eth0:0
+
+<span class="token comment">#清除网络地址</span>
+<span class="token function">ip</span> addr flush dev eth0 </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h6>管理路由</h6>
+<p>ip route 用法</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#添加路由：</span>
+<span class="token function">ip</span> route <span class="token function">add</span> TARGET via GW dev IFACE src SOURCE_IP
+        TARGET:
+            主机路由：IP
+            网络路由：NETWORK/MASK
+<span class="token comment">#添加网关：</span>
+<span class="token function">ip</span> route <span class="token function">add</span> default via GW dev IFACE
+
+<span class="token comment">#删除路由：</span>
+<span class="token function">ip</span> route del TARGET 
+
+<span class="token comment">#显示路由：</span>
+<span class="token function">ip</span> route show<span class="token operator">|</span>list
+
+<span class="token comment">#清空路由表：</span>
+<span class="token function">ip</span> route flush  <span class="token punctuation">[</span>dev IFACE<span class="token punctuation">]</span>     <span class="token punctuation">[</span>via PREFIX<span class="token punctuation">]</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">ip</span> route <span class="token function">add</span> <span class="token number">192.168</span>.0.0/24 via <span class="token number">172.16</span>.0.1
+<span class="token function">ip</span> route <span class="token function">add</span> <span class="token number">192.168</span>.1.100 via <span class="token number">172.16</span>.0.1
+<span class="token function">ip</span> route <span class="token function">add</span>  default via <span class="token number">172.16</span>.0.1
+<span class="token function">ip</span> route flush dev eth0</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>ss 命令</h5>
+<p>netstat 通过遍历 /proc来获取 socket信息，ss 使用 netlink与内核 tcp_diag 模块通信获取 socket 信息</p>
+<p>格式：</p>
+<pre><code>ss [OPTION]... [FILTER]</code></pre>
+<p>选项：</p>
+<pre><code>-t: tcp协议相关
+-u: udp协议相关
+-w: 裸套接字相关
+-x：unix sock相关
+-l: listen状态的连接
+-a: 所有
+-n: 数字格式
+-p: 相关的程序及PID
+-e: 扩展的信息
+-m：内存用量
+-o：计时器信息</code></pre>
+<p>格式说明</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">FILTER <span class="token builtin class-name">:</span>  <span class="token punctuation">[</span> state TCP-STATE <span class="token punctuation">]</span> <span class="token punctuation">[</span> EXPRESSION <span class="token punctuation">]</span>
+TCP的常见状态：
+    tcp finite state machine:
+        LISTEN: 监听
+        ESTABLISHED：已建立的连接
+        FIN_WAIT_1
+        FIN_WAIT_2
+        SYN_SENT
+        SYN_RECV
+        CLOSED
+EXPRESSION:
+    dport <span class="token operator">=</span> 
+    sport <span class="token operator">=</span> </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>常用组合：</p>
+<pre><code>-tan, -tanl, -tanlp, -uan</code></pre>
+<p>范例：常见用法</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#显示本地打开的所有端口</span>
+ss -l 
+
+<span class="token comment">#显示每个进程具体打开的socket</span>
+ss -pl 
+
+<span class="token comment">#显示所有tcp socket</span>
+ss -t -a 
+
+<span class="token comment">#显示所有的UDP Socekt</span>
+ss -u -a 
+
+<span class="token comment">#显示所有已建立的ssh连接</span>
+ss -o state established <span class="token string">'( dport = :ssh or sport = :ssh )'</span> 
+
+<span class="token comment">#显示所有已建立的HTTP连接</span>
+ss -o state established <span class="token string">'( dport = :http or sport = :http )'</span> 
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ss -no state established '( dport = :21 or sport = :21 )' </span>
+Netid               Recv-Q                Send-Q                                    Local Address:Port                                    Peer Address:Port                 
+tcp                 <span class="token number">0</span>                     <span class="token number">0</span>                                     <span class="token punctuation">[</span>::ffff:10.0.0.8<span class="token punctuation">]</span>:21                                 <span class="token punctuation">[</span>::ffff:10.0.0.7<span class="token punctuation">]</span>:46638                 timer:<span class="token punctuation">(</span>keepalive,119min,0<span class="token punctuation">)</span>
+
+<span class="token comment">#列出当前socket详细信息</span>
+ss -s </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>网络配置文件</h4>
+<h5>网络基本配置文件</h5>
+<p><strong>IP、MASK、GW、DNS相关的配置文件：</strong></p>
+<pre><code>/etc/sysconfig/network-scripts/ifcfg-IFACE</code></pre>
+<p><strong>说明参考：</strong></p>
+<pre><code>/usr/share/doc/initcripts-*/sysconfig.txt</code></pre>
+<p><strong>常用配置</strong></p>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>TYPE</td>
+<td>接口类型；常见有的Ethernet, Bridge</td>
+</tr>
+<tr>
+<td>NAME</td>
+<td>此配置文件应用到的设备</td>
+</tr>
+<tr>
+<td>DEVICE</td>
+<td>设备名</td>
+</tr>
+<tr>
+<td>HWADDR</td>
+<td>对应的设备的MAC地址</td>
+</tr>
+<tr>
+<td>UUID</td>
+<td>设备的惟一标识</td>
+</tr>
+<tr>
+<td>BOOTPROTO：</td>
+<td>激活此设备时使用的地址配置协议，常用的dhcp, static, none, bootp</td>
+</tr>
+<tr>
+<td>IPADDR</td>
+<td>指明IP地址</td>
+</tr>
+<tr>
+<td>NETMASK</td>
+<td>子网掩码,如:255.255.255.0</td>
+</tr>
+<tr>
+<td>PREFIX</td>
+<td>网络ID的位数, 如:24</td>
+</tr>
+<tr>
+<td>GATEWAY</td>
+<td>默认网关</td>
+</tr>
+<tr>
+<td>DNS1</td>
+<td>第一个DNS服务器地址</td>
+</tr>
+<tr>
+<td>DNS2</td>
+<td>第二个DNS服务器地址</td>
+</tr>
+<tr>
+<td>DOMAIN</td>
+<td>主机不完整时，自动搜索的域名后缀</td>
+</tr>
+<tr>
+<td>ONBOOT</td>
+<td>在系统引导时是否激活此设备</td>
+</tr>
+<tr>
+<td>USERCTL</td>
+<td>普通用户是否可控制此设备</td>
+</tr>
+<tr>
+<td>PEERDNS</td>
+<td>如果BOOTPROTO的值为“dhcp”，YES将允许dhcp server分配的dns服务器信息直接覆盖至/etc/resolv.conf文件，NO不允许修改resolv.conf</td>
+</tr>
+<tr>
+<td>NM_CONTROLLED</td>
+<td>NM是NetworkManager的简写，此网卡是否接受NM控制</td>
+</tr>
+</tbody>
+</table>
+<h5>配置当前主机的主机名</h5>
+<pre><code>#centos6 之前版本
+/etc/sysconfig/network
+HOSTNAME=
+
+#centos7 以后版
+/etc/hostname 
+HOSTNAME</code></pre>
+<h5>本地主机名数据库和IP地址的映射</h5>
+<p>优先于使用DNS前检查<br>
+getent hosts  查看/etc/hosts 内容</p>
+<pre><code>/etc/hosts</code></pre>
+<h5>DNS域名解析</h5>
+<pre><code>/etc/resolv.conf
+nameserver DNS_SERVER_IP1
+nameserver DNS_SERVER_IP2
+nameserver DNS_SERVER_IP3
+search DOMAIN</code></pre>
+<h5>修改 /etc/hosts和DNS的优先级</h5>
+<pre><code>/etc/nsswitch.conf 
+hosts:  files dns</code></pre>
+<h5>路由相关的配置文件：</h5>
+<pre><code>/etc/sysconfig/network-scripts/route-IFACE
+
+两种风格：
+(1) TARGET via GW
+如：10.0.0.0/8 via 172.16.0.1
+
+(2) 每三行定义一条路由
+ADDRESS#=TARGET
+NETMASK#=mask
+GATEWAY#=GW</code></pre>
+<h4>网卡别名</h4>
+<p>将多个IP地址绑定到一个NIC上</p>
+<p>每个IP绑定到独立逻辑网卡，即网络别名，命名格式： ethX:Y，如：eth0:1 、eth0:2、eth0:3</p>
+<p>范例：ifconfig命令</p>
+<pre><code>ifconfig eth0:0 192.168.1.100/24 up 
+ifconfig eth0:0 down</code></pre>
+<p>范例：ip命令</p>
+<pre><code>ip addr add 172.16.1.1/16 dev eth0
+ip addr add 172.16.1.2/16 dev eth0 label eth0:0
+ip addr del 172.16.1.2/16 dev eth0 label eth0:0
+ip addr flush dev eth0 label eth0:0</code></pre>
+<p>为每个设备别名生成独立的接口配置文件，格式为：ifcfg-ethX:xxx</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat /etc/sysconfig/network-scripts/ifcfg-eth0:1</span>
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>eth0:1
+<span class="token assign-left variable">IPADDR</span><span class="token operator">=</span><span class="token number">10.0</span>.0.100
+<span class="token assign-left variable">PREFIX</span><span class="token operator">=</span><span class="token number">8</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig </span>
+eth0: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">416</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,BROADCAST,RUNNING,MULTICAST<span class="token operator">&gt;</span>  mtu <span class="token number">1500</span>
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">10.0</span>.0.255
+        inet6 fe80::20c:29ff:fe09:f5b  prefixlen <span class="token number">64</span>  scopeid 0x2<span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>link<span class="token operator">&gt;</span>
+        ether 00:0c:29:09:0f:5b  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Ethernet<span class="token punctuation">)</span>
+        RX packets <span class="token number">2320</span>  bytes <span class="token number">200266</span> <span class="token punctuation">(</span><span class="token number">195.5</span> KiB<span class="token punctuation">)</span>
+        RX errors <span class="token number">0</span>  dropped <span class="token number">0</span>  overruns <span class="token number">0</span>  frame <span class="token number">0</span>
+        TX packets <span class="token number">1891</span>  bytes <span class="token number">279736</span> <span class="token punctuation">(</span><span class="token number">273.1</span> KiB<span class="token punctuation">)</span>
+        TX errors <span class="token number">0</span>  dropped <span class="token number">0</span> overruns <span class="token number">0</span>  carrier <span class="token number">0</span>  collisions <span class="token number">0</span>
+
+eth0:1: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">416</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,BROADCAST,RUNNING,MULTICAST<span class="token operator">&gt;</span>  mtu <span class="token number">1500</span>
+        inet <span class="token number">10.0</span>.0.100  netmask <span class="token number">255.0</span>.0.0  broadcast <span class="token number">10.255</span>.255.255
+        ether 00:0c:29:09:0f:5b  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Ethernet<span class="token punctuation">)</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>注意：</p>
+<ul>
+<li>建议 CentOS 6 关闭 NetworkManager 服务</li>
+<li>网卡别名必须使用静态联网</li>
+</ul>
+<h4>多网卡 bonding</h4>
+<p>将多块网卡绑定同一IP地址对外提供服务，可以实现高可用或者负载均衡。直接给两块网卡设置同一IP地址是不可以的。通过bonding，虚拟一块网卡对外提供连接，物理网卡的被修改为相同的MAC地址</p>
+<h5>Bonding工作模式</h5>
+<p>共7种模式：0-6 Mode</p>
+<ul>
+<li>Mode 0 (balance-rr)： 轮询（Round-robin）策略，从头到尾顺序的在每一个slave接口上面发送数据包。本模式提供负载均衡和容错的能力</li>
+<li>Mode 1 (active-backup)： 活动-备份（主备）策略，只有一个slave被激活，当且仅当活动的slave接口失败时才会激活其他slave.为了避免交换机发生混乱此时绑定的MAC地址只有一个外部端口上可见</li>
+<li>Mode 3 (broadcast)：广播策略，在所有的slave接口上传送所有的报文,提供容错能力</li>
+</ul>
+<p>说明：</p>
+<p>active-backup、balance-tlb 和 balance-alb 模式不需要交换机的任何特殊配置。其他绑定模式需要配置交换机以便整合链接。如：Cisco 交换机需要在模式 0、2 和 3 中使用 EtherChannel，但在模式4中需要 LACP和 EtherChannel</p>
+<h5>Bonding配置</h5>
+<p>详细帮助：</p>
+<pre><code>/usr/share/doc/kernel-doc- version/Documentation/networking/bonding.txt
+https://www.kernel.org/doc/Documentation/networking/bonding.txt</code></pre>
+<p>创建bonding设备的配置文件</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">/etc/sysconfig/network-scripts/ifcfg-bond0
+<span class="token assign-left variable">TYPE</span><span class="token operator">=</span>bond
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>bond0
+<span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>none
+<span class="token assign-left variable">IPADDR</span><span class="token operator">=</span><span class="token number">10.0</span>.0.100
+<span class="token assign-left variable">PREFIX</span><span class="token operator">=</span><span class="token number">8</span>
+<span class="token comment">#miimon指定链路监测时间间隔。如果miimon=100，那么系统每100ms 监测一次链路连接状态，如果有一条线路不通就转入另一条线路</span>
+<span class="token assign-left variable">BONDING_OPTS</span><span class="token operator">=</span><span class="token string">"mode=1 miimon=100"</span>
+
+/etc/sysconfig/network-scripts/ifcfg-eth0
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>eth0
+<span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>none
+<span class="token assign-left variable">MASTER</span><span class="token operator">=</span>bond0
+<span class="token assign-left variable">SLAVE</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">ONBOOT</span><span class="token operator">=</span>yes
+
+/etc/sysconfig/network-scripts/ifcfg-eth1
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>eth1
+<span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>none
+<span class="token assign-left variable">MASTER</span><span class="token operator">=</span>bond0
+<span class="token assign-left variable">SLAVE</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">ONBOOT</span><span class="token operator">=</span>yes</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>查看bond0状态：</p>
+<pre><code>/proc/net/bonding/bond0</code></pre>
+<p>删除bond0</p>
+<pre><code>ifconfig bond0 down
+rmmod bonding</code></pre>
+<h4>CentOS 7 以上版网络配置</h4>
+<p>CentOS 6之前，网络接口使用连续号码命名：eth0、eth1等,当增加或删除网卡时，名称可能会发生变化<br>
+CentOS 7以上版使用基于硬件，设备拓扑和设置类型命名</p>
+<h5>网卡命名机制</h5>
+<p><strong>systemd对网络设备的命名方式</strong></p>
+<ol>
+<li>如果Firmware或BIOS为主板上集成的设备提供的索引信息可用，且可预测则根据此索引进行命名，如：eno1</li>
+<li>如果Firmware或BIOS为PCI-E扩展槽所提供的索引信息可用，且可预测，则根据此索引进行命名，如：ens1</li>
+<li>如果硬件接口的物理位置信息可用，则根据此信息命名，如：enp2s0</li>
+<li>如果用户显式启动，也可根据MAC地址进行命名，如：enx2387a1dc56</li>
+<li>上述均不可用时，则使用传统命名机制</li>
+</ol>
+<p><strong>基于BIOS支持启用biosdevname软件</strong></p>
+<pre><code>内置网卡：em1,em2  
+pci卡：pYpX    Y：slot ,X:port </code></pre>
+<p><strong>网卡组成格式</strong></p>
+<pre><code>en: Ethernet 有线局域网
+wl: wlan 无线局域网
+ww: wwan无线广域网
+o&lt;index&gt;: 集成设备的设备索引号
+s&lt;slot&gt;: 扩展槽的索引号
+x&lt;MAC&gt;: 基于MAC地址的命名
+p&lt;bus&gt;s&lt;slot&gt;: enp2s1</code></pre>
+<p>使用传统命名方式：<br>
+(1) 编辑/etc/default/grub配置文件</p>
+<pre><code>GRUB_CMDLINE_LINUX="net.ifnames=0 biosdevname=0"</code></pre>
+<p>(2) 为grub2生成其配置文件</p>
+<pre><code>grub2-mkconfig -o /etc/grub2.cfg</code></pre>
+<p>(3) 重启系统</p>
+<h5>主机名</h5>
+<p><strong>配置文件:</strong></p>
+<pre><code>/etc/hostname </code></pre>
+<p>默认没有此文件，通过DNS反向解析获取主机名，主机名默认为：localhost.localdomain</p>
+<p>设置主机名</p>
+<pre><code>hostnamectl set-hostname centos7.magedu.com</code></pre>
+<p>删除文件/etc/hostname，恢复主机名localhost.localdomain</p>
+<p><strong>显示主机名信息</strong></p>
+<pre><code>hostname
+hostnamectl status</code></pre>
+<h5>网络配置工具nmcli</h5>
+<p>图形工具：nm-connection-editor</p>
+<p>字符配置tui工具：</p>
+<ul>
+<li>nmtui</li>
+<li>nmtui-connect   </li>
+<li>nmtui-edit  </li>
+<li>nmtui-hostname</li>
+</ul>
+<p>命令行工具：nmcli</p>
+<p>以上工具都依赖NeworkManager服务，此服务是管理和监控网络设置的守护进程</p>
+<p><strong>nmcli命令</strong></p>
+<p>参考文档：<a href="http://www.yunweipai.com/go?_=c78021f3d6aHR0cHM6Ly9hY2Nlc3MucmVkaGF0LmNvbS9kb2N1bWVudGF0aW9uL2VuLXVzL3JlZF9oYXRfZW50ZXJwcmlzZV9saW51eC84L2h0bWwvY29uZmlndXJpbmdfYW5kX21hbmFnaW5nX25ldHdvcmtpbmcvY29uZmlndXJpbmctbmV0d29ya2luZy13aXRoLW5tY2xpX2NvbmZpZ3VyaW5nLWFuZC1tYW5hZ2luZy1uZXR3b3JraW5n" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=c78021f3d6aHR0cHM6Ly9hY2Nlc3MucmVkaGF0LmNvbS9kb2N1bWVudGF0aW9uL2VuLXVzL3JlZF9oYXRfZW50ZXJwcmlzZV9saW51eC84L2h0bWwvY29uZmlndXJpbmdfYW5kX21hbmFnaW5nX25ldHdvcmtpbmcvY29uZmlndXJpbmctbmV0d29ya2luZy13aXRoLW5tY2xpX2NvbmZpZ3VyaW5nLWFuZC1tYW5hZ2luZy1uZXR3b3JraW5n" rel="external nofollow" target="_blank">https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/configuring-networking-with-nmcli_configuring-and-managing-networking</a></p>
+<p>nmcli命令相关术语</p>
+<ul>
+<li>设备即网络接口</li>
+<li>连接是对网络接口的配置，一个网络接口可有多个连接配置，但同时只有一个连接配置生效</li>
+</ul>
+<p>格式：</p>
+<pre><code>nmcli  [ OPTIONS ] OBJECT { COMMAND | help }
+    device - show and manage network interfaces
+    nmcli device help
+    connection - start, stop, and manage network connections
+    nmcli connection help</code></pre>
+<p>修改IP地址等属性：</p>
+<pre><code>nmcli connection modify IFACE [+|-]setting.property value
+setting.property: ipv4.addresses  ipv4.gateway ipv4.dns1  ipv4.method   manual | auto</code></pre>
+<p>修改配置文件执行生效：</p>
+<pre><code>nmcli con reload
+nmcli con up con-name</code></pre>
+<table>
+<thead>
+<tr>
+<th><strong>nmcli</strong> <strong>con mod</strong></th>
+<th><strong>ifcfg**</strong>-*<strong> </strong>文件**</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ipv4.method manual</td>
+<td>BOOTPROTO=none</td>
+</tr>
+<tr>
+<td>ipv4.method auto</td>
+<td>BOOTPROTO=dhcp</td>
+</tr>
+<tr>
+<td>ipv4.addresses 192.168.2.1/24</td>
+<td>IPADDR=192.168.2.1  PREFIX=24</td>
+</tr>
+<tr>
+<td>ipv4.gateway  172.16.0.200</td>
+<td>GATEWAY=192.0.2.254</td>
+</tr>
+<tr>
+<td>ipv4.dns 8.8.8.8</td>
+<td>DNS0=8.8.8.8</td>
+</tr>
+<tr>
+<td>ipv4.dns-search example.com</td>
+<td>DOMAIN=example.com</td>
+</tr>
+<tr>
+<td>ipv4.ignore-auto-dns true</td>
+<td>PEERDNS=no</td>
+</tr>
+<tr>
+<td>connection.autoconnect  yes</td>
+<td>ONBOOT=yes</td>
+</tr>
+<tr>
+<td>connection.id eth0</td>
+<td>NAME=eth0</td>
+</tr>
+<tr>
+<td>connection.interface-name  eth0</td>
+<td>DEVICE=eth0</td>
+</tr>
+<tr>
+<td>802-3-ethernet.mac-address . . .</td>
+<td>HWADDR= . . .</td>
+</tr>
+</tbody>
+</table>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#查看帮助</span>
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">help</span>
+
+<span class="token comment">#使用nmcli配置网络</span>
+nmcli con show
+
+<span class="token comment">#显示所有活动连接</span>
+nmcli con show --active
+
+<span class="token comment">#显示网络连接配置</span>
+nmcli con show  "System eth0“
+
+<span class="token comment">#显示设备状态</span>
+nmcli  dev  status 
+
+<span class="token comment">#显示网络接口属性</span>
+nmcli  dev show eth0
+
+<span class="token comment">#创建新连接default，IP自动通过dhcp获取</span>
+nmcli  con <span class="token function">add</span> con-name default  <span class="token builtin class-name">type</span> Ethernet ifname eth0
+
+<span class="token comment">#删除连接</span>
+nmcli con del default
+
+<span class="token comment">#创建新连接static ，指定静态IP，不自动连接</span>
+nmcti  con <span class="token function">add</span> con-name static   ifname eth0 autoconnect no <span class="token builtin class-name">type</span> Ethernet ipv4.addresses <span class="token number">172.25</span>.X.10/24 ipv4.gateway   <span class="token number">172.25</span>.X.254
+
+<span class="token comment">#启用static连接配置</span>
+nmcli con up static
+
+<span class="token comment">#启用default连接配置</span>
+nmcli con up default
+
+<span class="token comment">#修改连接设置</span>
+nmcli con mod “static” connection.autoconnect no
+nmcli con mod “static”  ipv4.dns <span class="token number">172.25</span>.X.254
+nmcli con mod “static”  +ipv4.dns  <span class="token number">8.8</span>.8.8
+nmcli con mod “static”  -ipv4.dns  <span class="token number">8.8</span>.8.8
+nmcli con mod “static” ipv4.addresses “172.16.X.10/24  <span class="token number">172.16</span>.X.254”
+nmcli con mod “static”  +ipv4.addresses <span class="token number">10.10</span>.10.10/16
+
+<span class="token comment">#DNS设置存放在/etc/resolv.conf，PEERDNS=no 表示当IP通过dhcp自动获取时，dns仍是手动设置，不自动获取等价于下面命令</span>
+nmcli con mod “system eth0” ipv4.ignore-auto-dns <span class="token function">yes</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>nmcli实现bonding</h5>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#添加bonding接口</span>
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> bond con-name mybond0 ifname bond0 mode active-backup
+<span class="token comment">#添加从属接口</span>
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> bond-slave ifname ens7 master bond0
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> bond-slave ifname ens3 master bond0
+<span class="token comment">#注：如无为从属接口提供连接名，则该名称是接口名称加类型构成</span>
+
+<span class="token comment">#要启动绑定，则必须首先启动从属接口</span>
+nmcli con up bond-slave-eth0
+nmcli con up bond-slave-eth1
+
+<span class="token comment">#启动绑定</span>
+nmcli con up mybond0</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>网络组Network Teaming</h5>
+<p>网络组：是将多个网卡聚合在一起方法，从而实现冗错和提高吞吐量<br>
+网络组不同于旧版中bonding技术，提供更好的性能和扩展性<br>
+网络组由内核驱动和teamd守护进程实现</p>
+<p>多种方式 runner</p>
+<ul>
+<li>broadcast</li>
+<li>roundrobin</li>
+<li>activebackup</li>
+<li>loadbalance</li>
+<li>lacp (implements the 802.3ad Link Aggregation Control Protocol)</li>
+</ul>
+<p>网络组特点</p>
+<ul>
+<li>启动网络组接口不会自动启动网络组中的port接口</li>
+<li>启动网络组接口中的port接口总会自动启动网络组接口</li>
+<li>禁用网络组接口会自动禁用网络组中的port接口</li>
+<li>没有port接口的网络组接口可以启动静态IP连接</li>
+<li>启用DHCP连接时，没有port接口的网络组会等待port接口的加入</li>
+</ul>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#创建网络组接口</span>
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> team con-name CNAME ifname INAME <span class="token punctuation">[</span>config JSON<span class="token punctuation">]</span>
+
+CNAME 连接名
+INAME 接口名 
+JSON 指定runner方式,格式：<span class="token string">'{"runner": {"name": "METHOD"}}'</span>
+METHOD 可以是broadcast, roundrobin, activebackup, loadbalance, lacp
+
+<span class="token comment">#创建port接口</span>
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> team-slave con-name CNAME ifname INAME master TEAM
+
+CNAME   连接名,连接名若不指定，默认为team-slave-IFACE
+INAME   网络接口名
+TEAM    网络组接口名 
+
+<span class="token comment">#断开和启动</span>
+nmcli dev dis INAME
+nmcli con up CNAME
+
+INAME  设备名 CNAME 网络组接口名或port接口</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>网络组示例</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> team con-name myteam0 ifname team0 config <span class="token string">'{"runner": {"name": "loadbalance"}}'</span> ipv4.addresses <span class="token number">192.168</span>.1.100/24 ipv4.method manual
+nmcli con <span class="token function">add</span> con-name team0-eth1 <span class="token builtin class-name">type</span> team-slave ifname eth1 master team0
+nmcli con <span class="token function">add</span> con-name team0-eth2 <span class="token builtin class-name">type</span> team-slave ifname eth2 master team0
+nmcli con up myteam0
+nmcli con up team0-eth1
+nmcli con up team0-eth2
+
+teamdctl team0 state
+<span class="token function">ping</span> -I team0 <span class="token number">192.168</span>.0.254
+nmcli dev dis eth1
+teamdctl team0 state
+nmcli con up team0-port1
+nmcli dev dis eth2
+teamdctl team0 state
+nmcli con up team0-port2
+teamdctl team0 state
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>管理网络组配置文件</p>
+<pre><code>/etc/sysconfig/network-scripts/ifcfg-team0
+DEVICE=team0
+DEVICETYPE=Team
+TEAM_CONFIG="{\"runner\": {\"name\": \"broadcast\"}}"
+BOOTPROTO=none
+IPADDR0=172.16.0.100
+PREFIX0=24
+NAME=team0
+ONBOOT=yes</code></pre>
+<p>管理网络组配置文件</p>
+<pre><code>/etc/sysconfig/network-scripts/ifcfg-team0-eth1
+DEVICE=eth1
+DEVICETYPE=TeamPort
+TEAM_MASTER=team0
+NAME=team0-eth1
+ONBOOT=yes</code></pre>
+<p>删除网络组</p>
+<pre><code>nmcli connection down team0
+teamdctl team0 state
+nmcli connection show
+nmcli connectioni delete team0-eth0
+nmcli connectioni delete team0-eth1
+nmcli connection show</code></pre>
+<h4>网桥</h4>
+<h5>桥接原理</h5>
+<p>桥接：把一台机器上的若干个网络接口“连接”起来。其结果是，其中一个网口收到的报文会被复制给其他网口并发送出去。以使得网口之间的报文能够互相转发。网桥就是这样一个设备，它有若干个网口，并且这些网口是桥接起来的。与网桥相连的主机就能通过交换机的报文转发而互相通信。</p>
+<p><img title="linux网络配置插图(1)" alt="linux网络配置插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191228181624110-480x136.png"></p>
+<p>主机A发送的报文被送到交换机S1的eth0口，由于eth0与eth1、eth2桥接在一起，故而报文被复制到eth1和eth2，并且发送出去，然后被主机B和交换机S2接收到。而S2又会将报文转发给主机C、D</p>
+<h5>配置实现网桥</h5>
+<p>工具包：bridge-utils,目前CentOS 8无此包</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">yum <span class="token function">install</span> bridge-utils
+
+<span class="token comment">#查看网桥       </span>
+brctl  show
+
+<span class="token comment">#查看CAM(content addressable  memory内容可寻址存储器)表    </span>
+brctl  showmacs br0
+
+<span class="token comment">#添加和删除网桥        </span>
+brctl addbr <span class="token operator">|</span> delbr br0 
+
+<span class="token comment">#添加和删除网桥中网卡     </span>
+brctl addif <span class="token operator">|</span> delif br0 eth0
+
+<span class="token comment">#默认br0 是down,必须启用</span>
+<span class="token function">ifconfig</span> br0 up </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>注意：NetworkManager只支持以太网接口接口连接到网桥，不支持聚合接口</p>
+<p>nmcli命令创建软件网桥</p>
+<pre><code>nmcli con add con-name mybr0 type bridge ifname br0
+nmcli con modify mybr0 ipv4.addresses 192.168.0.100/24 ipv4.method manual
+nmcli con add con-name br0-port0 type bridge-slave  ifname eth0 master br0</code></pre>
+<p>查看配置文件</p>
+<pre><code>cat  /etc/sysconfig/network-scripts/ifcfg-br0
+cat  /etc/sysconfig/network-scripts/ifcfg-br0-port0</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#1创建网桥</span>
+nmcli con <span class="token function">add</span> <span class="token builtin class-name">type</span> bridge con-name br0 ifname br0
+nmcli connection modify br0 ipv4.addresses <span class="token number">192.168</span>.0.100/24 ipv4.method manual
+nmcli con up br0
+
+<span class="token comment">#2加入物理网卡</span>
+nmcli  con <span class="token function">add</span> <span class="token builtin class-name">type</span> bridge-slave con-name br0-port0 ifname eth0 master br0
+nmcli  con <span class="token function">add</span> <span class="token builtin class-name">type</span> bridge-slave con-name br0-port1 ifname eth1 master br0
+nmcli  con up br0-port0
+nmcli  con up br0-port1
+
+<span class="token comment">#3查看网桥配置文件</span>
+<span class="token function">cat</span>  /etc/sysconfig/network-scripts/ifcfg-br0
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>br0
+<span class="token assign-left variable">STP</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">TYPE</span><span class="token operator">=</span>Bridge
+<span class="token assign-left variable">BOOTPROTO</span><span class="token operator">=</span>static
+<span class="token assign-left variable">IPADDR</span><span class="token operator">=</span><span class="token number">192.168</span>.0.100
+<span class="token assign-left variable">PREFIX</span><span class="token operator">=</span><span class="token number">24</span>
+
+<span class="token function">cat</span> /etc/sysconfig/network-scripts/ifcfg-br0-port0
+<span class="token assign-left variable">TYPE</span><span class="token operator">=</span>Ethernet
+<span class="token assign-left variable">NAME</span><span class="token operator">=</span>br0-port0
+<span class="token assign-left variable">DEVICE</span><span class="token operator">=</span>eth0
+<span class="token assign-left variable">ONBOOT</span><span class="token operator">=</span>yes
+<span class="token assign-left variable">BRIDGE</span><span class="token operator">=</span>br0
+<span class="token assign-left variable">UUID</span><span class="token operator">=</span>23f41d3b-b57c-4e26-9b17-d5f02dafd12d
+
+<span class="token comment">#4安装管理软件包：</span>
+yum <span class="token function">install</span> bridge-utils
+brctl show
+
+<span class="token comment">#5删除br0</span>
+nmcli con down br0
+<span class="token function">rm</span> /etc/sysconfig/network-scripts/ifcfg-br0*
+nmcli con reload</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>网络测试诊断工具</h4>
+<ul>
+<li>
+测试网络连通性<br>
+ping
+</li>
+<li>
+显示正确的路由表<br>
+ip route
+</li>
+<li>
+跟踪路由<br>
+traceroute<br>
+tracepath<br>
+mtr
+</li>
+<li>
+确定名称服务器使用<br>
+nslookup<br>
+host<br>
+dig
+</li>
+<li>
+抓包工具<p></p>
+<p>tcpdump </p>
+<p>wireshark
+</p></li>
+<li>
+安全扫描工具<p></p>
+<p>nmap</p>
+<p>netcat ：网络界的瑞士
+</p></li>
+<li>
+流量控制工具<p></p>
+<p>tc</p>
+<p>范例：</p>
+<pre><code>tc qdisc add dev eth0 root netem loss 50%
+tc qdisc add dev eth0 root netem delay 1000ms
+tc qdisc show dev eth0
+tc qdisc del  </code></pre>
+</li>
+</ul>
+
+				
+			</div>
+
+			<div class="clear"></div>
+
+			
+		</div>
+
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

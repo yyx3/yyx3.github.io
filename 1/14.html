@@ -1,0 +1,540 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux文本处理-sed – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,sed">
+<meta name="description" content="文本处理三剑客之 sed sed 工作原理 sed 即 stream EDitor，和 vi 不同，sed是行编辑器 Sed是从文件或管道中读取一行，处理一行，输出一行；再读取一行，再处理一行，再输出一行，直到最后一行。每当处理一行时，把当…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33886"><link rel="prev" title="linux-文本处理-grep" href="http://www.yunweipai.com/33884.html">
+<link rel="next" title="linux文本处理-awk" href="http://www.yunweipai.com/33891.html">
+<link rel="canonical" href="http://www.yunweipai.com/33886.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33886.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33886.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, sed, Linux教程">
+<meta name="description" content="文本处理三剑客之 sed sed 工作原理  sed 即 stream EDitor，和 vi 不同，sed是行编辑器 Sed是从文件或管道中读取一行，处理一行，输出一行；再读取一行，再处理一行，再输出一行，直到最后一行。每当处理一行时，把当前处理的行存储在临时缓冲区中，称为模式空间（Pattern Space），接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，直到文件末尾。一次处理">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post current"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33886" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h4>文本处理三剑客之 sed</h4>
+<h5>sed 工作原理</h5>
+<p><img title="linux文本处理-sed插图" alt="linux文本处理-sed插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191214222158011-480x204.png"></p>
+<p>sed 即 stream EDitor，和 vi 不同，sed是行编辑器<br>
+Sed是从文件或管道中读取一行，处理一行，输出一行；再读取一行，再处理一行，再输出一行，直到最后一行。每当处理一行时，把当前处理的行存储在临时缓冲区中，称为<strong>模式空间（Pattern Space）</strong>，接着用sed命令处理缓冲区中的内容，处理完成后，把缓冲区的内容送往屏幕。接着处理下一行，这样不断重复，直到文件末尾。一次处理一行的设计模式使得sed性能很高，sed在读取大文件时不会出现卡顿的现象。如果使用vi命令打开几十M上百M的文件，明显会出现有卡顿的现象，这是因为vi命令打开文件是一次性将文件加载到内存，然后再打开。Sed就避免了这种情况，一行一行的处理，打开速度非常快，执行速度也很快</p>
+<p>参考网站：<a href="http://www.yunweipai.com/go?_=35bc2566c7aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL3NlZC9tYW51YWwvc2VkLmh0bWw=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=35bc2566c7aHR0cDovL3d3dy5nbnUub3JnL3NvZnR3YXJlL3NlZC9tYW51YWwvc2VkLmh0bWw=" rel="external nofollow" target="_blank">http://www.gnu.org/software/sed/manual/sed.html</a></p>
+<h5>sed 基本用法</h5>
+<p>格式：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">sed</span> <span class="token punctuation">[</span>option<span class="token punctuation">]</span><span class="token punctuation">..</span>. <span class="token string">'script;script;...'</span> inputfile<span class="token punctuation">..</span>.</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>常用选项：</p>
+<p>-n            不输出模式空间内容到屏幕，即不自动打印<br>
+-e            多点编辑<br>
+-f  /PATH/SCRIPT_FILE   从指定文件中读取编辑脚本<br>
+-r, -E        使用扩展正则表达式<br>
+-i.bak       备份文件并原处编辑</p>
+<p><strong>script格式：</strong></p>
+<pre><code>'地址命令'</code></pre>
+<p><strong>地址格式：</strong></p>
+<pre><code>1. 不给地址：对全文进行处理
+2. 单地址：
+   #：指定的行，$：最后一行
+   /pattern/：被此处模式所能够匹配到的每一行
+3. 地址范围：
+    #,#
+    #,+#
+    /pat1/,/pat2/
+    #,/pat/
+4. 步进：~
+      1~2 奇数行
+      2~2 偶数行</code></pre>
+<p><strong>命令：</strong></p>
+<pre><code>p           打印当前模式空间内容，追加到默认输出之后
+Ip          忽略大小写输出
+d           删除模式空间匹配的行，并立即启用下一轮循环
+a [\\]text  在指定行后面追加文本，支持使用\n实现多行追加
+i [\\]text  在行前面插入文本
+c [\\]text  替换行为单行或多行文本
+w /path/file    保存模式匹配的行至指定文件
+r /path/file    读取指定文件的文本至模式空间中匹配到的行后
+=           为模式空间中的行打印行号
+!           模式空间中匹配行取反处理
+
+s/pattern/string/修饰符        查找替换,支持使用其它分隔符，可以是其它形式：s@@@，s###
+替换修饰符：
+g   行内全局替换
+p   显示替换成功的行
+w   /PATH/FILE  将替换成功的行保存至文件中
+I,i   忽略大小写</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed '' </span>
+welcome
+welcome
+to
+to
+magedu
+magedu
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed ''  /etc/issue</span>
+<span class="token punctuation">\</span>S
+Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed 'p'  /etc/issue</span>
+<span class="token punctuation">\</span>S
+<span class="token punctuation">\</span>S
+Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -n '' /etc/issue</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -n 'p' /etc/issue</span>
+<span class="token punctuation">\</span>S
+Kernel <span class="token punctuation">\</span>r on an <span class="token punctuation">\</span>m
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -n '1p' /etc/passwd</span>
+root:x:0:0:root:/root:/bin/bash
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 | sed '2p'</span>
+eth0: <span class="token assign-left variable">flags</span><span class="token operator">=</span><span class="token number">416</span><span class="token operator"><span class="token file-descriptor important">3</span>&lt;</span>UP,BROADCAST,RUNNING,MULTICAST<span class="token operator">&gt;</span>  mtu <span class="token number">1500</span>
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">10.0</span>.0.255
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">10.0</span>.0.255
+        inet6 fe80::20c:29ff:fe45:a8a1  prefixlen <span class="token number">64</span>  scopeid 0x2<span class="token operator"><span class="token file-descriptor important">0</span>&lt;</span>link<span class="token operator">&gt;</span>
+        ether 00:0c:29:45:a8:a1  txqueuelen <span class="token number">1000</span>  <span class="token punctuation">(</span>Ethernet<span class="token punctuation">)</span>
+        RX packets <span class="token number">89815</span>  bytes <span class="token number">69267453</span> <span class="token punctuation">(</span><span class="token number">66.0</span> MiB<span class="token punctuation">)</span>
+        RX errors <span class="token number">0</span>  dropped <span class="token number">0</span>  overruns <span class="token number">0</span>  frame <span class="token number">0</span>
+        TX packets <span class="token number">115634</span>  bytes <span class="token number">79827662</span> <span class="token punctuation">(</span><span class="token number">76.1</span> MiB<span class="token punctuation">)</span>
+        TX errors <span class="token number">0</span>  dropped <span class="token number">0</span> overruns <span class="token number">0</span>  carrier <span class="token number">0</span>  collisions <span class="token number">0</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 | sed -n '2p'</span>
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">10.0</span>.0.255
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -n  'p' /etc/passwd</span>
+postfix:x:89:89::/var/spool/postfix:/sbin/nologin
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 |sed -n '/netmask/p'</span>
+        inet <span class="token number">10.0</span>.0.8  netmask <span class="token number">255.255</span>.255.0  broadcast <span class="token number">10.0</span>.0.255
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#df | sed -n '/^\/dev\/sd/p'</span>
+/dev/sda2      <span class="token number">104806400</span> <span class="token number">4872956</span>  <span class="token number">99933444</span>   <span class="token number">5</span>% /
+/dev/sda3       <span class="token number">52403200</span>  <span class="token number">398860</span>  <span class="token number">52004340</span>   <span class="token number">1</span>% /data
+/dev/sda1         <span class="token number">999320</span>  <span class="token number">848568</span>     <span class="token number">81940</span>  <span class="token number">92</span>% /boot
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10 | sed -n '3,6p'</span>
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10 | sed -n '3,+4p'</span>
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10 | sed -n '3,p'</span>
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+<span class="token number">8</span>
+<span class="token number">9</span>
+<span class="token number">10</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10  |sed -n  '1~2p'</span>
+<span class="token number">1</span>
+<span class="token number">3</span>
+<span class="token number">5</span>
+<span class="token number">7</span>
+<span class="token number">9</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10  |sed -n  '2~2p'</span>
+<span class="token number">2</span>
+<span class="token number">4</span>
+<span class="token number">6</span>
+<span class="token number">8</span>
+<span class="token number">10</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10  |sed   '1~2d'</span>
+<span class="token number">2</span>
+<span class="token number">4</span>
+<span class="token number">6</span>
+<span class="token number">8</span>
+<span class="token number">10</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10  |sed   '2~2d'</span>
+<span class="token number">1</span>
+<span class="token number">3</span>
+<span class="token number">5</span>
+<span class="token number">7</span>
+<span class="token number">9</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -e '2d' -e '4d' seq.log</span>
+<span class="token number">1</span>
+<span class="token number">3</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+<span class="token number">8</span>
+<span class="token number">9</span>
+<span class="token number">10</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  '2d;4d' seq.log</span>
+<span class="token number">1</span>
+<span class="token number">3</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+<span class="token number">8</span>
+<span class="token number">9</span>
+<span class="token number">10</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -i.orig  '2d;4d' seq.log</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat seq.log.orig</span>
+<span class="token number">1</span>
+<span class="token number">2</span>
+<span class="token number">3</span>
+<span class="token number">4</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+<span class="token number">8</span>
+<span class="token number">9</span>
+<span class="token number">10</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat seq.log</span>
+<span class="token number">1</span>
+<span class="token number">3</span>
+<span class="token number">5</span>
+<span class="token number">6</span>
+<span class="token number">7</span>
+<span class="token number">8</span>
+<span class="token number">9</span>
+<span class="token number">10</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#seq 10 &gt; seq.log </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -i.orig  '2d;4d' seq.log</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -i   '/^listen 9527/a listen 80 \nlisten 8080' /etc/httpd/conf/httpd.conf</span>
+
+<span class="token comment">#删除所有以#开头的行</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -i '/^#/d' fstab</span>
+
+<span class="token comment">#只显示非#开头的行</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -n  '/^#/!p' fstab</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">sed</span> <span class="token string">'2p'</span>  /etc/passwd
+<span class="token function">sed</span>  -n <span class="token string">'2p'</span> /etc/passwd
+<span class="token function">sed</span>  -n <span class="token string">'1,4p'</span> /etc/passwd
+<span class="token function">sed</span>  -n <span class="token string">'/root/p'</span>  /etc/passwd
+<span class="token function">sed</span>  -n <span class="token string">'2,/root/p'</span>  /etc/passwd 从2行开始
+<span class="token function">sed</span>  -n <span class="token string">'/^/='</span>  <span class="token function">file</span> 显示空行行号
+<span class="token function">sed</span>  -n  -e <span class="token string">'/^/p'</span> -e <span class="token string">'/^/='</span>  <span class="token function">file</span>
+Sed<span class="token string">'/root/a\superman'</span>  /etc/passwd行后
+<span class="token function">sed</span> <span class="token string">'/root/i\superman'</span> /etc/passwd 行前
+<span class="token function">sed</span> <span class="token string">'/root/c\superman'</span> /etc/passwd 代替行
+<span class="token function">sed</span> <span class="token string">'/^/d'</span> <span class="token function">file</span>
+<span class="token function">sed</span> <span class="token string">'1,10d'</span>   <span class="token function">file</span>
+<span class="token function">nl</span>   /etc/passwd <span class="token operator">|</span> <span class="token function">sed</span> <span class="token string">'2,5d'</span>
+<span class="token function">nl</span>   /etc/passwd <span class="token operator">|</span> <span class="token function">sed</span> <span class="token string">'2a tea'</span>
+<span class="token function">sed</span> <span class="token string">'s/test/mytest/g'</span> example
+<span class="token function">sed</span> -n <span class="token string">'s/root/&amp;superman/p'</span> /etc/passwd 单词后
+<span class="token function">sed</span> -n <span class="token string">'s/root/superman&amp;/p'</span> /etc/passwd 单词前
+<span class="token function">sed</span> -e <span class="token string">'s/dog/cat/'</span> -e <span class="token string">'s/hi/lo/'</span> pets  
+<span class="token function">sed</span> -i.bak  <span class="token string">'s/dog/cat/g'</span> pets</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：取IP 地址</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig|sed -nr  "2s/[^0-9]+([0-9.]+).*/\1/p"  </span>
+<span class="token number">10.0</span>.0.8
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 | sed  -n '2s/^.*inet //p' | sed -n 's/ netmask.*//p'</span>
+<span class="token number">10.0</span>.0.8 
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 | sed  -n '2s/^.*inet //;s/ netmask.*//p'</span>
+<span class="token number">10.0</span>.0.8 
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ifconfig eth0 | sed  -rn '2s/(.*inet )([0-9].*)( netmask.*)/\2/p' </span>
+<span class="token number">10.0</span>.0.8 </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：取基名和目录名</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token builtin class-name">echo</span> <span class="token string">"/etc/sysconfig/network-scripts/"</span> <span class="token operator">|</span><span class="token function">sed</span> -r <span class="token string">'s#(^/.*/)([^/]+/?)#<span class="token entity">\2</span>#'</span>  取基名
+<span class="token builtin class-name">echo</span> <span class="token string">"/etc/sysconfig/network-scripts/"</span> <span class="token operator">|</span><span class="token function">sed</span> -r <span class="token string">'s#(^/.*/)([^/]+/?)#<span class="token entity">\1</span>#'</span>  取目录
+
+<span class="token comment">#取目录名</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo /etc/sysconfig/ | sed  -rn 's#(.*)/([^/]+)/?#\1#p'</span>
+/etc
+
+<span class="token comment">#取基名</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo /etc/sysconfig/ | sed  -rn 's#(.*)/([^/]+)/?#\2#p'</span>
+sysconfig</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：将非#开头的行加#</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -rn "s/^[^#]/#&amp;/p"   /etc/fstab</span>
+<span class="token comment">#UUID=1b950ef9-7142-46bd-975c-c4ac1e0d47e8 /                       xfs     defaults        0 0</span>
+<span class="token comment">#UUID=667a4c81-8b4b-4a39-a111-b11cb6d09309 /boot                   ext4    defaults        1 2</span>
+<span class="token comment">#UUID=38d14714-c018-41d5-922c-49e415decbca /data                   xfs     defaults        0 0</span>
+<span class="token comment">#UUID=a0efb2bb-8227-4317-a79d-0a70d515046c swap                    swap    defaults        0 0</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -rn 's/^[^#](.*)/#\1/p' /etc/fstab</span>
+<span class="token comment">#UID=1b950ef9-7142-46bd-975c-c4ac1e0d47e8 /                       xfs     defaults        0 0</span>
+<span class="token comment">#UID=667a4c81-8b4b-4a39-a111-b11cb6d09309 /boot                   ext4    defaults        1 2</span>
+<span class="token comment">#UID=38d14714-c018-41d5-922c-49e415decbca /data                   xfs     defaults        0 0</span>
+<span class="token comment">#UID=a0efb2bb-8227-4317-a79d-0a70d515046c swap                    swap    defaults        0 0</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -rn '/^#/!s@^@#@p' /etc/fstab </span>
+<span class="token comment">#</span>
+<span class="token comment">#UUID=1b950ef9-7142-46bd-975c-c4ac1e0d47e8 /                       xfs     defaults        0 0</span>
+<span class="token comment">#UUID=667a4c81-8b4b-4a39-a111-b11cb6d09309 /boot                   ext4    defaults        1 2</span>
+<span class="token comment">#UUID=38d14714-c018-41d5-922c-49e415decbca /data                   xfs     defaults        0 0</span>
+<span class="token comment">#UUID=a0efb2bb-8227-4317-a79d-0a70d515046c swap                    swap    defaults        0 0</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例: 将#开头的行删除#</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -ri.bak  '/^#/s/^#//'  /etc/fstab</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：取分区利用率</p>
+<pre><code>[root@centos8 ~]#df | sed -nr '/^\/dev\/sd/s# .* ([0-9]+)%.*# \1#p'
+/dev/sda2 3
+/dev/sda5 1
+/dev/sda1 14</code></pre>
+<p>范例：修改内核参数</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed -nr '/^GRUB_CMDLINE_LINUX/s/"/ net.ifnames=0"/p' /etc/default/grub</span>
+<span class="token assign-left variable">GRUB_CMDLINE_LINUX</span><span class="token operator">=</span><span class="token string">"crashkernel=auto resume=UUID=8363289d-138e-4e4a-abaf-6e028babc924 rhgb quiet net.ifnames=0"</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -rn '/^GRUB_CMDLINE_LINUX=/s@(.*)"@\1 net.ifnames=0"@p' /etc/default/grub</span>
+<span class="token assign-left variable">GRUB_CMDLINE_LINUX</span><span class="token operator">=</span><span class="token string">"crashkernel=auto resume=UUID=a0efb2bb-8227-4317-a79d-0a70d515046c rhgb quiet net.ifnames=0"</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -rn '/^GRUB_CMDLINE_LINUX=/s@"$@ net.ifnames=0"@p' /etc/default/grub</span>
+<span class="token assign-left variable">GRUB_CMDLINE_LINUX</span><span class="token operator">=</span><span class="token string">"crashkernel=auto resume=UUID=a0efb2bb-8227-4317-a79d-0a70d515046c rhgb quiet net.ifnames=0 net.ifnames=0"</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：修改网卡名称</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#sed  -ri '/^GRUB_CMDLINE_LINUX=/s@"$@ net.ifnames=0"@' /etc/default/grub</span>
+<span class="token comment">#centos7,8</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#grub2-mkconfig -o /boot/grub2/grub.cfg </span>
+
+<span class="token comment">#ubuntu</span>
+<span class="token punctuation">[</span>root@ubuntu ~<span class="token punctuation">]</span><span class="token comment">#grub-mkconfig -o /boot/grub/grub.cfg </span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：查看配置文件</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">sed</span>  -r  <span class="token string">'/^(#|)/d'</span>  /etc/httpd/conf/httpd.conf
+<span class="token function">sed</span>  -r  <span class="token string">'/^#|^/d'</span>  /etc/httpd/conf/httpd.conf </code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：引用变量</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo|sed "s/^/RANDOM.rmvb/"</span>
+<span class="token number">5242</span>.rmvb
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo|sed 's/^/RANDOM.rmvb/'</span>
+<span class="token environment constant">RANDOM</span>.rmvb
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo|sed 's/^/'''RANDOM'''.rmvb/'</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：修改配置文件</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos6 ~<span class="token punctuation">]</span><span class="token comment">#sed   -e '/^#&lt;VirtualHost/,/^#&lt;\/VirtualHost&gt;/s@#@@'  -e '/^#NameVirtualHost/s@#@@' /etc/httpd/conf/httpd.conf</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>sed 高级用法</h5>
+<p>sed 中除了模式空间，还另外还支持保持空间（Hold Space）,利用此空间，可以将模式空间中的数据，临时保存至保持空间，从而后续接着处理，实现更为强大的功能。</p>
+<p>常见的高级命令</p>
+<ul>
+<li>P 打印模式空间开端至\n内容，并追加到默认输出之前</li>
+<li>h 把模式空间中的内容覆盖至保持空间中</li>
+<li>H 把模式空间中的内容追加至保持空间中</li>
+<li>g 从保持空间取出数据覆盖至模式空间</li>
+<li>G 从保持空间取出内容追加至模式空间</li>
+<li>x 把模式空间中的内容与保持空间中的内容进行互换</li>
+<li>n 读取匹配到的行的下一行覆盖至模式空间</li>
+<li>N 读取匹配到的行的下一行追加至模式空间</li>
+<li>d 删除模式空间中的行</li>
+<li>D 如果模式空间包含换行符，则删除直到第一个换行符的模式空间中的文本，并不会读取新的输入行，而使用合成的模式空间重新启动循环。如果模式空间不包含换行符，则会像发出d命令那样启动正常的新循环</li>
+</ul>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">sed</span> -n <span class="token string">'n;p'</span> FILE
+<span class="token function">sed</span> <span class="token string">'1!G;h;!d'</span> FILE
+<span class="token function">sed</span>  ‘N<span class="token punctuation">;</span>D’FILE
+<span class="token function">seq</span> <span class="token number">10</span> <span class="token operator">|</span><span class="token function">sed</span>  <span class="token string">'3h;9G;9!d'</span>
+<span class="token function">sed</span> <span class="token string">'!N;!D'</span> FILE
+<span class="token function">sed</span> <span class="token string">'!d'</span> FILE
+<span class="token function">sed</span> ‘G’ FILE
+<span class="token function">sed</span> ‘g’ FILE
+<span class="token function">sed</span> ‘/^/d<span class="token punctuation">;</span>G’ FILE
+<span class="token function">sed</span> <span class="token string">'n;d'</span> FILE 
+<span class="token function">sed</span> -n <span class="token string">'1!G;h;p'</span> FILE</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+		</div>
+	
+		</div>
+
+	</div>
+
+</div>	
+</body></html>

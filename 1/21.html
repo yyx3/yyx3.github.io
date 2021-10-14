@@ -1,0 +1,413 @@
+<html lang="zh-CN"><!--<![endif]--><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux文件系统管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script><script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux文件系统管理">
+<meta name="description" content="文件系统 文件系统概念 文件系统是操作系统用于明确存储设备或分区上的文件的方法和数据结构；即在存储设备上组织文件的方法。操作系统中负责管理和存储文件信息的软件结构称为文件管理系统，简称文件系统 从系统角度来看，文件系统是对文件存储设备的空间…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33914"><link rel="prev" title="linux磁盘管理" href="http://www.yunweipai.com/33903.html">
+<link rel="next" title="linux网络基础" href="http://www.yunweipai.com/33918.html">
+<link rel="canonical" href="http://www.yunweipai.com/33914.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33914.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33914.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux文件系统管理, Linux教程">
+<meta name="description" content="文件系统 文件系统概念 文件系统是操作系统用于明确存储设备或分区上的文件的方法和数据结构；即在存储设备上组织文件的方法。操作系统中负责管理和存储文件信息的软件结构称为文件管理系统，简称文件系统 从系统角度来看，文件系统是对文件存储设备的空间进行组织和分配，负责文件存储并对存入的文件进行保护和检索的系统。具体地说，它负责为用户建立文件，存入、读出、修改、转储文件，控制文件的存取，安全控制，日志，压缩，加密等 支持的文件系统： /lib/m">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post current"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+<div class="post-nav">
+    <div class="post-prev">
+        <p><a href="http://www.yunweipai.com/33903.html">linux磁盘管理</a></p>
+    </div>
+    <div class="post-next">
+        <p><a href="http://www.yunweipai.com/33918.html">linux网络基础</a></p>
+    </div>
+</div>
+	
+		<div id="post-33914" class="post-guide">
+
+			    
+			<div class="img-box1">
+        <a href="http://mp.weixin.qq.com/s?__biz=MzI0MTQwMDA4NA==&amp;mid=100008450&amp;idx=1&amp;sn=0815a82aac042229fed8d49ae55cdf9e&amp;chksm=690e82795e790b6faebc2cacb1e2fc1a0eb3cb27613acc1a846fdc75e7929ceae93007f8d051#rd" target="_blank">
+          <img src="http://www.yunweipai.com/wp-content/uploads/2020/11/未命名_自定义px_2020-10-29-0.png" alt="干货资料">
+        </a>
+			</div>
+			
+						<div class="ads-box1">
+				<p style="display: block; text-align: center; font-size:15px">运维派隶属马哥教育旗下专业运维社区，是国内成立最早的IT运维技术社区，欢迎关注公众号：yunweipai<br>
+领取学习更多免费Linux云计算、Python、Docker、K8s教程关注公众号：马哥linux运维</p>			</div>
+			
+			<div class="entry">
+				<h4>文件系统</h4>
+<h5>文件系统概念</h5>
+<p>文件系统是操作系统用于明确存储设备或分区上的文件的方法和数据结构；即在存储设备上组织文件的方法。操作系统中负责管理和存储文件信息的软件结构称为文件管理系统，简称文件系统<br>
+从系统角度来看，文件系统是对文件存储设备的空间进行组织和分配，负责文件存储并对存入的文件进行保护和检索的系统。具体地说，它负责为用户建立文件，存入、读出、修改、转储文件，控制文件的存取，安全控制，日志，压缩，加密等</p>
+<p>支持的文件系统：</p>
+<pre><code>/lib/modules/<code>uname -r</code>/kernel/fs</code></pre>
+<p>各种文件系统：<a href="http://www.yunweipai.com/go?_=45caedaeddaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQ29tcGFyaXNvbl9vZl9maWxlX3N5c3RlbXM=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=45caedaeddaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvQ29tcGFyaXNvbl9vZl9maWxlX3N5c3RlbXM=" rel="external nofollow" target="_blank">https://en.wikipedia.org/wiki/Comparison_of_file_systems</a></p>
+<p>帮助：man 5 fs</p>
+<h5>文件系统类型</h5>
+<p><strong>Linux 常用文件系统</strong></p>
+<ul>
+<li>ext2：Extended file system 适用于那些分区容量不是太大，更新也不频繁的情况，例如 /boot 分区</li>
+<li>ext3：是 ext2 的改进版本，其支持日志功能，能够帮助系统从非正常关机导致的异常中恢复</li>
+<li>ext4：是 ext 文件系统的最新版。提供了很多新的特性，包括纳秒级时间戳、创建和使用巨型文件(16TB)、最大1EB的文件系统，以及速度的提升</li>
+<li>xfs：SGI，支持最大8EB的文件系统</li>
+<li>swap</li>
+<li>iso9660 光盘</li>
+<li>btrfs（Oracle）</li>
+<li>reiserfs</li>
+</ul>
+<p><strong>Windows 常用文件系统</strong></p>
+<ul>
+<li>FAT32</li>
+<li>NTFS</li>
+<li>exFAT</li>
+</ul>
+<p><strong>Unix：</strong></p>
+<ul>
+<li>FFS（fast）</li>
+<li>UFS（unix）</li>
+<li>JFS2  </li>
+</ul>
+<p><strong>网络文件系统：</strong></p>
+<ul>
+<li>NFS</li>
+<li>CIFS</li>
+</ul>
+<p><strong>集群文件系统：</strong></p>
+<ul>
+<li>GFS2</li>
+<li>OCFS2（oracle）</li>
+</ul>
+<p><strong>分布式文件系统：</strong></p>
+<ul>
+<li>fastdfs</li>
+<li>ceph</li>
+<li>moosefs</li>
+<li>mogilefs</li>
+<li>glusterfs</li>
+<li>Lustre</li>
+</ul>
+<p><strong>RAW：</strong></p>
+<p>未经处理或者未经格式化产生的文件系统</p>
+<p><strong>常用的文件系统特性：</strong></p>
+<p><strong>FAT32</strong></p>
+<ul>
+<li>最多只能支持16TB的文件系统和4GB的文件</li>
+</ul>
+<p><strong>NTFS</strong></p>
+<ul>
+<li>最多只能支持16EB的文件系统和16EB的文件</li>
+</ul>
+<p><strong>EXT3</strong></p>
+<ul>
+<li>最多只能支持32TB的文件系统和2TB的文件，实际只能容纳2TB的文件系统和16GB的文件</li>
+<li>Ext3目前只支持32000个子目录</li>
+<li>Ext3文件系统使用32位空间记录块数量和 inode数量</li>
+<li>当数据写入到Ext3文件系统中时，Ext3的数据块分配器每次只能分配一个4KB的块</li>
+</ul>
+<p><strong>EXT4：</strong></p>
+<ul>
+<li>EXT4是Linux系统下的日志文件系统，是EXT3文件系统的后继版本</li>
+<li>Ext4的文件系统容量达到1EB，而支持单个文件则达到16TB</li>
+<li>理论上支持无限数量的子目录</li>
+<li>Ext4文件系统使用64位空间记录块数量和 inode数量</li>
+<li>Ext4的多块分配器支持一次调用分配多个数据块</li>
+<li>修复速度更快</li>
+</ul>
+<p>XFS</p>
+<ul>
+<li>根据所记录的日志在很短的时间内迅速恢复磁盘文件内容</li>
+<li>用优化算法，日志记录对整体文件操作影响非常小</li>
+<li>是一个全64-bit的文件系统，最大可以支持8EB的文件系统，而支持单个文件则达到8EB</li>
+<li>能以接近裸设备I/O的性能存储数据</li>
+</ul>
+<p>查前支持的文件系统：</p>
+<pre><code>cat /proc/filesystems</code></pre>
+<h5>文件系统的组成部分</h5>
+<ul>
+<li>内核中的模块：ext4, xfs, vfat</li>
+<li>Linux的虚拟文件系统：VFS</li>
+<li>用户空间的管理工具：mkfs.ext4, mkfs.xfs,mkfs.vfat</li>
+</ul>
+<p><img title="linux文件系统管理插图" alt="linux文件系统管理插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222195113594-480x350.png"></p>
+<h5>文件系统选择管理</h5>
+<h6>创建文件系统</h6>
+<p>创建文件管理工具</p>
+<ul>
+<li>mkfs命令：<br>
+(1) mkfs.FS_TYPE /dev/DEVICE<br>
+ext4<br>
+xfs<br>
+btrfs<br>
+vfat<br>
+(2) mkfs -t FS_TYPE /dev/DEVICE<br>
+-L ‘LABEL’  设定卷标</li>
+<li>mke2fs：ext系列文件系统专用管理工具</li>
+</ul>
+<p>常用选项</p>
+<p>-t {ext2|ext3|ext4}         指定文件系统类型<br>
+-b {1024|2048|4096}     指定块 block 大小<br>
+-L ‘LABEL’          设置卷标<br>
+-j  相当于 -t ext3， mkfs.ext3 = mkfs -t ext3 = mke2fs -j = mke2fs -t ext3<br>
+-i   #  为数据空间中每多少个字节创建一个inode；不应该小于block大小<br>
+-N #    指定分区中创建多少个inode<br>
+-I  一个inode记录占用的磁盘空间大小，128—4096<br>
+-m #    默认5%,为管理人员预留空间占总空间的百分比<br>
+-O FEATURE[,…]    启用指定特性<br>
+-O ^FEATURE 关闭指定特性</p>
+<h6>查看和管理分区信息</h6>
+<p>blkid  可以查看块设备属性信息</p>
+<p>格式：</p>
+<pre><code>blkid [OPTION]... [DEVICE]</code></pre>
+<p>常用选项：</p>
+<p>-U UUID 根据指定的UUID来查找对应的设备<br>
+-L LABEL    根据指定的LABEL来查找对应的设备</p>
+<p>e2label：管理ext系列文件系统的LABEL</p>
+<pre><code>e2label DEVICE [LABEL]</code></pre>
+<p>findfs ：查找分区</p>
+<pre><code>findfs [options] LABEL=&lt;label&gt;
+findfs [options] UUID=&lt;uuid&gt;</code></pre>
+<p>tune2fs：重新设定ext系列文件系统可调整参数的值</p>
+<p>-l  查看指定文件系统超级块信息；super block<br>
+-L ‘LABEL’  修改卷标<br>
+-m #    修预留给管理员的空间百分比<br>
+-j  将ext2升级为ext3<br>
+-O  文件系统属性启用或禁用, –O ^has_journal<br>
+-o  调整文件系统的默认挂载选项，–o ^acl<br>
+-U UUID 修改UUID号</p>
+<p>dumpe2fs：显示ext文件系统信息，将磁盘块分组管理<br>
+-h：查看超级块信息，不显示分组信息</p>
+<p>xfs_info：显示示挂载或已挂载的 xfs 文件系统信息</p>
+<pre><code>xfs_info mountpoint|devname</code></pre>
+<p>范例:</p>
+<pre><code>[root@centos8 ~]#xfs_info  /dev/sda7
+meta-data=/dev/sda7              isize=512    agcount=4, agsize=131072 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=0
+         =                       reflink=1
+data     =                       bsize=4096   blocks=524288, imaxpct=25
+         =                       sunit=0      swidth=0 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=2560, version=2
+         =                       sectsz=512   sunit=0 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+</code></pre>
+<p><strong>超级块和INODE TABLE</strong></p>
+<p><img title="linux文件系统管理插图(1)" alt="linux文件系统管理插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191222195851375-1-480x303.png"></p>
+<p><strong>块组描述符表(GDT)</strong></p>
+<p>ext文件系统每一个块组信息使用32字节描述，这32个字节称为块组描述符，所有块组的块组描述符组成块组描述符表GDT(group descriptor table)。虽然每个块组都需要块组描述符来记录块组的信息和属性元数据，但是不是每个块组中都存放了块组描述符。将所有块组的块组信息组成一个GDT保存,并将该GDT存放于某些块组中，类似存放superblock和备份superblock的块</p>
+<h6>文件系统检测和修复</h6>
+<p>文件系统夹故障常发生于死机或者非正常关机之后，挂载为文件系统标记为“no clean”<br>
+注意：一定不要在挂载状态下执行下面命令修复</p>
+<p>fsck: File System Check</p>
+<pre><code>fsck.FS_TYPE
+fsck -t FS_TYPE </code></pre>
+<p>注意：FS_TYPE  一定要与分区上已经文件类型相同</p>
+<p>常用选项：</p>
+<p>-a  自动修复<br>
+-r  交互式修复错误 </p>
+<p>e2fsck：ext系列文件专用的检测修复工具<br>
+-y  自动回答为yes<br>
+-f  强制修复<br>
+-p  自动进行安全的修复文件系统问题</p>
+<p>xfs_repair：xfs文件系统专用检测修复工具</p>
+<p>常用选项：</p>
+<p>-f  修复文件，而设备<br>
+-n  只检查<br>
+-d  允许修复只读的挂载设备，在单用户下修复 / 时使用，然后立即reboot</p>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+			<div class="clear"></div>
+		</div>	
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

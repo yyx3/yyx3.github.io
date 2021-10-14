@@ -1,0 +1,301 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Linux 连接服务器 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,Linux命令,linux学习,linux安装,linux教程,linux用法">
+<meta name="description" content="Linux操作系统安装完成后，要想在Windows下远程连接Linux服务器，就需要借助像Xshell这样的终端模拟器软件，那要怎么操作才会使其远程连接Linux服务器？ Window下Xshell软件连接 1、下载Xshell软件 下载地…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33775"><link rel="prev" title="Linux 操作系统安装" href="http://www.yunweipai.com/33773.html">
+<link rel="next" title="linux shell介绍" href="http://www.yunweipai.com/33832.html">
+<link rel="canonical" href="http://www.yunweipai.com/33775.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33775.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33775.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, Linux命令, linux学习, linux安装, linux教程, linux用法, Linux教程">
+<meta name="description" content="Linux操作系统安装完成后，要想在Windows下远程连接Linux服务器，就需要借助像Xshell这样的终端模拟器软件，那要怎么操作才会使其远程连接Linux服务器？ Window下Xshell软件连接 1、下载Xshell软件 下载地址：https://www.xshellcn.com/xiazai.html  2、下载完成后打开Xshell软件，双击桌面上的Xshell软件快捷图标，就可以打开软件，打开的软件主界面如下图所示。 ">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453919"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post current"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+   <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33775" class="post-guide">
+
+			    
+			<div class="img-box1">
+        
+			</div>
+			
+						
+			
+			<div class="entry">
+				<div>Linux操作系统安装完成后，要想在Windows下远程连接Linux服务器，就需要借助像Xshell这样的终端模拟器软件，那要怎么操作才会使其远程连接Linux服务器？</div>
+<div>Window下Xshell软件连接</div>
+<div>1、下载Xshell软件</div>
+<div>下载地址：https://www.xshellcn.com/xiazai.html</div>
+<div></div>
+<div>2、下载完成后打开Xshell软件，双击桌面上的Xshell软件快捷图标，就可以打开软件，打开的软件主界面如下图所示。</div>
+<div><img title="Linux 连接服务器插图(1)" alt="Linux 连接服务器插图(1)" loading="lazy" class="alignnone size-full wp-image-34557" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/92.png?download=false" width="664" height="479"></div>
+<div>图1：Xshell软件主界面</div>
+<div></div>
+<div>2、创建链接，点击&nbsp;左上角新建命令。打开Xshell软件后找到左上角第一个“文件”菜单并单击，弹出来一个下拉框，点击选择“新建”命令（或者直接按下快捷键“Alt+n”）。</div>
+<div><img title="Linux 连接服务器插图(2)" alt="Linux 连接服务器插图(2)" loading="lazy" class="alignnone size-full wp-image-34558" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/93.png?download=false" width="656" height="453"></div>
+<div></div>
+<div>图2：在文件菜单下执行新建命令</div>
+<div></div>
+<div>3、点击“新建”之后就会出现下面这样一个界面，“名称”根据自己的需求填写，“协议”就是默认的SSH，“主机”是这一步最关键的，一定要填写正确，否则无法登录，端口也是默认的22，其他不用填，填写完成之后先不要点确定，看下一步。<p></p>
+<div></div>
+<div>图3：新建服务器会话</div>
+</div>
+<div></div>
+<div><img title="Linux 连接服务器插图(5)" alt="Linux 连接服务器插图(5)" loading="lazy" class="alignnone size-full wp-image-34559" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/94.png?download=false" width="622" height="491"></div>
+<div>&gt; 在使用Xshell中的过程中，如果发现电脑的小键盘不能用了，可参考教程：<a href="http://www.yunweipai.com/go?_=740bbbcabeaHR0cHM6Ly93d3cueHNoZWxsY24uY29tL3dlbnRpL3NodXppLWppYW5wYW4uaHRtbA==" rel="external nofollow" target="_blank">Xshell中数字小键盘不能使用怎么办？</a></div>
+<div></div>
+<div>4、步骤四&nbsp;找到连接选项栏中的“用户身份验证”点击，点击之后会让你填写用户名和密码，其中“方法”默认“password”，“用户名”填写你的系统用户名，系统默认用户root，“密码”填写你安装系统设置的密码，填写完成点击确定。</div>
+<div></div>
+<div>图4：用户身份验证</div>
+<div><img title="Linux 连接服务器插图(7)" alt="Linux 连接服务器插图(7)" loading="lazy" class="alignnone size-full wp-image-34560" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/95.png?download=false" width="569" height="492"></div>
+<div></div>
+<div>5、登录刚才保存的账号，单击左上角的“文件”菜单，在其下拉选项选择“打开”命令，弹出会话对话框，左下角有一个选项“启动时显示此对话框”，这个选项的意思是：每次打开Xshell都直接跳出这个对话框，根据需求勾选，然后找到你想登录的服务器，点击“连接”即可。</div>
+<div></div>
+<div>图5：连接服务器</div>
+<div>连接之后出现如下界面中的[root@******]样式的，就证明连接成功了。</div>
+<div><img title="Linux 连接服务器插图(9)" alt="Linux 连接服务器插图(9)" loading="lazy" class="alignnone size-full wp-image-34562" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/96.png?download=false" width="653" height="536"></div>
+<div></div>
+<div>图6：服务器连接成功</div>
+<div><img title="Linux 连接服务器插图(11)" alt="Linux 连接服务器插图(11)" loading="lazy" class="alignnone size-full wp-image-34563" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/97.png?download=false" width="660" height="460"></div>
+<div></div>
+<div></div>
+<div>MAC电脑下连接</div>
+<div>1、 打开 SSH 客户端（ Mac 自带终端）</div>
+<div></div>
+<div>2、输入命令登录系统：</div>
+<div>$ ssh root@192.168.1.2</div>
+<div></div>
+<div>root是要登录的系统用户名</div>
+<div>192.168.1.2是要登录的服务器IP</div>
+<div>-p 端口号，如果不指定，默认22</div>
+<div></div>
+<div>3、输入密码后就可以登录到系统:</div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<div></div>
+<p></p>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+			
+
+		</div>
+
+		
+
+				<div class="ads-box2">
+					</div>
+		
+			
+
+
+
+
+
+		
+
+	
+		</div>
+
+	</div>
+
+</div>	
+
+
+	
+</body></html>

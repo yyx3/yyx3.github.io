@@ -1,0 +1,353 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux软件包管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux软件包管理">
+<meta name="description" content="软件包和包管理器 软件包介绍 开源软件最初只提供了.tar.gz的打包的源码文件，用户必须自已编译每个想在GNU/Linux上运行的软件。用户急需系统能提供一种更加便利的方法来管理这些软件，当Debian诞生时，这样一个管理工具dpkg也就…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33901"><link rel="prev" title="linux文件压缩" href="http://www.yunweipai.com/33899.html">
+<link rel="next" title="linux磁盘管理" href="http://www.yunweipai.com/33903.html">
+<link rel="canonical" href="http://www.yunweipai.com/33901.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33901.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33901.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux软件包管理, Linux教程">
+<meta name="description" content="软件包和包管理器 软件包介绍 开源软件最初只提供了.tar.gz的打包的源码文件，用户必须自已编译每个想在GNU/Linux上运行的软件。用户急需系统能提供一种更加便利的方法来管理这些软件，当Debian诞生时，这样一个管理工具dpkg也就应运而生，可用来管理deb后缀的&quot;包&quot;文件。从而著名的“package”概念第一次出现在GNU/Linux系统中，稍后Red Hat才开发自己的rpm包管理系统 软件包中的文件分类">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post current"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33901" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>软件包和包管理器</h3>
+<h4>软件包介绍</h4>
+<p>开源软件最初只提供了.tar.gz的打包的源码文件，用户必须自已编译每个想在GNU/Linux上运行的软件。用户急需系统能提供一种更加便利的方法来管理这些软件，当Debian诞生时，这样一个管理工具dpkg也就应运而生，可用来管理deb后缀的"包"文件。从而著名的“package”概念第一次出现在GNU/Linux系统中，稍后Red Hat才开发自己的rpm包管理系统</p>
+<h5>软件包中的文件分类</h5>
+<ul>
+<li>二进制文件</li>
+<li>库文件</li>
+<li>配置文件</li>
+<li>帮助文件</li>
+</ul>
+<p>范例：利用 cpio工具查看包文件列表</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash">rpm2cpio 包文件<span class="token operator">|</span>cpio –itv  预览包内文件
+rpm2cpio 包文件<span class="token operator">|</span>cpio –id  “*.conf” 释放包内文件</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>程序包管理器</h5>
+<p>软件包管理器功能：</p>
+<p>将编译好的应用程序的各组成文件打包一个或几个程序包文件，利用包管理器可以方便快捷地实现程序包的安装、卸载、查询、升级和校验等管理操作</p>
+<p>主流的程序包管理器</p>
+<ul>
+<li>redhat：rpm文件, rpm 包管理器，rpm：Redhat Package Manager，RPM  Package Manager </li>
+<li>debian：deb文件, dpkg 包管理器</li>
+</ul>
+<h5>包命名</h5>
+<p>源代码打包文件命名：</p>
+<pre><code>name-VERSION.tar.gz|bz2|xz
+VERSION: major.minor.release</code></pre>
+<p>rpm包命名方式：</p>
+<pre><code>name-VERSION-release.arch.rpm
+VERSION: major.minor.release
+release：release.OS</code></pre>
+<p>常见的arch：</p>
+<ul>
+<li>x86: i386, i486, i586, i686</li>
+<li>x86_64: x64, x86_64, amd64</li>
+<li>powerpc: ppc</li>
+<li>跟平台无关：noarch</li>
+</ul>
+<p>范例：</p>
+<pre><code>bash-3.2-32.el5_9.1.i386.rpm
+bash-4.2.46-19.el7.x86_64.rpm
+bash-4.4.19-7.el8.x86_64.rpm
+bash-4.4.19-7.el8.aarch64.rpm
+bash-4.4.19-7.el8.ppc64le.rpm
+bc_1.07.1-2_amd64.deb
+bc_1.07.1-2_s390x.deb</code></pre>
+<p>范例：统计rpm的架构类型及相应的包数量</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 Packages<span class="token punctuation">]</span><span class="token comment">#pwd</span>
+/misc/cd/BaseOS/Packages
+<span class="token punctuation">[</span>root@centos8 Packages<span class="token punctuation">]</span><span class="token comment">#ls *.rpm | grep -Eo '[^.]+\.rpm'| grep -Eo '^[^.]+'|sort |uniq -c</span>
+    <span class="token number">389</span> i686
+    <span class="token number">211</span> noarch
+   <span class="token number">1061</span> x86_64
+<span class="token punctuation">[</span>root@centos8 Packages<span class="token punctuation">]</span><span class="token comment">#ls *.rpm |rev|cut -d. -f2|rev |sort |uniq -c</span>
+    <span class="token number">389</span> i686
+    <span class="token number">211</span> noarch
+   <span class="token number">1061</span> x86_64
+<span class="token punctuation">[</span>root@centos8 Packages<span class="token punctuation">]</span><span class="token comment">#ls *.rpm | grep -Eo '[^.]+\.rpm'|cut -d. -f1|sort |uniq -c</span>
+    <span class="token number">389</span> i686
+    <span class="token number">211</span> noarch
+   <span class="token number">1061</span> x86_64</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>分类和拆包</h5>
+<p>软件包为了管理和使用的便利，会将一个大的软件分类，放在不同的子包中。</p>
+<p>包的分类</p>
+<ul>
+<li>Application-VERSION-ARCH.rpm: 主包</li>
+<li>Application-devel-VERSION-ARCH.rpm 开发子包</li>
+<li>Application-utils-VERSION-ARHC.rpm 其它子包</li>
+<li>Application-libs-VERSION-ARHC.rpm 其它子包</li>
+</ul>
+<h5>包的依赖</h5>
+<p>软件包之间可能存在依赖关系，甚至循环依赖，即：A包依赖B包，B包依赖C包，C包依赖A包</p>
+<p>安装软件包时，会因为缺少依赖的包，而导致安装包失败。</p>
+<p>解决依赖包管理工具：</p>
+<ul>
+<li>yum：rpm包管理器的前端工具</li>
+<li>dnf：Fedora 18+ rpm包管理器前端管理工具，CentOS 8 版代替 yum</li>
+<li>apt：deb包管理器前端工具</li>
+<li>zypper：suse上的rpm前端管理工具</li>
+</ul>
+<h5>程序包管理器相关文件</h5>
+<ol>
+<li>包文件组成 (每个包独有)</li>
+</ol>
+<ul>
+<li>包内的文件</li>
+<li>元数据，如：包的名称，版本，依赖性，描述等</li>
+<li>可能会有包安装或卸载时运行的脚本</li>
+</ul>
+<ol start="2">
+<li>数据库(公共)：/var/lib/rpm</li>
+</ol>
+<ul>
+<li>程序包名称及版本</li>
+<li>依赖关系</li>
+<li>功能说明</li>
+<li>包安装后生成的各文件路径及校验码信息</li>
+</ul>
+<h5>获取程序包的途径</h5>
+<p>软件包需要事先将源码进行编译后打包形成，获取包的途径如下：</p>
+<h6>系统发版的光盘或官方网站</h6>
+<p>CentOS镜像：<br>
+<a href="http://www.yunweipai.com/go?_=b54aa83bc4aHR0cHM6Ly93d3cuY2VudG9zLm9yZy9kb3dubG9hZC8=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=b54aa83bc4aHR0cHM6Ly93d3cuY2VudG9zLm9yZy9kb3dubG9hZC8=" rel="external nofollow" target="_blank">https://www.centos.org/download/</a><br>
+<a href="http://www.yunweipai.com/go?_=cac5f0c506aHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbQ==" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=cac5f0c506aHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbQ==" rel="external nofollow" target="_blank">http://mirrors.aliyun.com</a><br>
+<a href="http://www.yunweipai.com/go?_=a1ab91bafcaHR0cDovL21pcnJvcnMuc29odS5jb20=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=a1ab91bafcaHR0cDovL21pcnJvcnMuc29odS5jb20=" rel="external nofollow" target="_blank">http://mirrors.sohu.com</a><br>
+<a href="http://www.yunweipai.com/go?_=b03db4ed60aHR0cDovL21pcnJvcnMuMTYzLmNvbQ==" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=b03db4ed60aHR0cDovL21pcnJvcnMuMTYzLmNvbQ==" rel="external nofollow" target="_blank">http://mirrors.163.com</a></p>
+<p>Ubuntu 镜像：</p>
+<p><a href="http://www.yunweipai.com/go?_=cfb7b4724caHR0cDovL2NkaW1hZ2UudWJ1bnR1LmNvbS9yZWxlYXNlcy8=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=cfb7b4724caHR0cDovL2NkaW1hZ2UudWJ1bnR1LmNvbS9yZWxlYXNlcy8=" rel="external nofollow" target="_blank">http://cdimage.ubuntu.com/releases/</a><br>
+<a href="http://www.yunweipai.com/go?_=d8c99a8445aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=d8c99a8445aHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20=" rel="external nofollow" target="_blank">http://releases.ubuntu.com</a></p>
+<h6>第三方组织提供</h6>
+<ul>
+<li>
+Fedora-EPEL：Extra Packages for Enterprise Linux<p></p>
+<p><a href="http://www.yunweipai.com/go?_=d0f0c29db0aHR0cHM6Ly9mZWRvcmFwcm9qZWN0Lm9yZy93aWtpL0VQRUw=" rel="external nofollow" target="_blank">https://fedoraproject.org/wiki/EPEL</a></p>
+<p><a href="http://www.yunweipai.com/go?_=a82d654a2baHR0cHM6Ly9taXJyb3JzLmFsaXl1bi5jb20vZXBlbC8/c3BtPWEyYzZoLjEzNjUxMTA0LjAuMC4zYmM0N2RmYVpwZXNBcg==" rel="external nofollow" target="_blank">https://mirrors.aliyun.com/epel/?spm=a2c6h.13651104.0.0.3bc47dfaZpesAr</a>
+</p></li>
+<li>
+Rpmforge：官网：<a href="http://www.yunweipai.com/go?_=743081248caHR0cDovL3JlcG9mb3JnZS5vcmcv" rel="external nofollow" target="_blank">http://repoforge.org/</a>,   RHEL推荐，包很全，即将关闭
+</li>
+<li>
+Community Enterprise Linux Repository：<a href="http://www.yunweipai.com/go?_=2a0c160ea0aHR0cDovL3d3dy5lbHJlcG8ub3Jn77yM5pSv5oyB5pyA5paw55qE5YaF5qC45ZKM56Gs5Lu255u45YWz5YyF" rel="external nofollow" target="_blank">http://www.elrepo.org，支持最新的内核和硬件相关包</a>
+</li>
+</ul>
+<h6>软件项目官方站点</h6>
+<p><a href="http://www.yunweipai.com/go?_=b2baf9df22aHR0cDovL3l1bS5tYXJpYWRiLm9yZy8xMC40L2NlbnRvczgtYW1kNjQvcnBtcy8=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=b2baf9df22aHR0cDovL3l1bS5tYXJpYWRiLm9yZy8xMC40L2NlbnRvczgtYW1kNjQvcnBtcy8=" rel="external nofollow" target="_blank">http://yum.mariadb.org/10.4/centos8-amd64/rpms/</a><br>
+<a href="http://www.yunweipai.com/go?_=492760d67daHR0cDovL3JlcG8ubXlzcWwuY29tL3l1bS9teXNxbC04LjAtY29tbXVuaXR5L2VsLzgveDg2XzY0Lw==" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=492760d67daHR0cDovL3JlcG8ubXlzcWwuY29tL3l1bS9teXNxbC04LjAtY29tbXVuaXR5L2VsLzgveDg2XzY0Lw==" rel="external nofollow" target="_blank">http://repo.mysql.com/yum/mysql-8.0-community/el/8/x86_64/</a></p>
+<h6>搜索引擎</h6>
+<p><a href="http://www.yunweipai.com/go?_=743472f806aHR0cDovL3BrZ3Mub3Jn" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=743472f806aHR0cDovL3BrZ3Mub3Jn" rel="external nofollow" target="_blank">http://pkgs.org</a><br>
+<a href="http://www.yunweipai.com/go?_=4fcab4ad6faHR0cDovL3JwbWZpbmQubmV0" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=4fcab4ad6faHR0cDovL3JwbWZpbmQubmV0" rel="external nofollow" target="_blank">http://rpmfind.net</a><br>
+<a href="http://www.yunweipai.com/go?_=5751140fa5aHR0cDovL3JwbS5wYm9uZS5uZXQ=" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=5751140fa5aHR0cDovL3JwbS5wYm9uZS5uZXQ=" rel="external nofollow" target="_blank">http://rpm.pbone.net</a><br>
+<a href="http://www.yunweipai.com/go?_=511c613e33aHR0cHM6Ly9zb3VyY2Vmb3JnZS5uZXQv" rel="external nofollow" target="_blank"></a><a href="http://www.yunweipai.com/go?_=511c613e33aHR0cHM6Ly9zb3VyY2Vmb3JnZS5uZXQv" rel="external nofollow" target="_blank">https://sourceforge.net/</a></p>
+<p>注意：第三方包建议要检查其合法性，来源合法性,程序包的完整性</p>
+<h6>自己制作</h6>
+<p>将源码文件，利用工具，如：rpmbuild，fpm等工具制作成rpm包文件</p>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+	</div>	
+		</div>
+
+	</div>
+
+</div>	
+</body></html>

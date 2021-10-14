@@ -1,0 +1,455 @@
+<html lang="zh-CN"><!--<![endif]--><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux文件查找-find – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script><script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="find,Linux,linux入门,linux学习,linux教程,linux文件查找">
+<meta name="description" content="find find 是实时查找工具，通过遍历指定路径完成文件查找 工作特点： 查找速度略慢 精确查找 实时查找 查找条件丰富 可能只搜索用户具备读取和执行权限的目录 格式： find [OPTION]... [查找路径] [查找条件] [处…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33896"><link rel="prev" title="linux正则表达式" href="http://www.yunweipai.com/33893.html">
+<link rel="next" title="linux文件压缩" href="http://www.yunweipai.com/33899.html">
+<link rel="canonical" href="http://www.yunweipai.com/33896.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33896.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33896.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sfind, Linux, linux入门, linux学习, linux教程, linux文件查找, Linux教程">
+<meta name="description" content="find find 是实时查找工具，通过遍历指定路径完成文件查找 工作特点：  查找速度略慢 精确查找 实时查找 查找条件丰富 可能只搜索用户具备读取和执行权限的目录  格式： find [OPTION]... [查找路径] [查找条件] [处理动作] 查找路径：指定具体目标路径；默认为当前目录 查找条件：指定的查找标准，可以文件名、大小、类型、权限等标准进行；默认为找出指定路径下的所有文件 处理动作：对符合条件的文件做操作，默认输出至">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post current"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33896" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h4>find</h4>
+<p>find 是实时查找工具，通过遍历指定路径完成文件查找</p>
+<p>工作特点：</p>
+<ul>
+<li>查找速度略慢</li>
+<li>精确查找</li>
+<li>实时查找</li>
+<li>查找条件丰富</li>
+<li>可能只搜索用户具备读取和执行权限的目录</li>
+</ul>
+<p>格式：</p>
+<pre><code>find [OPTION]... [查找路径] [查找条件] [处理动作]</code></pre>
+<p>查找路径：指定具体目标路径；默认为当前目录<br>
+查找条件：指定的查找标准，可以文件名、大小、类型、权限等标准进行；默认为找出指定路径下的所有文件<br>
+处理动作：对符合条件的文件做操作，默认输出至屏幕</p>
+<h5>指定搜索目录层级</h5>
+<p>-maxdepth  level 最大搜索目录深度,指定目录下的文件为第1级<br>
+-mindepth   level 最小搜索目录深度</p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">find</span> /etc  -maxdepth <span class="token number">2</span> -mindepth <span class="token number">2</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>对每个目录先处理目录内的文件，再处理目录本身</h5>
+<p>-depth  -d </p>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#tree /data/test</span>
+/data/test
+├── f1.txt
+├── f2.txt
+└── test2
+    └── test3
+        ├── f3.txt
+        └── f4.txt
+
+<span class="token number">4</span> directories, <span class="token number">2</span> files
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#find /data/test</span>
+/data/test
+/data/test/f1.txt
+/data/test/f2.txt
+/data/test/test2
+/data/test/test2/test3
+/data/test/test2/test3/f3.txt
+/data/test/test2/test3/f4.txt
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#find /data/test -depth</span>
+
+/data/test/f1.txt
+/data/test/f2.txt
+/data/test/test2/test3/f3.txt
+/data/test/test2/test3/f4.txt
+/data/test/test2/test3
+/data/test/test2
+/data/test</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>根据文件名和inode查找</h5>
+<pre><code>-name "文件名称"：支持使用glob，如：*, ?, [], [^],通配符要加双引号引起来
+-iname "文件名称"：不区分字母大小写
+-inum n  按inode号查找
+-samefile name  相同inode号的文件
+-links n   链接数为n的文件
+-regex “PATTERN”：以PATTERN匹配整个文件路径，而非文件名称</code></pre>
+<p>范例：</p>
+<pre><code>find -name snow.png
+find -iname snow.png
+find / -name  ".txt"
+find /var –name "log*"
+
+[root@centos8 data]#find -regex ".*\.txt$"
+./script40/b.txt
+./f1.txt
+</code></pre>
+<h5>根据属主、属组查找</h5>
+<pre><code>-user USERNAME：查找属主为指定用户(UID)的文件
+-group GRPNAME: 查找属组为指定组(GID)的文件
+-uid UserID：查找属主为指定的UID号的文件
+-gid GroupID：查找属组为指定的GID号的文件
+-nouser：查找没有属主的文件
+-nogroup：查找没有属组的文件</code></pre>
+<h5>根据文件类型查找</h5>
+<pre><code>-type TYPE
+TYPE可以是以下形式：
+
+f: 普通文件
+d: 目录文件
+l: 符号链接文件
+s：套接字文件
+b: 块设备文件
+c: 字符设备文件
+p: 管道文件</code></pre>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#查看/home的目录</span>
+<span class="token function">find</span>  /home –type d -ls</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>空文件或目录</h5>
+<p>-empty</p>
+<p>范例：</p>
+<pre><code>find /app -type d  -empty</code></pre>
+<h5>组合条件</h5>
+<pre><code>与：-a ，默认多个条件是与关系
+或：-o
+非：-not   !  </code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#find /etc/ -type d -o -type l  |wc -l</span>
+<span class="token number">307</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#find /etc/ -type d -o -type l -ls  |wc -l</span>
+<span class="token number">101</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#find /etc/ \( -type d -o -type l \)   -ls  |wc -l</span>
+<span class="token number">307</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>德·摩根定律：</p>
+<ul>
+<li>(非 A) 或 (非 B) = 非(A 且 B)  </li>
+<li>(非 A) 且 (非 B) = 非(A 或 B)  </li>
+</ul>
+<p>示例：<br>
+!A -a !B = !(A -o B)<br>
+!A -o !B = !(A -a B)</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">find</span>  -user joe  -group joe
+<span class="token function">find</span> -user joe -not -group joe
+<span class="token function">find</span> -user joe -o -user jane
+<span class="token function">find</span> -not  <span class="token punctuation">\</span><span class="token punctuation">(</span>  -user joe -o -user jane  <span class="token punctuation">\</span><span class="token punctuation">)</span>
+<span class="token function">find</span> / -user joe -o -uid <span class="token number">500</span>
+
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#find  ! \( -type d -a  -empty \)| wc -l</span>
+<span class="token number">56</span>
+<span class="token punctuation">[</span>root@centos8 data<span class="token punctuation">]</span><span class="token comment">#find  ! -type d -o ! -empty  |wc -l</span>
+<span class="token number">56</span>
+
+<span class="token punctuation">[</span>mage@centos8 data<span class="token punctuation">]</span><span class="token variable">$find</span>  <span class="token operator">!</span>  -user wang   <span class="token operator">!</span> -user mage
+<span class="token builtin class-name">.</span>
+./script40
+./script40/backup
+./script40/backup/args.sh
+./script40/backup/chook_rabbit.sh
+./script40/backup/disk_check.sh
+./script40/backup/ping.sh
+./script40/backup/systeminfo.sh
+./script40/backup/test_read.sh
+./script40/backup/test.sh
+./script40/if_bmi.sh
+./script40/case_yesorno.sh
+./script40/case_yesorno2.sh
+./script40/b.txt
+./f1.txt
+./test
+./test/f1.txt.link
+./f1.txtlink
+./test2
+
+<span class="token punctuation">[</span>root@centos8 home<span class="token punctuation">]</span><span class="token comment">#ll</span>
+total <span class="token number">0</span>
+drwx------. <span class="token number">2</span> mage     mage     <span class="token number">62</span> Jan <span class="token number">16</span> <span class="token number">17</span>:53 mage
+drwx------. <span class="token number">2</span> wang     wang     <span class="token number">62</span> Jan <span class="token number">16</span> <span class="token number">10</span>:43 wang
+drwx------  <span class="token number">2</span> xiaoming xiaoming <span class="token number">62</span> Apr  <span class="token number">6</span> 09:51 xiaoming
+<span class="token punctuation">[</span>root@centos8 home<span class="token punctuation">]</span><span class="token comment">#find  ! \( -user wang -o -user mage \)</span>
+<span class="token builtin class-name">.</span>
+./xiaoming
+./xiaoming/.bash_logout
+./xiaoming/.bash_profile
+./xiaoming/.bashrc
+<span class="token punctuation">[</span>root@centos8 home<span class="token punctuation">]</span><span class="token comment">#find  ! -user wang -a ! -user mage</span>
+<span class="token builtin class-name">.</span>
+./xiaoming
+./xiaoming/.bash_logout
+./xiaoming/.bash_profile
+./xiaoming/.bashrc
+
+<span class="token comment">#找出/tmp目录下，属主不是root，且文件名不以f开头的文件</span>
+<span class="token function">find</span> /tmp <span class="token punctuation">(</span> -not -user root -a -not -name <span class="token string">'f*'</span> <span class="token punctuation">)</span> -ls
+<span class="token function">find</span> /tmp -not <span class="token punctuation">(</span> -user root -o -name <span class="token string">'f*'</span> <span class="token punctuation">)</span>  –ls</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>排除目录</h5>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#查找/etc/下，除/etc/sane.d目录的其它所有.conf后缀的文件</span>
+<span class="token function">find</span> /etc -path <span class="token string">'/etc/sane.d'</span> -a -prune -o -name <span class="token string">"*.conf"</span>
+
+<span class="token comment">#查找/etc/下，除/etc/sane.d和/etc/fonts两个目录的所有.conf后缀的文件</span>
+<span class="token function">find</span> /etc <span class="token punctuation">\</span><span class="token punctuation">(</span> -path <span class="token string">"/etc/sane.d"</span> -o -path <span class="token string">"/etc/fonts"</span> <span class="token punctuation">\</span><span class="token punctuation">)</span> -a -prune -o -name <span class="token string">"*.conf"</span>
+
+<span class="token comment">#排除/proc和/sys目录</span>
+<span class="token function">find</span> / <span class="token punctuation">\</span><span class="token punctuation">(</span> -path <span class="token string">"/sys"</span> -o -path <span class="token string">"/proc"</span> <span class="token punctuation">\</span><span class="token punctuation">)</span> -a -prune -o -type f -a -mmin -1</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>根据文件大小来查找</h5>
+<pre><code>-size [+|-]#UNIT
+        常用单位：k, M, G，c（byte）,注意大小写敏感
+#UNIT: (#-1, #]
+        如：6k 表示(5k,6k]
+-#UNIT：[0,#-1]
+        如：-6k 表示[0,5k]
++#UNIT：(#,∞)
+        如：+6k 表示(6k,∞)</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">find</span> /  -size +10G</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h5>根据时间戳</h5>
+<p>以“天”为单位</p>
+<p>-atime [+|-]# </p>
+<ul>
+<li>
+<h1>: [#,#+1)</h1>
+</li>
+<li>+#: [#+1,∞]</li>
+<li>-#: [0,#)</li>
+</ul>
+<p>-mtime<br>
+-ctime</p>
+<p>以“分钟”为单位</p>
+<p>-amin<br>
+-mmin<br>
+-cmin</p>
+<p><img title="linux文件查找-find插图" alt="linux文件查找-find插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191220211414161-480x245.png"></p>
+<h5>根据权限查找</h5>
+<pre><code>-perm [/|-]MODE
+
+MODE: 精确权限匹配
+/MODE：任何一类(u,g,o)对象的权限中只要能一位匹配即可，或关系，+ 从CentOS 7开始淘汰
+-MODE：每一类对象都必须同时拥有指定权限，与关系
+0 表示不关注</code></pre>
+<p>说明：</p>
+<p>find -perm 755　会匹配权限模式恰好是755的文件<br>
+只要当任意人有写权限时，find -perm /222就会匹配<br>
+只有当每个人都有写权限时，find -perm -222才会匹配<br>
+只有当其它人（other）有写权限时，find -perm -002才会匹配</p>
+<h5>处理动作</h5>
+<pre><code>-print：默认的处理动作，显示至屏幕
+-ls：类似于对查找到的文件执行“ls -l”命令
+-fls file：查找到的所有文件的长格式信息保存至指定文件中，相当于 -ls &gt; file
+-delete：删除查找到的文件，慎用！
+-ok COMMAND {} \; 对查找到的每个文件执行由COMMAND指定的命令，对于每个文件执行命令之前，都会交互式要求用户确认
+-exec COMMAND {} \; 对查找到的每个文件执行由COMMAND指定的命令 
+{}: 用于引用查找到的文件名称自身</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#备份配置文件，添加.orig这个扩展名</span>
+<span class="token function">find</span>  -name  <span class="token string">".conf"</span>  -exec  <span class="token function">cp</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>.orig  <span class="token punctuation">\</span><span class="token punctuation">;</span>
+<span class="token comment">#提示删除存在时间超过３天以上的joe的临时文件</span>
+<span class="token function">find</span> /tmp -ctime +3 -user joe -ok <span class="token function">rm</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">\</span><span class="token punctuation">;</span>
+<span class="token comment">#在主目录中寻找可被其它用户写入的文件</span>
+<span class="token function">find</span> ~ -perm -002  -exec <span class="token function">chmod</span> o-w <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">\</span><span class="token punctuation">;</span>
+<span class="token comment">#查找/data下的权限为644，后缀为sh的普通文件，增加执行权限</span>
+<span class="token function">find</span> /data –type  f -perm <span class="token number">644</span>  -name <span class="token string">"*.sh"</span> –exec <span class="token function">chmod</span> <span class="token number">755</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">\</span><span class="token punctuation">;</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

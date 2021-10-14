@@ -1,0 +1,517 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux用户管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux用户管理">
+<meta name="description" content="用户管理命令 用户管理命令 useradd usermod userdel 用户创建 useradd 命令可以创建新的Linux用户 格式： useradd [options] LOGIN 常见选项： -u UID -o 配合-u 选项，不…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33868"><link rel="prev" title="什么是搜索引擎" href="http://www.yunweipai.com/33979.html">
+<link rel="next" title="linux权限管理" href="http://www.yunweipai.com/33871.html">
+<link rel="canonical" href="http://www.yunweipai.com/33868.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33868.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33868.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux用户管理, Linux教程">
+<meta name="description" content="用户管理命令 用户管理命令  useradd usermod userdel  用户创建 useradd 命令可以创建新的Linux用户 格式： useradd [options] LOGIN 常见选项：    -u  UID  -o  配合-u 选项，不检查UID的唯一性 -g GID  指明用户所属基本组，可为组名，也可以GID -c &quot;COMMENT“   用户的注释信息 -d HOME_DIR 以指定的路径(不存在)为">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453924"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post current"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33868" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>用户管理命令</h3>
+<p>用户管理命令</p>
+<ul>
+<li>useradd</li>
+<li>usermod</li>
+<li>userdel</li>
+</ul>
+<h4>用户创建</h4>
+<p>useradd 命令可以创建新的Linux用户</p>
+<p>格式：</p>
+<pre><code>useradd [options] LOGIN</code></pre>
+<p>常见选项：   </p>
+<pre><code>-u  UID 
+-o  配合-u 选项，不检查UID的唯一性
+-g GID  指明用户所属基本组，可为组名，也可以GID
+-c "COMMENT“   用户的注释信息
+-d HOME_DIR 以指定的路径(不存在)为家目录
+-s SHELL    指明用户的默认shell程序，可用列表在/etc/shells文件中
+-G GROUP1[,GROUP2,...]  为用户指明附加组，组须事先存在
+-N  不创建私用组做主组，使用users组做主组
+-r  创建系统用户 CentOS 6之前: ID&lt;500，CentOS 7以后: ID&lt;1000
+-m  创建家目录，用于系统用户
+-M  不创建家目录，用于非系统用户</code></pre>
+<p>范例:</p>
+<pre><code>useradd -r -u 48 -g apache -s /sbin/nologin -d /var/www -c "Apache" apache</code></pre>
+<p>useradd 命令默认值设定由/etc/default/useradd定义</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#cat /etc/default/useradd</span>
+<span class="token comment"># useradd defaults file</span>
+<span class="token assign-left variable">GROUP</span><span class="token operator">=</span><span class="token number">100</span>
+<span class="token assign-left variable"><span class="token environment constant">HOME</span></span><span class="token operator">=</span>/home
+<span class="token assign-left variable">INACTIVE</span><span class="token operator">=</span>-1    <span class="token comment">#对应/etc/shadow文件第7列，即用户密码过期的宽限期</span>
+<span class="token assign-left variable">EXPIRE</span><span class="token operator">=</span>        <span class="token comment">#对应/etc/shadow文件第8列，即用户帐号的有效期</span>
+<span class="token assign-left variable"><span class="token environment constant">SHELL</span></span><span class="token operator">=</span>/bin/bash
+<span class="token assign-left variable">SKEL</span><span class="token operator">=</span>/etc/skel
+<span class="token assign-left variable">CREATE_MAIL_SPOOL</span><span class="token operator">=</span>yes</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>显示或更改默认设置</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">useradd</span> -D  
+<span class="token function">useradd</span> –D -s <span class="token environment constant">SHELL</span>
+<span class="token function">useradd</span> –D –b BASE_DIR
+<span class="token function">useradd</span> –D –g GROUP</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>新建用户的相关文件</p>
+<ul>
+<li>/etc/default/useradd </li>
+<li>/etc/skel/* </li>
+<li>/etc/login.defs</li>
+</ul>
+<p>批量创建用户 </p>
+<pre><code>newusers  passwd 格式文件  </code></pre>
+<p>批量修改用户口令</p>
+<pre><code>echo username:passwd | chpasswd </code></pre>
+<h4>用户属性修改</h4>
+<p>usermod 命令可以修改用户属性</p>
+<p>格式：</p>
+<pre><code>usermod [OPTION] login</code></pre>
+<p>常见选项：   </p>
+<pre><code>-u UID: 新UID
+-g GID: 新主组
+-G GROUP1[,GROUP2,...[,GROUPN]]]：新附加组，原来的附加组将会被覆盖；若保留原有，则要同时使用-a选项
+-s SHELL：新的默认SHELL
+-c 'COMMENT'：新的注释信息
+-d HOME: 新家目录不会自动创建；若要创建新家目录并移动原家数据，同时使用-m选项
+-l login_name: 新的名字
+-L: lock指定用户,在/etc/shadow 密码栏的增加 ! 
+-U: unlock指定用户,将 /etc/shadow 密码栏的 ! 拿掉
+-e YYYY-MM-DD: 指明用户账号过期日期
+-f INACTIVE: 设定非活动期限，即宽限期</code></pre>
+<h4>删除用户</h4>
+<p>userdel 可删除Linux 用户</p>
+<p>格式：</p>
+<pre><code>userdel [OPTION]... Login</code></pre>
+<p>常见选项：</p>
+<pre><code>-f, --force     强制
+-r, --remove    删除用户家目录和邮箱</code></pre>
+<h4>查看用户相关的ID信息</h4>
+<p>id 命令可以查看用户的UID，GID等信息</p>
+<pre><code>id [OPTION]... [USER]</code></pre>
+<p>常见选项：</p>
+<pre><code>-u: 显示UID
+-g: 显示GID
+-G: 显示用户所属的组的ID
+-n: 显示名称，需配合ugG使用</code></pre>
+<h4>切换用户或以其他用户身份执行命令</h4>
+<p>su:  即 switch user，命令可以切换用户身份，并且以指定用户的身份执行命令</p>
+<p>格式：</p>
+<pre><code>su [options...] [-] [user [args...]]</code></pre>
+<p>常见选项：</p>
+<pre><code>-l  --login   su -l UserName    相当于 su - UserName
+-c, --command &lt;command&gt;         pass a single command to the shell with -c</code></pre>
+<p>切换用户的方式：</p>
+<ul>
+<li>su UserName：非登录式切换，即不会读取目标用户的配置文件，不改变当前工作目录，即不完全切换</li>
+<li>su – UserName：登录式切换，会读取目标用户的配置文件，切换至自已的家目录，即完全切换</li>
+</ul>
+<p>说明：root su至其他用户无须密码；非root用户切换时需要密码</p>
+<p>注意：su 切换新用户后，使用 exit 退回至旧的用户，而不要再用 su 切换至旧用户，否则会生成很多的bash子进程，环境可能会混乱。</p>
+<p>换个身份执行命令：</p>
+<pre><code>su [-] UserName -c 'COMMAND'</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent passwd mage</span>
+mage:x:1001:1001::/home/mage:/bin/bash
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#usermod -s /bin/false mage</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent passwd mage</span>
+mage:x:1001:1001::/home/mage:/bin/false
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su - mage</span>
+Last login: Fri Mar <span class="token number">27</span> 09:18:57 CST <span class="token number">2020</span> on pts/0
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whomai</span>
+-bash: whomai: <span class="token builtin class-name">command</span> not found
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whoami</span>
+root</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su -s /sbin/nologin wang</span>
+This account is currently not available.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whoami</span>
+root
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su -s /bin/false wang</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#whoami</span>
+root</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>wang@centos8 ~<span class="token punctuation">]</span><span class="token variable">$su</span> - root -c <span class="token string">"getent shadow"</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#su - wang -c 'touch wang.txt'
+[root@centos8 ~]#ll ~wang/
+total 0
+-rw-rw-r-- 1 wang wang 0 Mar 27 09:31 wang1.txt
+-rw-rw-r-- 1 wang wang 0 Mar 27 09:32 wang2.txt</code></pre>
+<p>范例：</p>
+<pre><code>[root@centos8 ~]#su  bin
+This account is currently not available.
+[root@centos8 ~]#su -s /bin/bash bin
+bash-4.4whoami
+bin
+bash-4.4
+
+[root@centos8 ~]#getent passwd tss
+tss:x:59:59:Account used by the trousers package to sandbox the tcsd daemon:/dev/null:/sbin/nologin
+
+[root@centos8 ~]#su - -s /bin/bash tss
+Last login: Fri Mar 27 09:46:43 CST 2020 on pts/0
+su: warning: cannot change directory to /dev/null: Not a directory
+-bash: /dev/null/.bash_profile: Not a directory
+[tss@centos8 root]pwd
+/root
+[tss@centos8 root]whoami
+tss</code></pre>
+<h4>设置密码</h4>
+<p><img title="linux用户管理插图" alt="linux用户管理插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200327104435650-480x210.png"></p>
+<p>passwd 可以修改用户密码</p>
+<p>格式：</p>
+<pre><code>passwd [OPTIONS] UserName</code></pre>
+<p>常用选项：</p>
+<pre><code>-d：删除指定用户密码
+-l：锁定指定用户
+-u：解锁指定用户
+-e：强制用户下次登录修改密码
+-f：强制操作
+-n mindays：指定最短使用期限
+-x maxdays：最大使用期限
+-w warndays：提前多少天开始警告
+-i inactivedays：非活动期限
+--stdin：从标准输入接收用户密码,Ubuntu无此选项</code></pre>
+<p>范例：</p>
+<pre><code>echo "PASSWORD" | passwd --stdin USERNAME</code></pre>
+<p>范例：设置用户下次必须更改密码</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#useradd wang</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#echo 123456 | passwd --stdin wang</span>
+Changing password <span class="token keyword">for</span> user wang.
+passwd: all authentication tokens updated successfully.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent shadow wang</span>
+wang:64f78ko7hJ4fcMvIHlpbOkFfziDBLT.8XBCi8c/N7wysDAejN5H9Fgxkt99HRDLTEosO43CKYi2XSSVHxAK568Olj3C5bwfNExlves/:18348:0:99999:7:::
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#passwd -e wang</span>
+Expiring password <span class="token keyword">for</span> user wang.
+passwd: Success
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent shadow wang</span>
+wang:64f78ko7hJ4fcMvIHlpbOkFfziDBLT.8XBCi8c/N7wysDAejN5H9Fgxkt99HRDLTEosO43CKYi2XSSVHxAK568Olj3C5bwfNExlves/:0:0:99999:7:::
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su - mage</span>
+Last login: Fri Mar <span class="token number">27</span> 09:55:27 CST <span class="token number">2020</span> on pts/0
+<span class="token punctuation">[</span>mage@centos8 ~<span class="token punctuation">]</span>su - wang
+Password:
+You are required to change your password immediately <span class="token punctuation">(</span>administrator enforced<span class="token punctuation">)</span>
+Current password:
+New password:
+BAD PASSWORD: The password is shorter than <span class="token number">8</span> characters
+New password:
+BAD PASSWORD: The password fails the dictionary check - it is too simplistic/systematic
+su: Have exhausted maximum number of retries <span class="token keyword">for</span> <span class="token function">service</span>
+<span class="token punctuation">[</span>mage@centos8 ~<span class="token punctuation">]</span>su - wang
+Password:
+You are required to change your password immediately <span class="token punctuation">(</span>administrator enforced<span class="token punctuation">)</span>
+Current password:
+New password:
+Retype new password:
+Last login: Fri Mar <span class="token number">27</span> <span class="token number">10</span>:01:20 CST <span class="token number">2020</span> on pts/0
+Last failed login: Fri Mar <span class="token number">27</span> <span class="token number">10</span>:02:37 CST <span class="token number">2020</span> on pts/0
+There was <span class="token number">1</span> failed login attempt since the last successful login.
+<span class="token punctuation">[</span>wang@centos8 ~<span class="token punctuation">]</span>exit
+<span class="token builtin class-name">logout</span>
+<span class="token punctuation">[</span>mage@centos8 ~<span class="token punctuation">]</span>exit
+<span class="token builtin class-name">logout</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent shadow wang</span>
+wang:6TX0iLjF52ByHh1zH<span class="token variable">$g</span>.WI4LNfauuwgnxpRhd7ePqFKHZ85YU3r6Lh2S0PWRXWGjGlDVtomLWqpdiWrT.vwqD/Wzok.kzQhUHc8UCs91:18348:0:99999:7:::</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>修改用户密码策略</h4>
+<p>chage 可以修改用户密码策略</p>
+<p>格式：</p>
+<pre><code>chage [OPTION]... LOGIN</code></pre>
+<p>常见选项：</p>
+<pre><code>-d  LAST_DAY                   #更改密码的时间
+-m --mindays MIN_DAYS
+-M --maxdays MAX_DAYS
+-W --warndays WARN_DAYS
+-I --inactive INACTIVE          #密码过期后的宽限期
+-E --expiredate EXPIRE_DATE     #用户的有效期
+-l  显示密码策略</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chage  -m 3 -M 42 -W 14 -I 7 -E 2020-10-10 wang</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chage -l wang</span>
+Last password change                    <span class="token builtin class-name">:</span> Dec <span class="token number">18</span>, <span class="token number">2019</span>
+Password expires                    <span class="token builtin class-name">:</span> Jan <span class="token number">29</span>, <span class="token number">2020</span>
+Password inactive                   <span class="token builtin class-name">:</span> Feb 05, <span class="token number">2020</span>
+Account expires                     <span class="token builtin class-name">:</span> Oct <span class="token number">10</span>, <span class="token number">2020</span>
+Minimum number of days between password change      <span class="token builtin class-name">:</span> <span class="token number">3</span>
+Maximum number of days between password change      <span class="token builtin class-name">:</span> <span class="token number">42</span>
+Number of days of warning before password expires   <span class="token builtin class-name">:</span> <span class="token number">14</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent shadow wang</span>
+wang:682L7A37XJgzKTegHlFzqrMHmFwW740U32bvWHUuakPDKOiULE/CxcyDzSe1qi1X2ALulDw1WYrhd2wE00.lWO0im5//7biyV.juk5.:18248:3:42:14:7:18545:
+
+<span class="token comment">#下一次登录强制重设密码 </span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chage  -d 0 wang</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent shadow wang</span>
+wang:682L7A37XJgzKTegHlFzqrMHmFwW740U32bvWHUuakPDKOiULE/CxcyDzSe1qi1X2ALulDw1WYrhd2wE00.lWO0im5//7biyV.juk5.:0:3:42:14:7:18545:
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chage -l wang</span>
+Last password change                    <span class="token builtin class-name">:</span> password must be changed
+Password expires                    <span class="token builtin class-name">:</span> password must be changed
+Password inactive                   <span class="token builtin class-name">:</span> password must be changed
+Account expires                     <span class="token builtin class-name">:</span> Oct <span class="token number">10</span>, <span class="token number">2020</span>
+Minimum number of days between password change      <span class="token builtin class-name">:</span> <span class="token number">3</span>
+Maximum number of days between password change      <span class="token builtin class-name">:</span> <span class="token number">42</span>
+Number of days of warning before password expires   <span class="token builtin class-name">:</span> <span class="token number">14</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent shadow wang</span>
+wang:682L7A37XJgzKTegH<span class="token variable">$lFzqrMHmFwW740U32bvWHUuakPDKOiULE</span>/CxcyDzSe1qi1X2ALulDw1WYrhd2wE00.lWO0im5//7biyV.juk5.:0:3:42:14:7:18545:</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>用户相关的其它命令</h4>
+<ul>
+<li>chfn 指定个人信息</li>
+<li>chsh 指定shell，相当于usermod -s </li>
+<li>finger 可看用户个人信息</li>
+</ul>
+<p>范例:</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#chfn wang</span>
+Changing finger information <span class="token keyword">for</span> wang.
+Name <span class="token punctuation">[</span>wang<span class="token punctuation">]</span>: wangxiaochun
+Office <span class="token punctuation">[</span><span class="token punctuation">]</span>:it
+Office Phone <span class="token punctuation">[</span><span class="token punctuation">]</span>: <span class="token number">10000</span>
+Home Phone <span class="token punctuation">[</span><span class="token punctuation">]</span>: <span class="token number">11111</span>
+
+Finger information changed.
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#finger wang</span>
+Login: wang                     Name: wangxiaochun
+Directory: /home/wang                   Shell: /bin/bash
+Office: it, x1-0000         Home Phone: x1-1111
+Never logged in.
+No mail.
+No Plan.
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#getent passwd wang</span>
+wang:x:1000:1000:wangxiaochun,it,10000,11111:/home/wang:/bin/bash
+
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#chsh -s /bin/csh wang </span>
+Changing shell <span class="token keyword">for</span> wang.
+Shell changed.
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#getent passwd wang</span>
+wang:x:1000:1000:wangsicong,wanda,10000,11111:/home/wang:/bin/csh
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#usermod -s /bin/bash wang</span>
+<span class="token punctuation">[</span>root@centos7 ~<span class="token punctuation">]</span><span class="token comment">#getent passwd wang</span>
+wang:x:1000:1000:wangsicong,wanda,10000,11111:/home/wang:/bin/bash</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>范例: 修改用户使用不可登录的shell类型 </p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#getent passwd wang</span>
+wang:x:1000:1000:wangxiaochun,IT,110,119,:/home/wang:/bin/bash
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chsh -s /sbin/nologin wang</span>
+Changing shell <span class="token keyword">for</span> wang.
+chsh: Warning: <span class="token string">"/sbin/nologin"</span> is not listed <span class="token keyword">in</span> /etc/shells.
+Shell changed.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su - wang</span>
+This account is currently not available.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chsh -s /bin/false wang</span>
+Changing shell <span class="token keyword">for</span> wang.
+chsh: Warning: <span class="token string">"/bin/false"</span> is not listed <span class="token keyword">in</span> /etc/shells.
+Shell changed.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su - wang</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#id </span>
+<span class="token assign-left variable">uid</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token assign-left variable">gid</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span> <span class="token assign-left variable">groups</span><span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">(</span>root<span class="token punctuation">)</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#chsh -s /bin/bash wang</span>
+Changing shell <span class="token keyword">for</span> wang.
+Shell changed.
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#su - wang</span>
+<span class="token punctuation">[</span>wang@centos8 ~<span class="token punctuation">]</span>$</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+		</div>
+
+	</div>
+
+</div>	
+	
+</body></html>

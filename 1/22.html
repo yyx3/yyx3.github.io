@@ -1,0 +1,425 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux网络基础 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux网络基础">
+<meta name="description" content="网络基础 网络概念 网络是一组计算机或网络设备通过有形的线缆或无形的媒介如无线，连接起来，按照一定的规则，进行通信的集合。 网络功能和优点 数据和应用程序 资源 网络存储 备份设备 作用范围分类 广域网(WAN,Wide Area Netw…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33918"><link rel="prev" title="linux文件系统管理" href="http://www.yunweipai.com/33914.html">
+<link rel="next" title="linux网络配置" href="http://www.yunweipai.com/33931.html">
+<link rel="canonical" href="http://www.yunweipai.com/33918.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33918.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33918.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux网络基础, Linux教程">
+<meta name="description" content="网络基础 网络概念 网络是一组计算机或网络设备通过有形的线缆或无形的媒介如无线，连接起来，按照一定的规则，进行通信的集合。  网络功能和优点  数据和应用程序 资源 网络存储 备份设备  作用范围分类  广域网(WAN,Wide Area Network) 城域网(MAN,Metropolitan Area Network) 局域网(LAN,Local Area Network)  常见的网络物理组件  网络应用程序 各种网络应用  W">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post current"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33918" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>网络基础</h3>
+<h4>网络概念</h4>
+<p>网络是一组计算机或网络设备通过有形的线缆或无形的媒介如无线，连接起来，按照一定的规则，进行通信的集合。</p>
+<p><img title="linux网络基础插图" alt="linux网络基础插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224201435127-480x363.png"></p>
+<p>网络功能和优点</p>
+<ul>
+<li>数据和应用程序</li>
+<li>资源</li>
+<li>网络存储</li>
+<li>备份设备</li>
+</ul>
+<p>作用范围分类</p>
+<ul>
+<li>广域网(WAN,Wide Area Network)</li>
+<li>城域网(MAN,Metropolitan Area Network)</li>
+<li>局域网(LAN,Local Area Network)</li>
+</ul>
+<h4>常见的网络物理组件</h4>
+<p><img title="linux网络基础插图(1)" alt="linux网络基础插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224201732299-480x350.png"></p>
+<h4>网络应用程序</h4>
+<h5>各种网络应用</h5>
+<ul>
+<li>Web 浏览器（Chrome、IE、Firefox等）</li>
+<li>即时消息（QQ、微信、钉钉等）</li>
+<li>电子邮件（Outlook、foxmail 等）</li>
+<li>协作（视频会议、VNC、Netmeeting、WebEx 等）</li>
+<li>web网络服务（apache，nginx，IIS）</li>
+<li>文件网络服务（ftp ，nfs，samba）</li>
+<li>数据库服务（ MySQL，MariaDB，MongoDB)</li>
+<li>中间件服务（Tomcat，JBoss）</li>
+<li>安全服务（Netfilter）</li>
+</ul>
+<h5>应用程序对网络的要求</h5>
+<ul>
+<li>批处理应用程序
+<ul>
+<li>FTP、TFTP、库存更新</li>
+<li>无需直接人工交互</li>
+<li>带宽很重要，但并非关键性因素</li>
+</ul>
+</li>
+<li>交互式应用程序
+<ul>
+<li>库存查询、数据库更新</li>
+<li>人机交互</li>
+<li>因为用户需等待响应，所以响应时间很重要，但并非关键性因素，除非要等待很长时间</li>
+</ul>
+</li>
+<li>实时应用程序
+<ul>
+<li>VoIP、视频</li>
+<li>人与人的交互</li>
+<li>端到端的延时至关重要</li>
+</ul>
+</li>
+</ul>
+<h4>网络的特征</h4>
+<ul>
+<li>速度</li>
+<li>成本</li>
+<li>安全性</li>
+<li>可用性</li>
+<li>可扩展性</li>
+<li>可靠性</li>
+<li>拓扑</li>
+</ul>
+<h5>速度(带宽)</h5>
+<p><img title="linux网络基础插图(2)" alt="linux网络基础插图(2)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224202053310-480x389.png"></p>
+<h5>网络拓扑</h5>
+<p>拓扑结构一般是指由点和线排列成的几何图形</p>
+<p>计算机网络的拓扑结构是指一个网络的通信链路和计算机结点相互连接构成的几何图形</p>
+<p><strong>拓扑分类</strong></p>
+<ul>
+<li>物理拓扑描述了物理设备的布线方式</li>
+<li>逻辑拓扑描述了信息在网络中流动的方式</li>
+</ul>
+<p><strong>拓扑结构分类</strong></p>
+<p><img title="linux网络基础插图(3)" alt="linux网络基础插图(3)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224210822941-480x148.png"></p>
+<p><img title="linux网络基础插图(4)" alt="linux网络基础插图(4)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224211030023-480x133.png"></p>
+<ul>
+<li>总线拓扑：所有设备均可接收信号</li>
+<li>星型拓扑：通过中心点传输，单一故障点</li>
+<li>扩展星型拓扑：比星型拓扑的复原能力更强</li>
+<li>环拓扑：信号绕环传输，单一故障点</li>
+<li>双环拓扑：信号沿相反方向传输，比单环的复原能力更强</li>
+<li>全网状拓扑：容错能力强，实施成本高</li>
+<li>部分网状拓扑：在容错能力与成本之间寻求平衡</li>
+</ul>
+<h4>网络标准</h4>
+<h5>网络标准和分层</h5>
+<p>旧模型：专有产品，由一个厂商控制应用程序和嵌入的软件<br>
+基于标准的模型：多厂商软件，分层方法</p>
+<p><strong>层次划分的必要性</strong></p>
+<p>计算机网络是由许多硬件、软件和协议交织起来的复杂系统。由于网络设计十分复杂，如何设计、组织和实现计算机网络是一个挑战，必须要采用科学有效的方法</p>
+<p><strong>层次划分的方法</strong></p>
+<ul>
+<li>网络的第一层应当具有相对独立的功能</li>
+<li>梳理功能之间的关系，使一个功能可以为实现另一个功能提供必要的服务，从而形成系统的层次结构</li>
+<li>为提高系统的工作效率，相同或相近的功能仅在一个层次中实现，而且尽可能在较高的层次中实现</li>
+<li>每一层只为相邻的上一层提供服务</li>
+</ul>
+<p><strong>层次划分的优点</strong></p>
+<ul>
+<li>各层之间相互独立，每一层只实现一种相对独立的功能，使问题复杂程度降低</li>
+<li>灵活性好，各层内部的操作不会影响其他层</li>
+<li>结构上可分割开，各层之间都可以采用最合适的技术来实现</li>
+<li>易于实现和维护，因为整个系统已被分解成相对独立的子系统</li>
+<li>能促进标准化工作，因为每一层的功能及其提供的服务都有了精确的说明 </li>
+</ul>
+<h5>开放系统互联OSI</h5>
+<p><img title="linux网络基础插图(5)" alt="linux网络基础插图(5)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224213736812-480x396.png"></p>
+<p>在制定计算机网络标准方面，起着重大作用的两大国际组织是：国际电信联盟电信标准化部门，与国际标准组织（ISO），虽然它们工作领域不同，但随着科学技术的发展，通信与信息处理之间的界限开始变得比较模糊，这也成了国际电信联盟电信标准化部门和ISO共同关心的领域。1984年，ISO发布了著名的OSI(Open System Interconnection)标准，它定义了网络互联的7层框架，物理层、数据链路层、网络层、传输层、会话层、表示层和应用层），即OSI开放系统互连参考模型</p>
+<p><strong>OSI 模型的七层结构</strong></p>
+<p><img title="linux网络基础插图(6)" alt="linux网络基础插图(6)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224213901676-480x339.png"></p>
+<p>第7层 应用层<br>
+应用层（Application Layer）提供为应用软件而设的接口，以设置与另一应用软件之间的通信。例如: HTTP、HTTPS、FTP、TELNET、SSH、SMTP、POP3、MySQL等</p>
+<p>第6层 表示层<br>
+主条目：表示层（Presentation Layer）把数据转换为能与接收者的系统格式兼容并适合传输的格式</p>
+<p>第5层 会话层<br>
+会话层（Session Layer）负责在数据传输中设置和维护电脑网络中两台电脑之间的通信连接。</p>
+<p>第4层 传输层<br>
+传输层（Transport Layer）把传输表头（TH）加至数据以形成数据包。传输表头包含了所使用的协议等发送信息。例如:传输控制协议（TCP）等。</p>
+<p>第3层 网络层<br>
+网络层（Network Layer）决定数据的路径选择和转寄，将网络表头（NH）加至数据包，以形成报文。网络表头包含了网络数据。例如:互联网协议（IP）等。</p>
+<p>第2层 数据链接层<br>
+数据链路层（Data Link Layer）负责网络寻址、错误侦测和改错。当表头和表尾被加至数据包时，会形成信息框（Data Frame）。数据链表头（DLH）是包含了物理地址和错误侦测及改错的方法。数据链表尾（DLT）是一串指示数据包末端的字符串。例如以太网、无线局域网（Wi-Fi）和通用分组无线服务（GPRS）等。分为两个子层：逻辑链路控制（logical link control，LLC）子层和介质访问控制（Media access control，MAC）子层</p>
+<p>第1层 物理层<br>
+物理层（Physical Layer）在局部局域网上传送数据帧（Data Frame），它负责管理电脑通信设备和网络媒体之间的互通。包括了针脚、电压、线缆规范、集线器、中继器、网卡、主机接口卡等</p>
+<h5>网络的通信过程</h5>
+<h6>数据封装和数据解封</h6>
+<p><img title="linux网络基础插图(7)" alt="linux网络基础插图(7)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224214236049-480x197.png"></p>
+<h6>协议数据单元 PDU</h6>
+<p><img title="linux网络基础插图(8)" alt="linux网络基础插图(8)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224214324484-480x286.png"></p>
+<p>PDU: Protocol Data Unit,协议数据单元是指对等层次之间传递的数据单位 </p>
+<ul>
+<li>物理层的 PDU是数据位 bit</li>
+<li>数据链路层的 PDU是数据帧 frame</li>
+<li>网络层的PDU是数据包 packet</li>
+<li>传输层的 PDU是数据段 segment</li>
+<li>其他更高层次的PDU是消息 message</li>
+</ul>
+<h6>三种通讯模式</h6>
+<p><img title="linux网络基础插图(9)" alt="linux网络基础插图(9)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224223126040-480x138.png"></p>
+<h6>冲突域和广播域</h6>
+<p>冲突域:两个网络设备同时发送数据,如果发生了冲突,则两个设备处于同一个冲突域,反之,则各自处于不同的冲突域</p>
+<p>广播域:一个网络设备发送广播,另一个设备收到了,则两个设备处于同一个广播域,反之,则各自处于不同的广播域</p>
+<h6>三种通讯机制</h6>
+<p><img title="linux网络基础插图(10)" alt="linux网络基础插图(10)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20191224224401804-480x260.png"></p>
+<ul>
+<li>单工通信：只有一个方向的通信</li>
+<li>半双工通信：通信双方都可以发送和接收信息，但不能同时发送，也不能同时接收</li>
+<li>全双工通信：通信双方可以同时发送和同时接收</li>
+</ul>
+<p>范例：查看双工和速度</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># mii-tool  eth0</span>
+eth0: negotiated 100baseTx-FD, <span class="token function">link</span> ok
+
+<span class="token punctuation">[</span>root@localhost ~<span class="token punctuation">]</span><span class="token comment"># mii-tool  -v eth0</span>
+eth0: negotiated 100baseTx-FD, <span class="token function">link</span> ok
+  product info: vendor 00:07:32, model <span class="token number">17</span> <span class="token function">rev</span> <span class="token number">5</span>
+  basic mode:   autonegotiation enabled
+  basic status: autonegotiation complete, <span class="token function">link</span> ok
+  capabilities: 100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD
+  advertising:  100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD flow-control
+  <span class="token function">link</span> partner: 100baseTx-FD 100baseTx-HD 10baseT-FD 10baseT-HD
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ethtool -i eth0</span>
+driver: vmxnet3
+version: <span class="token number">1.4</span>.16.0-k-NAPI
+firmware-version: 
+expansion-rom-version: 
+bus-info: 0000:03:00.0
+supports-statistics: <span class="token function">yes</span>
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: <span class="token function">yes</span>
+supports-priv-flags: no
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ethtool  eth0</span>
+Settings <span class="token keyword">for</span> eth0:
+    Supported ports: <span class="token punctuation">[</span> TP <span class="token punctuation">]</span>
+    Supported <span class="token function">link</span> modes:   1000baseT/Full 
+                            10000baseT/Full 
+    Supported pause frame use: No
+    Supports auto-negotiation: No
+    Supported FEC modes: Not reported
+    Advertised <span class="token function">link</span> modes:  Not reported
+    Advertised pause frame use: No
+    Advertised auto-negotiation: No
+    Advertised FEC modes: Not reported
+    Speed: 10000Mb/s
+    Duplex: Full
+    Port: Twisted Pair
+    PHYAD: <span class="token number">0</span>
+    Transceiver: internal
+    Auto-negotiation: off
+    MDI-X: Unknown
+    Supports Wake-on: uag
+    Wake-on: d
+    Link detected: <span class="token function">yes</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#mii-tool    eth0</span>
+SIOCGMIIPHY on <span class="token string">'eth0'</span> failed: Operation not supported</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+
+				
+			</div>
+
+			<div class="clear"></div>
+
+		</div>
+		</div>
+
+	</div>
+
+</div>		
+</body></html>

@@ -1,0 +1,343 @@
+<html lang="zh-CN">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>Linux 操作系统安装 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script><script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,Linux命令,linux学习,linux安装,linux教程,linux用法">
+<meta name="description" content="2 Linux 安装 2.1 Linux哲学思想 一切都是一个文件（包括硬件） 小型，单一用途的程序 链接程序，共同完成复杂的任务 避免令人困惑的用户界面 配置数据存储在文本中 2.2 Linux 生产主流版本 Linux 各种版本 Cen…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/">
+<link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33773">
+<link rel="prev" title="Linux 计算机基础" href="http://www.yunweipai.com/33771.html">
+<link rel="next" title="Linux 连接服务器" href="http://www.yunweipai.com/33775.html">
+<link rel="canonical" href="http://www.yunweipai.com/33773.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33773.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33773.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, Linux命令, linux学习, linux安装, linux教程, linux用法, Linux教程">
+<meta name="description" content="2 Linux 安装 2.1 Linux哲学思想      一切都是一个文件（包括硬件）     小型，单一用途的程序     链接程序，共同完成复杂的任务     避免令人困惑的用户界面     配置数据存储在文本中  2.2 Linux 生产主流版本 Linux 各种版本 Centos 各版本介绍 https://zh.wikipedia.org/wiki/CentOS RHEL各版本介绍  https://zh.wikipedia">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml">
+<!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453919"></script>
+<link href="./style.css" rel="styleSheet" type="text/css">
+</head>
+
+<body class="dayStyle">
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+<div id="container">
+  <div id="wrap">
+    <div class="col-left">
+      <div class="nav-root"> Linux教程 <a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a> </div>
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post current"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+    </div>
+    <script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+<!--0-->
+    <div class="col-sidebar">
+     <!--0-->
+     <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+      <div id="sidebar" class="wb100"> </div>
+    </div>
+
+    <div class="col-main dayStyle">
+      <div id="post-33773" class="post-guide">
+        <div class="entry">
+          <h3 class="md-end-block md-heading"><span class="md-plain">2 Linux 安装</span></h3>
+          <h4 class="md-end-block md-heading"><span class="md-plain">2.1 Linux哲学思想</span></h4>
+          <ul>
+            <li class="md-end-block md-p"><span class="md-plain">一切都是一个文件（包括硬件）</span></li>
+            <li class="md-end-block md-p"><span class="md-plain">小型，单一用途的程序</span></li>
+            <li class="md-end-block md-p"><span class="md-plain">链接程序，共同完成复杂的任务</span></li>
+            <li class="md-end-block md-p"><span class="md-plain">避免令人困惑的用户界面</span></li>
+            <li class="md-end-block md-p"><span class="md-plain">配置数据存储在文本中</span></li>
+          </ul>
+          <h4 class="md-end-block md-heading"><span class="md-plain">2.2 Linux 生产主流版本</span></h4>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">Linux 各种版本</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">Centos 各版本介绍</span> <span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=6371f07a49aHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvQ2VudE9T" rel="external nofollow" target="_blank">https://zh.wikipedia.org/wiki/CentOS</a></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">RHEL各版本介绍 </span> <span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=b10403005faHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvUmVkX0hhdF9FbnRlcnByaXNlX0xpbnV4" rel="external nofollow" target="_blank">https://zh.wikipedia.org/wiki/Red_Hat_Enterprise_Linux</a></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">Ubuntu 各版本介绍</span> <span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=93e17bfb2caHR0cHM6Ly96aC53aWtpcGVkaWEub3JnL3dpa2kvVWJ1bnR1" rel="external nofollow" target="_blank">https://zh.wikipedia.org/wiki/Ubuntu</a></span> <span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=c906654972aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3NvbmdmdWx1L2FydGljbGUvZGV0YWlscy84NTMxMDI3Mw==" rel="external nofollow" target="_blank">https://blog.csdn.net/songfulu/article/details/85310273</a></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">获取发行版</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">CentOS</span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=28e98163b6aHR0cHM6Ly93aWtpLmNlbnRvcy5vcmcvRG93bmxvYWQ=" rel="external nofollow" target="_blank">https://wiki.centos.org/Download</a></span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=cac5f0c506aHR0cDovL21pcnJvcnMuYWxpeXVuLmNvbQ==" rel="external nofollow" target="_blank">http://mirrors.aliyun.com</a></span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=a1ab91bafcaHR0cDovL21pcnJvcnMuc29odS5jb20=" rel="external nofollow" target="_blank">http://mirrors.sohu.com</a></span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=b03db4ed60aHR0cDovL21pcnJvcnMuMTYzLmNvbQ==" rel="external nofollow" target="_blank">http://mirrors.163.com</a></span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=0fa7fa057faHR0cHM6Ly9taXJyb3JzLnR1bmEudHNpbmdodWEuZWR1LmNuL2NlbnRvcy8=" rel="external nofollow" target="_blank">https://mirrors.tuna.tsinghua.edu.cn/centos/</a></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">Ubuntu</span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=cfb7b4724caHR0cDovL2NkaW1hZ2UudWJ1bnR1LmNvbS9yZWxlYXNlcy8=" rel="external nofollow" target="_blank">http://cdimage.ubuntu.com/releases/</a></span> <span class="md-plain">s</span><span class="md-plain">erver版</span></p>
+          <p class="md-end-block md-p"><span class="md-link" spellcheck="false"><a href="http://www.yunweipai.com/go?_=662b15e7eaaHR0cDovL3JlbGVhc2VzLnVidW50dS5jb20v" rel="external nofollow" target="_blank">http://releases.ubuntu.com/</a></span>desktop版</p>
+          <h4 class="md-end-block md-heading"><span class="md-plain">2.3 安装 Linux 系统</span></h4>
+          <h5 class="md-end-block md-heading"><span class="md-plain">2.3.1 Linux安装前准备</span></h5>
+          <p class="md-end-block md-p"><span class="md-plain">虚拟机：用软件（如：vmware,virtualbox等）模拟硬件,方便实验的灵活配置</span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/26.png?download=false"><img title="Linux 操作系统安装插图" alt="Linux 操作系统安装插图" loading="lazy" class="alignnone size-large wp-image-34361" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/26.png?download=false" width="780" height="387"></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">虚拟化软件，建议使用 Vmware Workstation</span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/27.png?download=false"><img title="Linux 操作系统安装插图(1)" alt="Linux 操作系统安装插图(1)" loading="lazy" class="alignnone size-full wp-image-34362" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/27.png?download=false" width="504" height="374"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">虚拟硬件配置</span></strong></span></p>
+          <ul class="ul-list" data-mark="-">
+            <li class="md-list-item">
+              <p class="md-end-block md-p"><span class="md-plain">CPU：2核或更多</span></p>
+            </li>
+            <li class="md-list-item">
+              <p class="md-end-block md-p"><span class="md-plain">内存：1G以上，推荐2G</span></p>
+            </li>
+            <li class="md-list-item">
+              <p class="md-end-block md-p"><span class="md-plain">硬盘：一块硬盘，200G</span></p>
+            </li>
+            <li class="md-list-item">
+              <p class="md-end-block md-p"><span class="md-plain">网卡：NAT模式</span></p>
+            </li>
+            <li class="md-list-item">
+              <p class="md-end-block md-p"><span class="md-plain">光盘：挂载对应版本的ISO文件</span></p>
+            </li>
+          </ul>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">打开虚拟化功能</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">在很多家用台式机和笔记本电脑上，虚拟化功能默认是关闭的，再要打开后才能使用Vmware等虚拟化软件，否则会报类拟以下的错误</span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">Intel CPU 报错提示</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/28.png?download=false"><img title="Linux 操作系统安装插图(2)" alt="Linux 操作系统安装插图(2)" loading="lazy" class="alignnone size-full wp-image-34364" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/28.png?download=false" width="465" height="372"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">AMD CPU 报错提示</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/29.png?download=false"><img title="Linux 操作系统安装插图(3)" alt="Linux 操作系统安装插图(3)" loading="lazy" class="alignnone size-full wp-image-34365" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/29.jpg?download=false" width="381" height="366"></span></p>
+          <p class="md-end-block md-p"><span class="md-plain">在电脑的BIOS里，打开虚拟化功能</span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">范例：Intel CPU 虚拟化功能</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/30.png?download=false"><img title="Linux 操作系统安装插图(4)" alt="Linux 操作系统安装插图(4)" loading="lazy" class="alignnone size-full wp-image-34366" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/30.png?download=false" width="532" height="398"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">范例：AMD CPU 虚拟化功能</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/31.png?download=false"><img title="Linux 操作系统安装插图(5)" alt="Linux 操作系统安装插图(5)" loading="lazy" class="alignnone size-full wp-image-34367" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/31.png?download=false" width="530" height="397"></span></p>
+          <h5 class="md-end-block md-heading"><span class="md-plain">2.3.2 安装 CentOS </span></h5>
+          <h6 class="md-end-block md-heading"><span class="md-plain">2.3.2.1 针对CentOS 8 创建虚拟机环境</span></h6>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/32.png?download=false"><img title="Linux 操作系统安装插图(6)" alt="Linux 操作系统安装插图(6)" loading="lazy" class="alignnone size-large wp-image-34368" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/32.png?download=false" width="780" height="559"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150104416.png"><img title="Linux 操作系统安装插图(7)" alt="Linux 操作系统安装插图(7)" loading="lazy" class="alignnone size-full wp-image-34369" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/33.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150114550.png"><img title="Linux 操作系统安装插图(8)" alt="Linux 操作系统安装插图(8)" loading="lazy" class="alignnone size-full wp-image-34370" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/34.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150134543.png"><img title="Linux 操作系统安装插图(9)" alt="Linux 操作系统安装插图(9)" loading="lazy" class="alignnone size-full wp-image-34371" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/35.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150229688.png"><img title="Linux 操作系统安装插图(10)" alt="Linux 操作系统安装插图(10)" loading="lazy" class="alignnone size-full wp-image-34372" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/36.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150520528.png"><img title="Linux 操作系统安装插图(11)" alt="Linux 操作系统安装插图(11)" loading="lazy" class="alignnone size-full wp-image-34373" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/37.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150542649.png"><img title="Linux 操作系统安装插图(12)" alt="Linux 操作系统安装插图(12)" loading="lazy" class="alignnone size-full wp-image-34374" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/38.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150605791.png"><img title="Linux 操作系统安装插图(13)" alt="Linux 操作系统安装插图(13)" loading="lazy" class="alignnone size-full wp-image-34375" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/39.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150623776.png"><img title="Linux 操作系统安装插图(14)" alt="Linux 操作系统安装插图(14)" loading="lazy" class="alignnone size-full wp-image-34376" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/40.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150644570.png"><img title="Linux 操作系统安装插图(15)" alt="Linux 操作系统安装插图(15)" loading="lazy" class="alignnone size-full wp-image-34377" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/41.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150730719.png"><img title="Linux 操作系统安装插图(16)" alt="Linux 操作系统安装插图(16)" loading="lazy" class="alignnone size-full wp-image-34379" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/42.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150748104.png"><img title="Linux 操作系统安装插图(17)" alt="Linux 操作系统安装插图(17)" loading="lazy" class="alignnone size-full wp-image-34380" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/43.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150831327.png"><img title="Linux 操作系统安装插图(18)" alt="Linux 操作系统安装插图(18)" loading="lazy" class="alignnone size-full wp-image-34381" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/44.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150849734.png"><img title="Linux 操作系统安装插图(19)" alt="Linux 操作系统安装插图(19)" loading="lazy" class="alignnone size-full wp-image-34382" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/45.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150910783.png"><img title="Linux 操作系统安装插图(20)" alt="Linux 操作系统安装插图(20)" loading="lazy" class="alignnone size-full wp-image-34383" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/46.png?download=false" width="513" height="439"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205150931122.png"><img title="Linux 操作系统安装插图(21)" alt="Linux 操作系统安装插图(21)" loading="lazy" class="alignnone size-large wp-image-34384" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/47.png?download=false" width="780" height="643"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205151029514.png"><img title="Linux 操作系统安装插图(22)" alt="Linux 操作系统安装插图(22)" loading="lazy" class="alignnone size-large wp-image-34385" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/48.png?download=false" width="780" height="539"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205151125226.png"><img title="Linux 操作系统安装插图(23)" alt="Linux 操作系统安装插图(23)" loading="lazy" class="alignnone size-full wp-image-34386" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/49.png?download=false" width="745" height="755"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205151715019.png"><img title="Linux 操作系统安装插图(24)" alt="Linux 操作系统安装插图(24)" loading="lazy" class="alignnone size-full wp-image-34387" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/50.png?download=false" width="745" height="755"></span></p>
+          <h6 class="md-end-block md-heading"><span class="md-plain">2.3.2.2 安装CentOS 8</span></h6>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">加电开机</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205151612114.png"><img title="Linux 操作系统安装插图(25)" alt="Linux 操作系统安装插图(25)" loading="lazy" class="alignnone size-full wp-image-34388" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/51.png?download=false" width="738" height="587"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">开始安装</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205151751016.png"><img title="Linux 操作系统安装插图(26)" alt="Linux 操作系统安装插图(26)" loading="lazy" class="alignnone size-full wp-image-34389" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/52.png?download=false" width="563" height="288"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">选择语言</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152024157.png"><img title="Linux 操作系统安装插图(27)" alt="Linux 操作系统安装插图(27)" loading="lazy" class="alignnone size-large wp-image-34390" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/53.png?download=false" width="780" height="589"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">设置磁盘空间分配策略</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152111282.png"><img title="Linux 操作系统安装插图(28)" alt="Linux 操作系统安装插图(28)" loading="lazy" class="alignnone size-large wp-image-34391" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/54.png?download=false" width="780" height="588"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">自定义分区</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152151417.png"><img title="Linux 操作系统安装插图(29)" alt="Linux 操作系统安装插图(29)" loading="lazy" class="alignnone size-large wp-image-34392" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/55.png?download=false" width="780" height="568"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152235130.png"><img title="Linux 操作系统安装插图(30)" alt="Linux 操作系统安装插图(30)" loading="lazy" class="alignnone size-large wp-image-34393" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/56.png?download=false" width="780" height="586"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">创建/boot分区</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152314874.png"><img title="Linux 操作系统安装插图(31)" alt="Linux 操作系统安装插图(31)" loading="lazy" class="alignnone size-large wp-image-34394" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/57.png?download=false" width="780" height="576"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152357635.png"><img title="Linux 操作系统安装插图(32)" alt="Linux 操作系统安装插图(32)" loading="lazy" class="alignnone size-large wp-image-34395" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/58.png?download=false" width="780" height="580"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">创建根分区</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152427121.png"><img title="Linux 操作系统安装插图(33)" alt="Linux 操作系统安装插图(33)" loading="lazy" class="alignnone size-large wp-image-34396" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/59.png?download=false" width="780" height="585"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">创建swap分区</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152514346.png"><img title="Linux 操作系统安装插图(34)" alt="Linux 操作系统安装插图(34)" loading="lazy" class="alignnone size-large wp-image-34397" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/60.png?download=false" width="780" height="596"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152548154.png"><img title="Linux 操作系统安装插图(35)" alt="Linux 操作系统安装插图(35)" loading="lazy" class="alignnone size-large wp-image-34398" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/61.png?download=false" width="780" height="591"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152619146.png"><img title="Linux 操作系统安装插图(36)" alt="Linux 操作系统安装插图(36)" loading="lazy" class="alignnone size-large wp-image-34399" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/62.png?download=false" width="780" height="588"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">创建自定义的/data 数据分区</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152657979.png"><img title="Linux 操作系统安装插图(37)" alt="Linux 操作系统安装插图(37)" loading="lazy" class="alignnone size-large wp-image-34400" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/63.png?download=false" width="780" height="582"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152736072.png"><img title="Linux 操作系统安装插图(38)" alt="Linux 操作系统安装插图(38)" loading="lazy" class="alignnone size-large wp-image-34401" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/64.png?download=false" width="780" height="588"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">安装指定包组</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152847955.png"><img title="Linux 操作系统安装插图(39)" alt="Linux 操作系统安装插图(39)" loading="lazy" class="alignnone size-large wp-image-34402" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/65.png?download=false" width="780" height="580"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205152939115.png"><img title="Linux 操作系统安装插图(40)" alt="Linux 操作系统安装插图(40)" loading="lazy" class="alignnone size-large wp-image-34403" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/66.png?download=false" width="780" height="588"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">配置网络和主机名</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153014780.png"><img title="Linux 操作系统安装插图(41)" alt="Linux 操作系统安装插图(41)" loading="lazy" class="alignnone size-large wp-image-34404" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/67.png?download=false" width="780" height="586"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153107564.png"><img title="Linux 操作系统安装插图(42)" alt="Linux 操作系统安装插图(42)" loading="lazy" class="alignnone size-large wp-image-34405" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/68.png?download=false" width="780" height="583"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">设置时区和时间</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153130011.png"><img title="Linux 操作系统安装插图(43)" alt="Linux 操作系统安装插图(43)" loading="lazy" class="alignnone size-large wp-image-34406" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/69.png?download=false" width="780" height="580"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153202284.png"><img title="Linux 操作系统安装插图(44)" alt="Linux 操作系统安装插图(44)" loading="lazy" class="alignnone size-large wp-image-34407" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/70.png?download=false" width="780" height="579"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153225963.png"><img title="Linux 操作系统安装插图(45)" alt="Linux 操作系统安装插图(45)" loading="lazy" class="alignnone size-large wp-image-34408" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/71.png?download=false" width="780" height="587"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">设置root用户的密码</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153247115.png"><img title="Linux 操作系统安装插图(46)" alt="Linux 操作系统安装插图(46)" loading="lazy" class="alignnone size-large wp-image-34409" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/72.png?download=false" width="780" height="589"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153427820.png"><img title="Linux 操作系统安装插图(47)" alt="Linux 操作系统安装插图(47)" loading="lazy" class="alignnone size-large wp-image-34410" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/73.png?download=false" width="780" height="592"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153451568.png"><img title="Linux 操作系统安装插图(48)" alt="Linux 操作系统安装插图(48)" loading="lazy" class="alignnone size-large wp-image-34411" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/74.png?download=false" width="780" height="595"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153514908.png"><img title="Linux 操作系统安装插图(49)" alt="Linux 操作系统安装插图(49)" loading="lazy" class="alignnone size-large wp-image-34412" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/75.png?download=false" width="780" height="585"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">创建普通用户并设置密码</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205153557442.png"><img title="Linux 操作系统安装插图(50)" alt="Linux 操作系统安装插图(50)" loading="lazy" class="size-large wp-image-34413 alignnone" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/76.png?download=false" width="780" height="590"></span></p>
+          <p><img title="Linux 操作系统安装插图(51)" alt="Linux 操作系统安装插图(51)" loading="lazy" class="alignnone size-large wp-image-34414" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/77.png?download=false" width="780" height="585"></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">第一次启动</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155036913.png"><img title="Linux 操作系统安装插图(52)" alt="Linux 操作系统安装插图(52)" loading="lazy" class="alignnone size-large wp-image-34415" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/78.png?download=false" width="780" height="169"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">许可协议</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155118176.png"><img title="Linux 操作系统安装插图(53)" alt="Linux 操作系统安装插图(53)" loading="lazy" class="alignnone size-large wp-image-34416" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/79.png?download=false" width="780" height="467"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155219928.png"><img title="Linux 操作系统安装插图(54)" alt="Linux 操作系统安装插图(54)" loading="lazy" class="alignnone size-large wp-image-34417" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/80.png?download=false" width="780" height="465"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155456182.png"><img title="Linux 操作系统安装插图(55)" alt="Linux 操作系统安装插图(55)" loading="lazy" class="alignnone size-large wp-image-34418" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/81.png?download=false" width="780" height="467"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">用户登录界面</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155521408.png"><img title="Linux 操作系统安装插图(56)" alt="Linux 操作系统安装插图(56)" loading="lazy" class="alignnone size-large wp-image-34419" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/82.png?download=false" width="780" height="468"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155726511.png"><img title="Linux 操作系统安装插图(57)" alt="Linux 操作系统安装插图(57)" loading="lazy" class="alignnone size-large wp-image-34420" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/83.png?download=false" width="780" height="466"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155745288.png"><img title="Linux 操作系统安装插图(58)" alt="Linux 操作系统安装插图(58)" loading="lazy" class="alignnone size-large wp-image-34421" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/84.png?download=false" width="780" height="466"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">首次登录初始化桌面环境</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155819207.png"><img title="Linux 操作系统安装插图(59)" alt="Linux 操作系统安装插图(59)" loading="lazy" class="alignnone size-large wp-image-34422" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/85.png?download=false" width="780" height="471"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205155941246.png"><img title="Linux 操作系统安装插图(60)" alt="Linux 操作系统安装插图(60)" loading="lazy" class="alignnone size-large wp-image-34423" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/86.png?download=false" width="780" height="472"></span></p>
+          <p class="md-end-block md-p"><img title="Linux 操作系统安装插图(61)" alt="Linux 操作系统安装插图(61)" loading="lazy" class="alignnone size-large wp-image-34424" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/87.png?download=false" width="780" height="472"></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205160025859.png"><img title="Linux 操作系统安装插图(62)" alt="Linux 操作系统安装插图(62)" loading="lazy" class="alignnone size-large wp-image-34425" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/88.png?download=false" width="780" height="467"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205160044864.png"><img title="Linux 操作系统安装插图(63)" alt="Linux 操作系统安装插图(63)" loading="lazy" class="alignnone size-large wp-image-34426" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/89.png?download=false" width="780" height="471"></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205160104032.png"><img title="Linux 操作系统安装插图(64)" alt="Linux 操作系统安装插图(64)" loading="lazy" class="alignnone size-large wp-image-34427" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/90.png?download=false" width="780" height="470"></span></p>
+          <p class="md-end-block md-p"><span class=""><strong><span class="md-plain">CentOS 8.0 桌面</span></strong></span></p>
+          <p class="md-end-block md-p"><span class="md-image md-img-loaded" data-src="images/image-20191205160126391.png"><img title="Linux 操作系统安装插图(65)" alt="Linux 操作系统安装插图(65)" loading="lazy" class="alignnone size-large wp-image-34428" src="https://fo3x.coding.net/p/video/d/fo3x/git/raw/master/91.png?download=false" width="780" height="474"></span></p>
+         
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

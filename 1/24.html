@@ -1,0 +1,660 @@
+<html lang="zh-CN"><!--<![endif]--><head><script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux进程管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux学习,linux教程,linux进程管理">
+<meta name="description" content="进程管理和性能相关工具 Linux系统状态的查看及管理工具：pstree, ps, pidof, pgrep, top, htop, glance, pmap, vmstat, dstat, kill, pkill, job, bg, fg…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33936"><link rel="prev" title="linux网络配置" href="http://www.yunweipai.com/33931.html">
+<link rel="next" title="linux任务计划" href="http://www.yunweipai.com/33940.html">
+<link rel="canonical" href="http://www.yunweipai.com/33936.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33936.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33936.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux学习, linux教程, linux进程管理, Linux教程">
+<meta name="description" content="进程管理和性能相关工具 Linux系统状态的查看及管理工具：pstree, ps, pidof, pgrep, top, htop, glance, pmap, vmstat, dstat, kill, pkill, job, bg, fg, nohup 进程树 pstree pstree 可以用来显示进程的父子关系，以树形结构显示 格式：  pstree   [OPTION] [ PID | USER ] 常用选项： -p      ">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+
+	<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post current"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33936" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h3>进程管理和性能相关工具</h3>
+<p>Linux系统状态的查看及管理工具：pstree, ps, pidof, pgrep, top, htop, glance, pmap, vmstat, dstat, kill, pkill, job, bg, fg, nohup</p>
+<h4>进程树 pstree</h4>
+<p>pstree 可以用来显示进程的父子关系，以树形结构显示</p>
+<p>格式：</p>
+<pre><code> pstree   [OPTION] [ PID | USER ]</code></pre>
+<p>常用选项：</p>
+<pre><code>-p      显示PID
+-T      不显示线程thread,默认显示线程
+-u      显示用户切换
+-H pid  高度指定进程及其前辈进程</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pstree  1</span>
+systemd─┬─NetworkManager───2*<span class="token punctuation">[</span><span class="token punctuation">{</span>NetworkManager<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─VGAuthService
+        ├─agetty
+        ├─atd
+        ├─auditd───<span class="token punctuation">{</span>auditd<span class="token punctuation">}</span>
+        ├─automount───4*<span class="token punctuation">[</span><span class="token punctuation">{</span>automount<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─crond
+        ├─dbus-daemon
+        ├─httpd─┬─httpd
+        │       ├─2*<span class="token punctuation">[</span>httpd───64*<span class="token punctuation">[</span><span class="token punctuation">{</span>httpd<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+        │       └─httpd───80*<span class="token punctuation">[</span><span class="token punctuation">{</span>httpd<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─irqbalance───<span class="token punctuation">{</span>irqbalance<span class="token punctuation">}</span>
+        ├─php-fpm───5*<span class="token punctuation">[</span>php-fpm<span class="token punctuation">]</span>
+        ├─polkitd───11*<span class="token punctuation">[</span><span class="token punctuation">{</span>polkitd<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─rngd───<span class="token punctuation">{</span>rngd<span class="token punctuation">}</span>
+        ├─rsyslogd───2*<span class="token punctuation">[</span><span class="token punctuation">{</span>rsyslogd<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─sshd───sshd───sshd─┬─bash───pstree
+        │                    └─bash───su───bash───ping
+        ├─sssd─┬─sssd_be
+        │      └─sssd_nss
+        ├─systemd───<span class="token punctuation">(</span>sd-pam<span class="token punctuation">)</span>
+        ├─systemd-journal
+        ├─systemd-logind
+        ├─systemd-udevd
+        ├─tuned───3*<span class="token punctuation">[</span><span class="token punctuation">{</span>tuned<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        └─vmtoolsd───<span class="token punctuation">{</span>vmtoolsd<span class="token punctuation">}</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pstree  wang</span>
+bash───ping
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pstree -T</span>
+systemd─┬─NetworkManager
+        ├─VGAuthService
+        ├─agetty
+        ├─atd
+        ├─auditd
+        ├─automount
+        ├─crond
+        ├─dbus-daemon
+        ├─httpd───4*<span class="token punctuation">[</span>httpd<span class="token punctuation">]</span>
+        ├─irqbalance
+        ├─php-fpm───5*<span class="token punctuation">[</span>php-fpm<span class="token punctuation">]</span>
+        ├─polkitd
+        ├─rngd
+        ├─rsyslogd
+        ├─sshd───sshd───sshd─┬─bash───pstree
+        │                    └─bash───su───bash───ping
+        ├─sssd─┬─sssd_be
+        │      └─sssd_nss
+        ├─systemd───<span class="token punctuation">(</span>sd-pam<span class="token punctuation">)</span>
+        ├─systemd-journal
+        ├─systemd-logind
+        ├─systemd-udevd
+        ├─tuned
+        └─vmtoolsd
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pstree  -pT</span>
+systemd<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>─┬─NetworkManager<span class="token punctuation">(</span><span class="token number">788</span><span class="token punctuation">)</span>
+           ├─VGAuthService<span class="token punctuation">(</span><span class="token number">783</span><span class="token punctuation">)</span>
+           ├─agetty<span class="token punctuation">(</span><span class="token number">889</span><span class="token punctuation">)</span>
+           ├─atd<span class="token punctuation">(</span><span class="token number">874</span><span class="token punctuation">)</span>
+           ├─auditd<span class="token punctuation">(</span><span class="token number">756</span><span class="token punctuation">)</span>
+           ├─automount<span class="token punctuation">(</span><span class="token number">864</span><span class="token punctuation">)</span>
+           ├─crond<span class="token punctuation">(</span><span class="token number">875</span><span class="token punctuation">)</span>
+           ├─dbus-daemon<span class="token punctuation">(</span><span class="token number">787</span><span class="token punctuation">)</span>
+           ├─httpd<span class="token punctuation">(</span><span class="token number">18386</span><span class="token punctuation">)</span>─┬─httpd<span class="token punctuation">(</span><span class="token number">18392</span><span class="token punctuation">)</span>
+           │              ├─httpd<span class="token punctuation">(</span><span class="token number">18393</span><span class="token punctuation">)</span>
+           │              ├─httpd<span class="token punctuation">(</span><span class="token number">18394</span><span class="token punctuation">)</span>
+           │              └─httpd<span class="token punctuation">(</span><span class="token number">18395</span><span class="token punctuation">)</span>
+           ├─irqbalance<span class="token punctuation">(</span><span class="token number">785</span><span class="token punctuation">)</span>
+           ├─php-fpm<span class="token punctuation">(</span><span class="token number">18385</span><span class="token punctuation">)</span>─┬─php-fpm<span class="token punctuation">(</span><span class="token number">18387</span><span class="token punctuation">)</span>
+           │                ├─php-fpm<span class="token punctuation">(</span><span class="token number">18388</span><span class="token punctuation">)</span>
+           │                ├─php-fpm<span class="token punctuation">(</span><span class="token number">18389</span><span class="token punctuation">)</span>
+           │                ├─php-fpm<span class="token punctuation">(</span><span class="token number">18390</span><span class="token punctuation">)</span>
+           │                └─php-fpm<span class="token punctuation">(</span><span class="token number">18391</span><span class="token punctuation">)</span>
+           ├─polkitd<span class="token punctuation">(</span><span class="token number">782</span><span class="token punctuation">)</span>
+           ├─rngd<span class="token punctuation">(</span><span class="token number">786</span><span class="token punctuation">)</span>
+           ├─rsyslogd<span class="token punctuation">(</span><span class="token number">868</span><span class="token punctuation">)</span>
+           ├─sshd<span class="token punctuation">(</span><span class="token number">805</span><span class="token punctuation">)</span>───sshd<span class="token punctuation">(</span><span class="token number">1053</span><span class="token punctuation">)</span>───sshd<span class="token punctuation">(</span><span class="token number">1224</span><span class="token punctuation">)</span>─┬─bash<span class="token punctuation">(</span><span class="token number">1251</span><span class="token punctuation">)</span>───pstree<span class="token punctuation">(</span><span class="token number">18864</span><span class="token punctuation">)</span>
+           │                                     └─bash<span class="token punctuation">(</span><span class="token number">18789</span><span class="token punctuation">)</span>───su<span class="token punctuation">(</span><span class="token number">18812</span><span class="token punctuation">)</span>───bash<span class="token punctuation">(</span><span class="token number">18813</span><span class="token punctuation">)</span>───ping<span class="token punctuation">(</span><span class="token number">18842</span><span class="token punctuation">)</span>
+           ├─sssd<span class="token punctuation">(</span><span class="token number">789</span><span class="token punctuation">)</span>─┬─sssd_be<span class="token punctuation">(</span><span class="token number">821</span><span class="token punctuation">)</span>
+           │           └─sssd_nss<span class="token punctuation">(</span><span class="token number">832</span><span class="token punctuation">)</span>
+           ├─systemd<span class="token punctuation">(</span><span class="token number">1189</span><span class="token punctuation">)</span>───<span class="token punctuation">(</span>sd-pam<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1192</span><span class="token punctuation">)</span>
+           ├─systemd-journal<span class="token punctuation">(</span><span class="token number">635</span><span class="token punctuation">)</span>
+           ├─systemd-logind<span class="token punctuation">(</span><span class="token number">858</span><span class="token punctuation">)</span>
+           ├─systemd-udevd<span class="token punctuation">(</span><span class="token number">670</span><span class="token punctuation">)</span>
+           ├─tuned<span class="token punctuation">(</span><span class="token number">802</span><span class="token punctuation">)</span>
+           └─vmtoolsd<span class="token punctuation">(</span><span class="token number">784</span><span class="token punctuation">)</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pstree  -u</span>
+systemd─┬─NetworkManager───2*<span class="token punctuation">[</span><span class="token punctuation">{</span>NetworkManager<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─VGAuthService
+        ├─agetty
+        ├─atd
+        ├─auditd───<span class="token punctuation">{</span>auditd<span class="token punctuation">}</span>
+        ├─automount───4*<span class="token punctuation">[</span><span class="token punctuation">{</span>automount<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─crond
+        ├─dbus-daemon<span class="token punctuation">(</span>dbus<span class="token punctuation">)</span>
+        ├─httpd─┬─httpd<span class="token punctuation">(</span>apache<span class="token punctuation">)</span>
+        │       ├─2*<span class="token punctuation">[</span>httpd<span class="token punctuation">(</span>apache<span class="token punctuation">)</span>───64*<span class="token punctuation">[</span><span class="token punctuation">{</span>httpd<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+        │       └─httpd<span class="token punctuation">(</span>apache<span class="token punctuation">)</span>───80*<span class="token punctuation">[</span><span class="token punctuation">{</span>httpd<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─irqbalance───<span class="token punctuation">{</span>irqbalance<span class="token punctuation">}</span>
+        ├─php-fpm───5*<span class="token punctuation">[</span>php-fpm<span class="token punctuation">(</span>apache<span class="token punctuation">)</span><span class="token punctuation">]</span>
+        ├─polkitd<span class="token punctuation">(</span>polkitd<span class="token punctuation">)</span>───11*<span class="token punctuation">[</span><span class="token punctuation">{</span>polkitd<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─rngd───<span class="token punctuation">{</span>rngd<span class="token punctuation">}</span>
+        ├─rsyslogd───2*<span class="token punctuation">[</span><span class="token punctuation">{</span>rsyslogd<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        ├─sshd───sshd───sshd─┬─bash───pstree
+        │                    └─bash───su───bash<span class="token punctuation">(</span>wang<span class="token punctuation">)</span>───ping
+        ├─sssd─┬─sssd_be
+        │      └─sssd_nss
+        ├─systemd───<span class="token punctuation">(</span>sd-pam<span class="token punctuation">)</span>
+        ├─systemd-journal
+        ├─systemd-logind
+        ├─systemd-udevd
+        ├─tuned───3*<span class="token punctuation">[</span><span class="token punctuation">{</span>tuned<span class="token punctuation">}</span><span class="token punctuation">]</span>
+        └─vmtoolsd───<span class="token punctuation">{</span>vmtoolsd<span class="token punctuation">}</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>进程信息 ps</h4>
+<p>ps  即process state，可以进程当前状态的快照，默认显示当前终端中的进程，Linux系统各进程的相关信息均保存在/proc/PID目录下的各文件中</p>
+<p>ps格式</p>
+<pre><code>ps [OPTION]...</code></pre>
+<p>支持三种选项：</p>
+<ul>
+<li>UNIX选项    如:  -A  -e</li>
+<li>BSD选项 如:  a</li>
+<li>GNU选项 如: –help</li>
+</ul>
+<p>常用选项：</p>
+<pre><code>a　选项包括所有终端中的进程
+x　选项包括不链接终端的进程
+u　选项显示进程所有者的信息
+f　选项显示进程树,相当于 --forest
+k|--sort  属性 对属性排序,属性前加- 表示倒序
+o　属性… 选项显示定制的信息 pid、cmd、%cpu、%mem
+L 显示支持的属性列表
+-C cmdlist 指定命令，多个命令用，分隔
+-L 显示线程
+-e 显示所有进程，相当于-A
+-f 显示完整格式程序信息
+-F 显示更完整格式的进程信息
+-H 以进程层级格式显示进程相关信息
+-u userlist  指定有效的用户ID或名称
+-U userlist 指定真正的用户ID或名称
+-g gid或groupname  指定有效的gid或组名称
+-G gid或groupname  指定真正的gid或组名称
+-p pid 显示指pid的进程
+--ppid pid  显示属于pid的子进程 
+-t  ttylist  指定tty,相当于 t
+-M  显示SELinux信息，相当于Z</code></pre>
+<p><strong>ps 输出属性</strong></p>
+<pre><code>C :  ps -ef 显示列 C 表示cpu利用率
+VSZ: Virtual memory SiZe，虚拟内存集，线性内存
+RSS: ReSident Size, 常驻内存集
+STAT：进程状态
+    R：running
+    S: interruptable sleeping
+    D: uninterruptable sleeping
+    T: stopped
+    Z: zombie
+    +: 前台进程
+    l: 多线程进程
+    L：内存分页并带锁
+    N：低优先级进程
+    &lt;: 高优先级进程
+    s: session leader，会话（子进程）发起者
+ni: nice值
+pri: priority 优先级
+rtprio: 实时优先级
+psr: processor  CPU编号</code></pre>
+<p>示例：</p>
+<pre><code>ps axo pid,cmd,psr,ni,pri,rtprio</code></pre>
+<p><strong>常用组合：</strong></p>
+<pre><code>aux
+-ef
+-eFH
+-eo pid,tid,class,rtprio,ni,pri,psr,pcpu,stat,comm
+ axo stat,euid,ruid,tty,tpgid,sess,pgrp,ppid,pid,pcpu,comm</code></pre>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token comment">#查询你拥有的所有进程</span>
+<span class="token function">ps</span> -x
+<span class="token comment">#显示指定用户名(RUID)或用户ID的进程</span>
+<span class="token function">ps</span> -fU apache
+<span class="token function">ps</span> -fU <span class="token number">48</span>
+<span class="token comment">#显示指定用户名(EUID)或用户ID的进程</span>
+<span class="token function">ps</span> -fu wang
+<span class="token function">ps</span> -fu <span class="token number">1000</span>
+<span class="token comment">#查看以root用户权限（实际和有效ID）运行的每个进程</span>
+<span class="token function">ps</span> -U root -u root
+<span class="token comment">#列出某个组拥有的所有进程（实际组ID：RGID或名称）</span>
+<span class="token function">ps</span> -fG nginx
+
+<span class="token comment">#列出有效组名称（或会话）所拥有的所有进程</span>
+<span class="token function">ps</span> -fg mysql
+<span class="token function">ps</span> -fg <span class="token number">27</span>
+
+<span class="token comment">#显示指定的进程ID对应的进程</span>
+<span class="token function">ps</span> -fp <span class="token number">1234</span>
+
+<span class="token comment">#以父进程ID来显示其下所有的进程，如显示父进程为1234的所有进程</span>
+<span class="token function">ps</span> -f --ppid <span class="token number">1234</span>
+
+<span class="token comment">#显示指定PID的多个进程</span>
+<span class="token function">ps</span> -fp <span class="token number">1204,1239</span>,1263
+
+<span class="token comment">#要按tty显示所属进程</span>
+<span class="token function">ps</span> -ft pts/0
+
+<span class="token comment">#以进程树显示系统中的进程如何相互链接</span>
+<span class="token function">ps</span> -e --forest
+
+<span class="token comment">#以进程树显示指定的进程</span>
+<span class="token function">ps</span> -f --forest -C sshd
+<span class="token function">ps</span> -ef --forest <span class="token operator">|</span> <span class="token function">grep</span> -v <span class="token function">grep</span> <span class="token operator">|</span> <span class="token function">grep</span> sshd
+
+<span class="token comment">#要显示一个进程的所有线程,将显示LWP（轻量级进程）以及NLWP（轻量级进程数）列</span>
+<span class="token function">ps</span> -fL -C nginx
+
+<span class="token comment">#要列出所有格式说明符</span>
+<span class="token function">ps</span> L
+
+<span class="token comment">#查看进程的PID，PPID，用户名和命令</span>
+<span class="token function">ps</span> -eo pid,ppid,user,cmd
+
+<span class="token comment">#自定义格式显示文件系统组,ni值开始时间和进程的时间</span>
+<span class="token function">ps</span> -p <span class="token number">1234</span> -o pid,ppid,fgroup,ni,lstart,etime
+
+<span class="token comment">#使用其PID查找进程名称：</span>
+<span class="token function">ps</span> -p <span class="token number">1244</span> -o <span class="token assign-left variable">comm</span><span class="token operator">=</span>
+
+<span class="token comment">#要以其名称选择特定进程，显示其所有子进程</span>
+<span class="token function">ps</span> -C sshd,bash
+
+<span class="token comment">#查找指定进程名所有的所属PID，在编写需要从std输出或文件读取PID的脚本时这个参数很有用</span>
+<span class="token function">ps</span> -C httpd,sshd -o <span class="token assign-left variable">pid</span><span class="token operator">=</span>
+
+<span class="token comment">#检查一个进程的执行时间</span>
+<span class="token function">ps</span> -eo comm,etime,user <span class="token operator">|</span> <span class="token function">grep</span> nginx
+
+<span class="token comment">#排序，查找占用最多内存和CPU的进程</span>
+<span class="token function">ps</span> -eo pid,ppid,cmd,%mem,%cpu --sort<span class="token operator">=</span>-%mem <span class="token operator">|</span> <span class="token function">head</span>
+<span class="token function">ps</span> -eo pid,ppid,cmd,%mem,%cpu --sort<span class="token operator">=</span>-%cpu <span class="token operator">|</span> <span class="token function">head</span>
+
+<span class="token comment">#显示安全信息</span>
+<span class="token function">ps</span> -eM
+<span class="token function">ps</span> --context
+
+<span class="token comment">#使用以下命令以用户定义的格式显示安全信息</span>
+<span class="token function">ps</span> -eo euser,ruser,suser,fuser,f,comm,label
+
+<span class="token comment">#使用watch实用程序执行重复的输出以实现对就程进行实时的监视，如下面的命令显示每秒钟的监视</span>
+<span class="token function">watch</span> -n <span class="token number">1</span> <span class="token string">'ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head'</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<p>面试题：找到未知进程的执行程序文件路径</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#ls -l /proc/1272/exe</span>
+lrwxrwxrwx <span class="token number">1</span> root root <span class="token number">0</span> Jan  <span class="token number">4</span> <span class="token number">15</span>:47 /proc/1272/exe -<span class="token operator">&gt;</span> /usr/bin/bash</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>查看进程信息prtstat</h4>
+<p>可以显示进程信息,来自于psmisc包</p>
+<p>格式：</p>
+<pre><code>prtstat [options] PID ...</code></pre>
+<p>选项：</p>
+<p>-r  raw 格式显示</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#prtstat 18395</span>
+Process: httpd              State: S <span class="token punctuation">(</span>sleeping<span class="token punctuation">)</span>
+  CPU<span class="token comment">#:  1          TTY: 0:0    Threads: 65</span>
+Process, Group and Session IDs
+  Process ID: <span class="token number">18395</span>       Parent ID: <span class="token number">18386</span>
+    Group ID: <span class="token number">18386</span>      Session ID: <span class="token number">18386</span>
+  T Group ID: -1
+
+Page Faults
+  This Process    <span class="token punctuation">(</span>minor major<span class="token punctuation">)</span>:      <span class="token number">509</span>         <span class="token number">0</span>
+  Child Processes <span class="token punctuation">(</span>minor major<span class="token punctuation">)</span>:        <span class="token number">0</span>         <span class="token number">0</span>
+CPU Times
+  This Process    <span class="token punctuation">(</span>user system guest blkio<span class="token punctuation">)</span>:   <span class="token number">0.03</span>   <span class="token number">0.47</span>   <span class="token number">0.00</span>   <span class="token number">0.00</span>
+  Child processes <span class="token punctuation">(</span>user system guest<span class="token punctuation">)</span>:         <span class="token number">0.00</span>   <span class="token number">0.00</span>   <span class="token number">0.00</span>
+Memory
+  Vsize:       <span class="token number">2651</span> MB   
+  RSS:         <span class="token number">15</span> MB             RSS Limit: <span class="token number">18446744073709</span> MB
+  Code Start:  0x5575c5525000        Code Stop:  0x5575c55aace0
+  Stack Start: 0x7ffc6b353ab0
+  Stack Pointer <span class="token punctuation">(</span>ESP<span class="token punctuation">)</span>:          <span class="token number">0</span>    Inst Pointer <span class="token punctuation">(</span>EIP<span class="token punctuation">)</span>:          <span class="token number">0</span>
+Scheduling
+  Policy: normal
+  Nice:   <span class="token number">0</span>          RT Priority: <span class="token number">0</span> <span class="token punctuation">(</span>non RT<span class="token punctuation">)</span>
+
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#prtstat -r 18395</span>
+         pid: <span class="token number">18395</span>                               comm: httpd
+       state: S                                   ppid: <span class="token number">18386</span>
+        pgrp: <span class="token number">18386</span>                            session: <span class="token number">18386</span>
+      tty_nr: <span class="token number">0</span>                                  tpgid: -1
+       flags: <span class="token number">400140</span>                            minflt: <span class="token number">509</span>
+     cminflt: <span class="token number">0</span>                                 majflt: <span class="token number">0</span>
+     cmajflt: <span class="token number">0</span>                                  utime: <span class="token number">3</span>
+       stime: <span class="token number">47</span>                                cutime: <span class="token number">0</span>
+      cstime: <span class="token number">0</span>                               priority: <span class="token number">20</span>
+        nice: <span class="token number">0</span>                            num_threads: <span class="token number">65</span>
+ itrealvalue: <span class="token number">0</span>                              starttime: <span class="token number">8709457</span>
+       vsize: <span class="token number">2651152384</span>                           rss: <span class="token number">3900</span>
+      rsslim: <span class="token number">18446744073709551615</span>               startcode: <span class="token number">93964310040576</span>
+     endcode: <span class="token number">93964310588640</span>                startstack: <span class="token number">140722107136688</span>
+     kstkesp: <span class="token number">0</span>                                kstkeip: <span class="token number">0</span>
+       wchan: <span class="token number">0</span>                                  nswap: <span class="token number">0</span>
+      cnswap: <span class="token number">0</span>                            exit_signal: <span class="token number">17</span>
+   processor: <span class="token number">1</span>                            rt_priority: <span class="token number">0</span>
+      policy: <span class="token number">0</span>                  delayaccr_blkio_ticks: <span class="token number">0</span>
+  guest_time: <span class="token number">0</span>                            cguest_time: <span class="token number">0</span>
+</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>设置和调整进程优先级</h4>
+<p>进程优先级调整</p>
+<ul>
+<li>静态优先级：100-139</li>
+<li>进程默认启动时的nice值为0，优先级为120</li>
+<li>只有根用户才能降低nice值（提高优先性）</li>
+</ul>
+<p>nice命令</p>
+<pre><code>nice [OPTION] [COMMAND [ARG]...]</code></pre>
+<p>renice命令</p>
+<pre><code>renice [-n] priority pid...</code></pre>
+<p>查看</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token function">ps</span> axo pid,comm,ni</code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>搜索进程</h4>
+<p>按条件搜索进程</p>
+<ul>
+<li>ps 选项　| grep ‘pattern’   灵活</li>
+<li>pgrep   按预定义的模式</li>
+<li>/sbin/pidof   按确切的程序名称查看pid </li>
+</ul>
+<p>pgrep 命令格式</p>
+<pre><code>pgrep [options] pattern</code></pre>
+<p>常用选项    </p>
+<pre><code>-u uid: effective user，生效者
+-U uid: real user，真正发起运行命令者
+-t terminal: 与指定终端相关的进程
+-l: 显示进程名
+-a: 显示完整格式的进程名
+-P pid: 显示指定进程的子进程</code></pre>
+<p>pidof 格式</p>
+<pre><code>pidof [options] [program [...]]</code></pre>
+<p>常用选项：</p>
+<p>-x  按脚本名称查找pid</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pidof  bash</span>
+<span class="token number">19035</span> <span class="token number">18813</span> <span class="token number">18789</span> <span class="token number">1251</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pidof ping.sh</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#pidof -x ping.sh</span>
+<span class="token number">19035</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>负载查询 uptime</h4>
+<p>/proc/uptime 包括两个值，单位 s</p>
+<ul>
+<li>系统启动时长</li>
+<li>空闲进程的总时长（按总的CPU核数计算）</li>
+</ul>
+<p>uptime 和 w 显示以下内容</p>
+<ul>
+<li>当前时间</li>
+<li>系统已启动的时间</li>
+<li>当前上线人数</li>
+<li>系统平均负载（1、5、15分钟的平均负载，一般不会超过1，超过5时建议警报）</li>
+</ul>
+<p>系统平均负载: 指在特定时间间隔内运行队列中的平均进程数,通常每个CPU内核的当前活动进程数不大于3，那么系统的性能良好。如果每个CPU内核的任务数大于5，那么此主机的性能有严重问题</p>
+<p>如：linux主机是1个双核CPU，当Load Average 为6的时候说明机器已经被充分使用</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#w</span>
+ 09:38:29 up <span class="token number">1</span> day,  <span class="token number">1</span>:04,  <span class="token number">2</span> users,  load average: <span class="token number">0.00</span>, <span class="token number">0.00</span>, <span class="token number">0.00</span>
+<span class="token environment constant">USER</span>     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+root     pts/0    <span class="token number">10.0</span>.0.1         Wed08    <span class="token number">0</span>.00s  <span class="token number">0</span>.32s  <span class="token number">0</span>.00s w
+root     pts/1    <span class="token number">10.0</span>.0.1         09:10    <span class="token number">5</span>:25   <span class="token number">0</span>.06s  <span class="token number">0</span>.00s /bin/bash ./ping.sh
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#uptime</span>
+ 09:38:34 up <span class="token number">1</span> day,  <span class="token number">1</span>:04,  <span class="token number">2</span> users,  load average: <span class="token number">0.00</span>, <span class="token number">0.00</span>, <span class="token number">0.00</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>显示CPU相关统计 mpstat</h4>
+<p>来自于sysstat包</p>
+<p>范例：</p>
+<div class="code-toolbar"><pre class="  language-bash"><code class="  language-bash"><span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#yum install -y sysstat</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#mpstat</span>
+Linux <span class="token number">4.18</span>.0-80.el8.x86_64 <span class="token punctuation">(</span>centos8.localdomain<span class="token punctuation">)</span>    01/09/2020  _x86_64_    <span class="token punctuation">(</span><span class="token number">4</span> CPU<span class="token punctuation">)</span>
+
+<span class="token number">10</span>:16:43 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+<span class="token number">10</span>:16:43 AM  all    <span class="token number">0.01</span>    <span class="token number">0.00</span>    <span class="token number">0.03</span>    <span class="token number">0.00</span>    <span class="token number">0.01</span>    <span class="token number">0.01</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>   <span class="token number">99.93</span>
+<span class="token punctuation">[</span>root@centos8 ~<span class="token punctuation">]</span><span class="token comment">#mpstat 1 3</span>
+Linux <span class="token number">4.18</span>.0-80.el8.x86_64 <span class="token punctuation">(</span>centos8.localdomain<span class="token punctuation">)</span>    01/09/2020  _x86_64_    <span class="token punctuation">(</span><span class="token number">4</span> CPU<span class="token punctuation">)</span>
+
+<span class="token number">10</span>:16:48 AM  CPU    %usr   %nice    %sys %iowait    %irq   %soft  %steal  %guest  %gnice   %idle
+<span class="token number">10</span>:16:49 AM  all    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.25</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>   <span class="token number">99.75</span>
+<span class="token number">10</span>:16:50 AM  all    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>  <span class="token number">100.00</span>
+<span class="token number">10</span>:16:51 AM  all    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>  <span class="token number">100.00</span>
+Average:     all    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.08</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>    <span class="token number">0.00</span>   <span class="token number">99.92</span></code></pre><div class="toolbar"><div class="toolbar-item"><span>Bash</span></div><div class="toolbar-item"><button>Copy</button></div></div></div>
+<h4>查看进程实时状态 top</h4>
+<p><img title="linux进程管理插图" alt="linux进程管理插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200115202743529-480x301.png"></p>
+<p>top 提供动态的实时进程状态</p>
+<p>有许多内置命令</p>
+<p>帮助：h 或 ？ ，按 q 或esc 退出帮助</p>
+<p>排序：</p>
+<p>P：以占据的CPU百分比,%CPU<br>
+M：占据内存百分比,%MEM<br>
+T：累积占据CPU时长,TIME+</p>
+<p>首部信息显示：</p>
+<p>uptime信息：l命令<br>
+tasks及cpu信息：t命令<br>
+cpu分别显示：1 (数字)<br>
+memory信息：m命令</p>
+<p>退出命令：q<br>
+修改刷新时间间隔：s<br>
+终止指定进程：k<br>
+保存文件：W</p>
+<p>top命令栏位信息简介<br>
+us：用户空间<br>
+sy：内核空间<br>
+ni：调整nice时间<br>
+id：空闲<br>
+wa：等待IO时间<br>
+hi：硬中断<br>
+si：软中断（模式切换）<br>
+st：虚拟机偷走的时间</p>
+<p>top选项：<br>
+-d #        指定刷新时间间隔，默认为3秒<br>
+-b          全部显示所有进程<br>
+-n #        刷新多少次后退出<br>
+-H        线程模式</p>
+<p>示例：</p>
+<pre><code>top -H -p <code>pidof mysqld</code></code></pre>
+<p>htop命令：EPEL源,比top功能更强</p>
+<p><img title="linux进程管理插图(1)" alt="linux进程管理插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200115202955997-480x262.png"></p>
+<p>选项：<br>
+-d #: 指定延迟时间；<br>
+-u UserName: 仅显示指定用户的进程<br>
+-s COLUME: 以指定字段进行排序</p>
+<p>子命令：<br>
+s：跟踪选定进程的系统调用<br>
+l：显示选定进程打开的文件列表<br>
+a：将选定的进程绑定至某指定CPU核心<br>
+t：显示进程树</p>
+			
+			</div>
+			<div class="clear"></div>
+		</div>
+		</div>
+
+	</div>
+
+</div>	
+</body></html>

@@ -1,0 +1,570 @@
+<html lang="zh-CN"><!--<![endif]--><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<title>linux加密管理 – yyx</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="stylesheet" type="text/css" media="only screen and (min-width:1024px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style.css">
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 1023px)" href="http://www.yunweipai.com/wp-content/themes/zYwp/style-mob.css">
+<link rel="pingback" href="http://www.yunweipai.com/xmlrpc.php">
+<link rel="shortcut icon" href="http://www.yunweipai.com/wp-content/themes/zYwp/favicon.ico" type="image/x-icon">
+<script src="https://ada.baidu.com/phone-tracker/getjs_bdtj?sid=15772694"></script><script charset="utf-8" src="http://ada.baidu.com/phone-tracker/insert_bdtj?sid=15772694"></script><script src="https://hm.baidu.com/hm.js?c30dc8da9d0fc35630e380dfdf76138d"></script><script type="text/javascript" src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/jquery-1.7.2.min.js"></script>
+<meta name="keywords" content="Linux,linux入门,linux加密管理,linux学习,linux教程">
+<meta name="description" content="信息安全防护的目标 保密性 Confidentiality 完整性 Integrity 可用性 Usability 可控制性 Controlability 不可否认性 Non-repudiation 安全防护环节 物理安全：各种设备/主机、…">
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//www.yunweipai.com">
+<link rel="stylesheet" id="wp-block-library-css" href="http://www.yunweipai.com/wp-includes/css/dist/block-library/style.min.css?ver=5.5.6" type="text/css" media="all">
+<link rel="stylesheet" id="Katex-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/KaTeX/katex.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="Emojify.js-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Emojify.js/css/basic/emojify.min.css?ver=10.2.1" type="text/css" media="all">
+<link rel="stylesheet" id="prism-theme-style-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/themes/prism-tomorrow.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-toolbar-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/toolbar/prism-toolbar.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="prism-plugin-line-numbers-css" href="https://cdn.jsdelivr.net/wp/wp-editormd/tags/10.2.1/assets/Prism.js/plugins/line-numbers/prism-line-numbers.css?ver=1.15.0" type="text/css" media="all">
+<link rel="stylesheet" id="z-ratings-css" href="http://www.yunweipai.com/wp-content/themes/zYwp/z-ratings/z-ratings.css?ver=1.0" type="text/css" media="all">
+<link rel="https://api.w.org/" href="http://www.yunweipai.com/wp-json/"><link rel="alternate" type="application/json" href="http://www.yunweipai.com/wp-json/wp/v2/posts/33949"><link rel="prev" title="linux内核管理" href="http://www.yunweipai.com/33947.html">
+<link rel="next" title="linux安全配置" href="http://www.yunweipai.com/33969.html">
+<link rel="canonical" href="http://www.yunweipai.com/33949.html">
+<link rel="alternate" type="application/json+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33949.html">
+<link rel="alternate" type="text/xml+oembed" href="http://www.yunweipai.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.yunweipai.com%2F33949.html&amp;format=xml">
+<meta name="keywords" content="IT运维,运维社区,Linux云计算,linux,运维,运维论坛,运维管理,运维服务,自动化运维,运维工具,DevOps,运维工程师,Linux运维,Shell脚本,数据库,运维派,运维帮,高效运维,微服务,互联网运维,docker,k8sLinux, linux入门, linux加密管理, linux学习, linux教程, Linux教程">
+<meta name="description" content="信息安全防护的目标  保密性       Confidentiality 完整性       Integrity 可用性       Usability 可控制性      Controlability 不可否认性     Non-repudiation  安全防护环节  物理安全：各种设备/主机、机房环境 系统安全：主机或设备的操作系统 应用安全：各种网络服务、应用程序 网络安全：对网络访问的控制、防火墙规则 数据安全：信息的备份与恢">
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.yunweipai.com/rsslatest.xml"><!--[if lt IE 9]>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/html5.js"></script>
+<script src="http://www.yunweipai.com/wp-content/themes/zYwp/includes/js/respond.js"></script>
+<![endif]-->
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=453925"></script><link href="./style.css" rel="styleSheet" type="text/css"></head>
+
+<body class="dayStyle">
+
+<div id="head" class="fixbar">
+	<div id="header">
+		<div id="header-left">
+			<a id="logo" href="https://foyyx.gitee.io/yyx"><img src="../tu.PNG" alt="yyx-Linux运维技术社区,Linux教程," width="" height=""></a>
+		</div>
+	
+		<div id="header-right">
+					
+			<div id="navi">
+			<ul id="menu1" class="menu">
+
+</ul>			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+<div id="container">
+
+
+<div id="wrap">
+
+		
+	<div class="col-left">
+
+<div class="nav-root">
+	Linux教程	
+	<a class="tree open" href="javascript:void(0);" onclick="openTree();">目录</a>
+</div>
+<div class="nav-tree">
+        <div class="nav-post"><a href="1.html" title="Linux经典入门教程">Linux经典入门教程</a></div>
+        <div class="nav-post"><a href="2.html" title="Linux 计算机基础">Linux 计算机基础</a></div>
+        <div class="nav-post"><a href="3.html" title="Linux 操作系统安装">Linux 操作系统安装</a></div>
+        <div class="nav-post"><a href="4.html" title="Linux 连接服务器">Linux 连接服务器</a></div>
+        <div class="nav-post"><a href="5.html" title="linux shell介绍">linux shell介绍</a></div>
+        <div class="nav-post"><a href="6.html" title="linux命令">linux命令</a></div>
+        <div class="nav-post"><a href="7.html" title="linux帮助">linux帮助</a></div>
+        <div class="nav-post"><a href="8.html" title="linux系统目录结构">linux系统目录结构</a></div>
+        <div class="nav-post"><a href="9.html" title="linux文件操作">linux文件操作</a></div>
+        <div class="nav-post"><a href="10.html" title="linux用户管理">linux用户管理</a></div>
+        <div class="nav-post"><a href="11.html" title="linux权限管理">linux权限管理</a></div>
+        <div class="nav-post"><a href="12.html" title="linux-文本处理-vim">linux-文本处理-vim</a></div>
+        <div class="nav-post"><a href="13.html" title="linux-文本处理-grep">linux-文本处理-grep</a></div>
+        <div class="nav-post"><a href="14.html" title="linux文本处理-sed">linux文本处理-sed</a></div>
+        <div class="nav-post"><a href="15.html" title="linux文本处理-awk">linux文本处理-awk</a></div>
+        <div class="nav-post"><a href="16.html" title="linux正则表达式">linux正则表达式</a></div>
+        <div class="nav-post"><a href="17.html" title="linux文件查找-find">linux文件查找-find</a></div>
+        <div class="nav-post"><a href="18.html" title="linux文件压缩">linux文件压缩</a></div>
+        <div class="nav-post"><a href="19.html" title="linux软件包管理">linux软件包管理</a></div>
+        <div class="nav-post"><a href="20.html" title="linux磁盘管理">linux磁盘管理</a></div>
+        <div class="nav-post"><a href="21.html" title="linux文件系统管理">linux文件系统管理</a></div>
+        <div class="nav-post"><a href="22.html" title="linux网络基础">linux网络基础</a></div>
+        <div class="nav-post"><a href="23.html" title="linux网络配置">linux网络配置</a></div>
+        <div class="nav-post"><a href="24.html" title="linux进程管理">linux进程管理</a></div>
+        <div class="nav-post"><a href="25.html" title="linux任务计划">linux任务计划</a></div>
+        <div class="nav-post"><a href="26.html" title="linux启动过程">linux启动过程</a></div>
+        <div class="nav-post"><a href="27.html" title="linux内核管理">linux内核管理</a></div>
+        <div class="nav-post current"><a href="28.html" title="linux加密管理">linux加密管理</a></div>
+        <div class="nav-post"><a href="29.html" title="linux安全配置">linux安全配置</a></div>
+      </div>
+</div>
+
+<script>
+
+	$(function(){
+		var cookieValue = readCookie('class');		
+
+		if(cookieValue == 'night') {
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('nightStyle').addClass('dayStyle');
+		}
+	});
+	
+	function chgLight() {
+		if($(".nav-root a.light").hasClass('day')) {
+			creatCookie("class",'night',1);
+			$(".nav-root a.light").removeClass('day').addClass('night');
+			$(".col-main").removeClass('dayStyle').addClass('nightStyle');
+			$("body").removeClass('dayStyle').addClass('nightStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}else {
+			creatCookie("class",'day',1);
+			$(".nav-root a.light").removeClass('night').addClass('day');
+			$(".col-main").removeClass('nightStyle').addClass('dayStyle');
+			$("body").removeClass('nightStyle').addClass('dayStyle');
+			$("#comments").removeClass('dayStyle').addClass('nightStyle');
+		}
+	}
+
+	function creatCookie(name,value,days){
+		if(days){
+			var date = new Date();
+			date.setTime(date.getTime()+(days*24*60*60*1000));
+			var expires = ";expires="+date.toGMTString();
+		}else{
+			var expires = "";                        
+		}
+		document.cookie = name+"="+value+expires;
+	}
+
+	function readCookie(name){
+		var nameEQ = name+"=";
+		var ca = document.cookie.split(";");
+		for(var i =0;i<ca.length;i++){
+			var c = ca[i];
+			while(c.charAt(0) == " "){
+				c = c.slice(1,c.length);
+			}
+			if(c.indexOf(nameEQ) == 0){
+				return c.slice(nameEQ.length,c.length);
+			}
+		}
+		return null;
+	}
+
+	// 展开 关闭教程目录
+	function openTree() {
+		if($(".nav-root a.tree").hasClass('open')) {
+			$(".nav-root a.tree").removeClass('open').addClass('close');
+			$(".nav-tree").slideDown();
+		}else {
+			$(".nav-root a.tree").removeClass('close').addClass('open');
+			$(".nav-tree").slideUp();
+		}
+	}
+
+</script>
+	<div class="col-sidebar">
+    <div id="he-plugin-standard"></div>
+<script>
+WIDGET = {
+  "CONFIG": {
+    "layout": "2",
+    "width": 230,
+    "height": 270,
+    "background": "1",
+    "dataColor": "FFFFFF",
+    "borderRadius": "5",
+    "key": "675d29b6cb0843e5a6865f9fded5b6db"
+  }
+}
+</script>
+		<script src="https://widget.qweather.net/standard/static/js/he-standard-common.js?v=2.0"></script>
+     <!--0-->
+    <div id="sidebar" class="wb100">
+        
+    </div>
+    
+</div>
+	<div class="col-main dayStyle">
+
+		
+
+	
+		<div id="post-33949" class="post-guide">
+
+			    
+			
+			
+						
+			
+			<div class="entry">
+				<h4>信息安全防护的目标</h4>
+<ul>
+<li>保密性       Confidentiality</li>
+<li>完整性       Integrity</li>
+<li>可用性       Usability</li>
+<li>可控制性      Controlability</li>
+<li>不可否认性     Non-repudiation</li>
+</ul>
+<h4>安全防护环节</h4>
+<ul>
+<li>物理安全：各种设备/主机、机房环境</li>
+<li>系统安全：主机或设备的操作系统</li>
+<li>应用安全：各种网络服务、应用程序</li>
+<li>网络安全：对网络访问的控制、防火墙规则</li>
+<li>数据安全：信息的备份与恢复、加密解密</li>
+<li>管理安全：各种保障性的规范、流程、方法</li>
+</ul>
+<h4>常见的安全攻击STRIDE</h4>
+<ul>
+<li>Spoofing 假冒 </li>
+<li>Tampering 篡改 </li>
+<li>Repudiation 否认 </li>
+<li>Information Disclosure 信息泄漏</li>
+<li>Denial of Service  拒绝服务</li>
+<li>Elevation of Privilege 提升权限</li>
+</ul>
+<h4>安全设计基本原则</h4>
+<ul>
+<li>使用成熟的安全系统</li>
+<li>以小人之心度输入数据</li>
+<li>外部系统是不安全的</li>
+<li>最小授权</li>
+<li>减少外部接口</li>
+<li>缺省使用安全模式</li>
+<li>安全不是似是而非</li>
+<li>从STRIDE思考</li>
+<li>在入口处检查</li>
+<li>从管理上保护好你的系统</li>
+</ul>
+<h4>常用安全技术</h4>
+<ul>
+<li>认证</li>
+<li>授权</li>
+<li>审计</li>
+<li>安全通信</li>
+</ul>
+<h4>加密算法和协议</h4>
+<ul>
+<li>对称加密</li>
+<li>公钥加密</li>
+<li>单向加密</li>
+<li>认证协议</li>
+</ul>
+<h5>对称加密算法</h5>
+<p><img title="linux加密管理插图" alt="linux加密管理插图" src="http://www.yunweipai.com/wp-content/uploads/2020/05/对称加密算法-480x185.jpg"></p>
+<p>对称加密：加密和解密使用同一个密钥</p>
+<p>特性：</p>
+<ul>
+<li>加密、解密使用同一个密钥，效率高</li>
+<li>将原始数据分割成固定大小的块，逐个进行加密</li>
+</ul>
+<p>缺陷：</p>
+<ul>
+<li>密钥过多  </li>
+<li>密钥分发</li>
+<li>数据来源无法确认</li>
+</ul>
+<p>常见对称加密算法:</p>
+<ul>
+<li>DES：Data Encryption Standard，56bits</li>
+<li>3DES：</li>
+<li>AES：Advanced (128, 192, 256bits)</li>
+<li>Blowfish，Twofish</li>
+<li>IDEA，RC6，CAST5</li>
+</ul>
+<h5>非对称加密算法</h5>
+<h6>非对称加密算法介绍</h6>
+<p>非对称加密：密钥是成对出现</p>
+<ul>
+<li>公钥：public key，公开给所有人，主要给别人加密使用</li>
+<li>私钥：secret key，private key 自己留存，必须保证其私密性，用于自已加密签名</li>
+<li>特点：用公钥加密数据，只能使用与之配对的私钥解密；反之亦然</li>
+</ul>
+<p>功能：</p>
+<ul>
+<li>数据加密：适合加密较小数据,比如: 加密对称密钥</li>
+<li>数字签名：主要在于让接收方确认发送方身份</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>密钥长,算法复杂</li>
+<li>加密解密效率低下</li>
+</ul>
+<p>常见算法：</p>
+<ul>
+<li>RSA：由 RSA 公司发明，是一个支持变长密钥的公共密钥算法，需要加密的文件块的长度也是可变的,可实现加密和数字签名</li>
+<li>DSA（Digital Signature Algorithm）：数字签名算法，是一种标准的 DSS（数字签名标准）</li>
+<li>ECC（Elliptic Curves Cryptography）：椭圆曲线密码编码学，比RSA加密算法使用更小的密钥，提供相当的或更高等级的安全</li>
+</ul>
+<h6>非对称加密实现加密</h6>
+<p><img title="linux加密管理插图(1)" alt="linux加密管理插图(1)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/非对称加密1-1578713496001-480x214.jpg"></p>
+<p>接收者<br>
+生成公钥/密钥对：P和S<br>
+公开公钥P，保密密钥S<br>
+发送者<br>
+使用接收者的公钥来加密消息M<br>
+将P(M)发送给接收者<br>
+接收者<br>
+使用密钥S来解密：M=S(P(M))</p>
+<h6>非对称加密实现数字签名</h6>
+<p><img title="linux加密管理插图(2)" alt="linux加密管理插图(2)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/非对称加密1-副本-480x214.jpg"></p>
+<p>发送者<br>
+生成公钥/密钥对：P和S<br>
+公开公钥P，保密密钥S<br>
+使用密钥S来加密消息M<br>
+发送给接收者S(M)<br>
+接收者<br>
+使用发送者的公钥来解密M=P(S(M))</p>
+<h6>RSA和DSA</h6>
+<p>RSA：公钥加密算法是1977年由Ron Rivest、Adi Shamirh和LenAdleman在（美国麻省理工学院）开发的，RSA取名来自开发他们三者的名字，后成立RSA数据安全有限公司。RSA是目前最有影响力的公钥加密算法，它能够抵抗到目前为止已知的所有密码攻击，已被ISO推荐为公钥数据加密标准。RSA算法基于一个十分简单的数论事实：将两个大素数相乘十分容易，但那时想要对其乘积进行因式分解却极其困难，因此可以将乘积公开作为加密密钥</p>
+<p>DSA (Digital Signature Algorithm)：1991年7月26日提交，并归属于David W. Kravitz前NSA员工，DSA是Schnorr和ElGamal签名算法的变种，被美国NIST作为SS(DigitalSignature Standard)， DSA是基于整数有限域离散对数难题的，其安全性与RSA相比差不多。DSA只是一种算法，和RSA不同之处在于它不能用作加密和解密，也不能进行密钥交换，只用于签名,它比RSA要快很多</p>
+<h5>使用gpg实现对称和非对称加密</h5>
+<h6>实现对称加密</h6>
+<p>对称加密file文件</p>
+<pre><code>gpg -c file</code></pre>
+<p>在另一台主机上解密file</p>
+<pre><code>gpg -o file -d file.gpg </code></pre>
+<h6>实现公钥加密</h6>
+<p>目标：在hostB主机上用公钥加密，在hostA主机上解密  B —&gt; A</p>
+<p>在hostA主机上生成公钥/私钥对</p>
+<pre><code>gpg --gen-key</code></pre>
+<p>在hostA主机上查看公钥</p>
+<pre><code>gpg --list-keys</code></pre>
+<p>在hostA主机上导出公钥到wang.pubkey</p>
+<pre><code>gpg -a  --export -o wang.pubkey</code></pre>
+<p>从hostA主机上复制公钥文件到需加密的B主机上</p>
+<pre><code>scp wang.pubkey  hostB:</code></pre>
+<p>在需加密数据的hostB主机上生成公钥/私钥对</p>
+<pre><code>gpg --list-keys
+gpg --gen-key</code></pre>
+<p>在hostB主机上导入公钥</p>
+<pre><code>gpg --import wang.pubkey 
+gpg --list-keys</code></pre>
+<p>用从hostA主机导入的公钥，加密hostB主机的文件file,生成file.gpg</p>
+<pre><code>gpg -e -r wangxiaochun file 
+file file.gpg</code></pre>
+<p>复制加密文件到hostA主机 </p>
+<pre><code>scp fstab.gpg hostA:</code></pre>
+<p>在hostA主机解密文件</p>
+<pre><code>gpg -d file.gpg  
+gpg -o file  -d file.gpg </code></pre>
+<p>删除公钥和私钥</p>
+<pre><code>gpg --delete-keys  wangxiaochun
+gpg --delete-secret-keys  wangxiaochun</code></pre>
+<h5>单向哈希算法</h5>
+<p>哈希算法：也称为散列算法，将任意数据缩小成固定大小的“指纹”，称为digest，即摘要</p>
+<p>特性：</p>
+<ul>
+<li>任意长度输入，固定长度输出</li>
+<li>若修改数据，指纹也会改变，且有雪崩效应，数据的一点微小改变，生成的指纹值变化非常大。</li>
+<li>无法从指纹中重新生成数据，即不要逆，具有单向性</li>
+</ul>
+<p>功能：数据完整性</p>
+<p>常见算法</p>
+<p>md5: 128bits、sha1: 160bits、sha224   、sha256、sha384、sha512</p>
+<p>常用工具</p>
+<ul>
+<li>md5sum | sha1sum  [ –check  ]  file</li>
+<li>openssl、gpg</li>
+<li>rpm  -V</li>
+</ul>
+<p><strong>数字签名</strong></p>
+<p><img title="linux加密管理插图(3)" alt="linux加密管理插图(3)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/数字签名-480x333.jpg"></p>
+<p>RPM 文件完整性<br>
+rpm  –verify  package_name  (or  -V)<br>
+rpm  –import  /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat*<br>
+rpm  –checksig  pakage_file_name  (or  -K)</p>
+<h5>综合应用多种加密算法</h5>
+<h6>实现数据加密</h6>
+<p>实现数据加密，无法验证数据完整性和来源</p>
+<p><img title="linux加密管理插图(4)" alt="linux加密管理插图(4)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/733013-20161122152607940-1921693334-480x275.png"><br>
+<img title="linux加密管理插图(5)" alt="linux加密管理插图(5)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/1498616560191226-480x253.png"></p>
+<h6>实现数字签名</h6>
+<p>不加密数据，可以保证数据来源的可靠性、数据的完整性和一致性</p>
+<p><img title="linux加密管理插图(6)" alt="linux加密管理插图(6)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/733013-20161122152609003-1710587731-480x205.png"></p>
+<h6>综合加密和签名</h6>
+<p>即实现数据加密，又可以保证数据来源的可靠性、数据的完整性和一致性</p>
+<p><strong>方法1：Pb{Sa[hash(data)]+data}</strong></p>
+<p><img title="linux加密管理插图(7)" alt="linux加密管理插图(7)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111121108802-480x239.png"></p>
+<p><strong>方法2：对称key{Sa[hash(data)]+data}+Pb(对称key)</strong></p>
+<p><img title="linux加密管理插图(8)" alt="linux加密管理插图(8)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/a17d5e2f9f4fecfb44789ef153c4d4f7_733013-20170701110248680-1763794011-480x154.png"></p>
+<h5>密码交换</h5>
+<p>密钥交换：IKE（ Internet Key Exchange ）</p>
+<ul>
+<li>
+公钥加密：
+</li>
+<li>
+DH (Deffie-Hellman)：生成会话密钥，由惠特菲尔德·迪菲（Bailey Whitfield Diffie）和马丁·赫尔曼（Martin Edward Hellman）在1976年发表<p></p>
+<p>参看：<a href="http://www.yunweipai.com/go?_=0904dc80f1aHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvRGlmZmllJUUyJTgwJTkzSGVsbG1hbl9rZXlfZXhjaGFuZ2U=" rel="external nofollow" target="_blank">https://en.wikipedia.org/wiki/Diffie%E2%80%93Hellman_key_exchange</a>
+</p></li>
+</ul>
+<p>DH 实现过程：</p>
+<pre><code>A: g,p 协商生成公开的整数g, 大素数p
+B: g,p
+A:生成隐私数据 :a (a&lt;p )，计算得出 g^a%p，发送给B
+B:生成隐私数据 :b,计算得出 g^b%p，发送给A
+A:计算得出 [(g^b%p)^a] %p = g^ab%p，生成为密钥
+B:计算得出 [(g^a%p)^b] %p = g^ab%p，生成为密钥</code></pre>
+<h4>CA和证书</h4>
+<h5>中间人攻击</h5>
+<p>Man-in-the-middle，简称为 MITM，中间人</p>
+<p><img title="linux加密管理插图(9)" alt="linux加密管理插图(9)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111121502444-480x298.png"></p>
+<h5>CA和证书</h5>
+<p><img title="linux加密管理插图(10)" alt="linux加密管理插图(10)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/证书-1578722916914-480x209.jpg"></p>
+<p>PKI：Public Key Infrastructure  公共密钥加密体系<br>
+签证机构：CA（Certificate Authority）<br>
+注册机构：RA<br>
+证书吊销列表：CRL<br>
+证书存取库：</p>
+<p>X.509：定义了证书的结构以及认证协议标准</p>
+<ul>
+<li>版本号</li>
+<li>序列号</li>
+<li>签名算法</li>
+<li>颁发者</li>
+<li>有效期限</li>
+<li>主体名称</li>
+</ul>
+<p>证书类型：</p>
+<ul>
+<li>证书授权机构的证书</li>
+<li>服务器证书</li>
+<li>用户证书</li>
+</ul>
+<p>获取证书两种方法：</p>
+<ul>
+<li>自签名的证书：   自已签发自己的公钥</li>
+<li>使用证书授权机构：
+<ul>
+<li>生成证书请求（csr）</li>
+<li>将证书请求csr发送给CA</li>
+<li>CA签名颁发证书</li>
+</ul>
+</li>
+</ul>
+<h5>安全协议 SSL/TLS</h5>
+<h6>TLS 介绍</h6>
+<p>SSL：Secure Socket Layer，TLS: Transport Layer Security</p>
+<p>1994年，NetScape公司设计了SSL协议（Secure Sockets Layer）的1.0版，但是未发布</p>
+<p>1995：SSL 2.0 Netscape 开发</p>
+<p>1996：SSL 3.0</p>
+<p>1999：TLS 1.0 </p>
+<p>2006：TLS 1.1 IETF(Internet工程任务组) RFC 4346，从2020年3月起，停止支持TLS 1.1及TLS 1.0版本安全协议，谷歌（Chrome）、Mozilla（Firefox）、微软（IE和Edge） 、苹果（Safari） 都会发布新版浏览器执行这个策略</p>
+<p>2008：TLS 1.2 当前主要使用</p>
+<p>2018：TLS 1.3 </p>
+<p>功能：</p>
+<ul>
+<li>机密性</li>
+<li>认证</li>
+<li>完整性</li>
+<li>重放保护</li>
+</ul>
+<h6>SSL/TLS组成</h6>
+<p><img title="linux加密管理插图(11)" alt="linux加密管理插图(11)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111135156025-480x247.png"></p>
+<ul>
+<li>Handshake协议：包括协商安全参数和密码套件、服务器身份认证（客户端身份认证可选）、密钥交换</li>
+<li>ChangeCipherSpec 协议：一条消息表明握手协议已经完成</li>
+<li>Alert 协议：对握手协议中一些异常的错误提醒，分为fatal和warning两个级别，fatal类型错误会直接中断SSL链接，而warning级别的错误SSL链接仍可继续，只是会给出错误警告</li>
+<li>Record 协议：包括对消息的分段、压缩、消息认证和完整性保护、加密等</li>
+</ul>
+<h6>TLS实现过程</h6>
+<p>实现分为握手阶段和应用阶段</p>
+<ul>
+<li>握手阶段(协商阶段):客户端和服务器端认证对方身份（依赖于PKI体系，利用数字证书进行身份认证），并协商通信中使用的安全参数、密码套件以及主密钥。后续通信使用的所有密钥都是通过MasterSecret生成</li>
+<li>应用阶段:在握手阶段完成后进入，在应用阶段通信双方使用握手阶段协商好的密钥进行安全通信</li>
+</ul>
+<p>目前密钥交换 + 签名有三种主流选择：</p>
+<ul>
+<li>RSA 密钥交换、RSA 数字签名</li>
+<li>ECDHE 密钥交换、RSA 数字签名</li>
+<li>ECDHE 密钥交换、ECDSA 数字签名</li>
+</ul>
+<p><strong>实现方式1</strong></p>
+<p>RSA 密钥交换、RSA 数字签名</p>
+<p><img title="linux加密管理插图(12)" alt="linux加密管理插图(12)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/tls-1578734973286-480x300.png"></p>
+<ol>
+<li>Visitor给出协议版本号、一个客户端随机数（Client random），以及客户端支持的加密方法</li>
+<li>Server确认双方使用的加密方法，以及一个服务器生成的随机数（Server random）</li>
+<li>Server发送数字证书给Visitor</li>
+<li>Visitor确认数字证书有效（查看证书状态且查询证书吊销列表），并使用信任的CA的公钥解密数字证书获得Server的公钥，然后生成一个新的46字节随机数（称为预备主密钥Pre-master secret），并使用Server的公钥加密预备主密钥发给Server</li>
+<li>Server使用自己的私钥，解密Visitor发来的预备主密钥</li>
+<li>Visitor和Server双方都具有了(客户端随机数+服务端随机数+预备主密钥)，它们两者都根据约定的加密方法，使用这三个随机数生成对称密钥——主密钥（也称为对话密钥session key），用来加密后续的对话过程</li>
+<li>在双方验证完session key的有效性之后，SSL握手机制就算结束了。之后所有的数据只需要使用“对话密钥”(此密钥并不是的session key，而是由其通过计算得到)加密即可，不再需要多余的加密机制</li>
+</ol>
+<p>注意：<br>
+1.在SSL握手机制中，需要三个随机数（客户端随机数+服务端随机数+预备主密钥）<br>
+2.至始至终客户端和服务端只有一次非对称加密动作——客户端使用证书中获得的服务端公钥加密预备主密钥。<br>
+3.上述SSL握手机制的前提单向验证，无需验证客户端，如果需要验证客户端则可能需要客户端的证书或客户端提供签名等。<br>
+4.Server和Visitor通信，Server把数字证书发给Visitor，最关键的一点是Visitor要保证证书的有效性，通过查看证书状态并去CA的吊销列表查看Server的证书是否被吊销。只有Server的证书可用了，才保证了第一环节的安全性<br>
+5.RSA 密钥交换有一个很大的问题：没有前向安全性Forward Secrecy。这意味着攻击者可以把监听到的加密流量先存起来，后续一旦拿到了私钥，之前所有流量都可以成功解密</p>
+<p><strong>实现方式2</strong></p>
+<p>目前大部分 HTTPS 流量用的都是 ECDHE 密钥交换。ECDHE 是使用椭圆曲线（ECC）的 DH（Diffie-Hellman）算法</p>
+<p><img title="linux加密管理插图(13)" alt="linux加密管理插图(13)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/TLS-DH-480x286.png"></p>
+<p>前图中的 Server DH Parameter 是用证书私钥签名的，客户端使用证书公钥就可以验证服务端合法性。相比 RSA 密钥交换，DH 由传递 Premaster Scret 变成了传递 DH 算法所需的 Parameter，然后双方各自算出 Premaster Secret</p>
+<p>对于这种情况，由于 Premaster Secret 无需交换，中间人就算有私钥也无法获得 Premaster Secret 和 Master Secret。当然，使用 ECDHE 后，虽然中间人拿到私钥也无法解密之前的流量，但可以实施 MITM 攻击来解密之后的流量，所以私钥还是要保管好。</p>
+<p>相比 RSA 既可以用于密钥交换，又可以用于数字签名；ECC 这边就分得比较清楚了：ECDHE 用于密钥交换，ECDSA 用于数字签名</p>
+<p><img title="linux加密管理插图(14)" alt="linux加密管理插图(14)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200203000050305-480x256.png"></p>
+<h5>HTTPS</h5>
+<p>HTTPS 协议：就是“HTTP 协议”和“SSL/TLS 协议”的组合。HTTP over SSL”或“HTTP over TLS”，对http协议的文本数据进行加密处理后，成为二进制形式传输</p>
+<h6>HTTPS结构</h6>
+<p><img title="linux加密管理插图(15)" alt="linux加密管理插图(15)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111135351516-480x276.png"></p>
+<h6>HTTPS工作的简化过程</h6>
+<p><img title="linux加密管理插图(16)" alt="linux加密管理插图(16)" src="http://www.yunweipai.com/wp-content/uploads/2020/05/image-20200111135406160-480x385.png"></p>
+<ol>
+<li>
+客户端发起HTTPS请求<br>
+用户在浏览器里输入一个https网址，然后连接到服务器的443端口
+</li>
+<li>
+服务端的配置<br>
+采用HTTPS协议的服务器必须要有一套数字证书，可以自己制作，也可以向组织申请。区别就是自己颁发的证书需要客户端验证通过，才可以继续访问，而使用受信任的公司申请的证书则不会弹出提示页面。这套证书其实就是一对公钥和私钥
+</li>
+<li>
+传送服务器的证书给客户端<br>
+证书里其实就是公钥，并且还包含了很多信息，如证书的颁发机构，过期时间等等
+</li>
+<li>
+客户端解析验证服务器证书<br>
+这部分工作是有客户端的TLS来完成的，首先会验证公钥是否有效，比如颁发机构，过期时间等等，如果发现异常，则会弹出一个警告框，提示证书存在问题。如果证书没有问题，那么就生成一个随机值。然后用证书中公钥对该随机值进行非对称加密
+</li>
+<li>
+客户端将加密信息传送服务器<br>
+这部分传送的是用证书加密后的随机值，目的就是让服务端得到这个随机值，以后客户端和服务端的通信就可以通过这个随机值来进行加密解密了
+</li>
+<li>
+服务端解密信息<br>
+服务端将客户端发送过来的加密信息用服务器私钥解密后，得到了客户端传过来的随机值
+</li>
+<li>
+服务器加密信息并发送信息<br>
+服务器将数据利用随机值进行对称加密,再发送给客户端
+</li>
+<li>
+客户端接收并解密信息<br>
+客户端用之前生成的随机值解密服务段传过来的数据，于是获取了解密后的内容
+</li>
+</ol>
+
+				<p style="margin-top: 20px;"></p>
+			</div>
+
+			<div class="clear"></div>
+
+
+		</div>	
+		</div>
+
+	</div>
+
+</div>		
+</body></html>
